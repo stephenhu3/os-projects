@@ -4,7 +4,6 @@
 #include <stdlib.h>
 
 int deletions(char* stringRef);
-// char* stringCopy(const char* stringRef);
 
 
 int main() {
@@ -12,12 +11,11 @@ int main() {
   scanf("%d",&t);
 
   char inStr[100001];
-  char* inStrPtr = inStr; // TODO: Check this
+  char* inStrPtr = inStr;
 
 
   for ( i = 0; i < t; i++ ) {
     scanf("%s", inStrPtr);
-    // input = (char*) malloc(strlen(inStrPtr) + 1);
     printf("%d\n", deletions(inStrPtr));
   }
 
@@ -37,7 +35,6 @@ int deletions(char* inputRef) {
     type = 1;
   }
 
-  // inputRef++;
 
   while(*inputRef++) {
     if ((type == 0) && (*inputRef == 'A')) {
