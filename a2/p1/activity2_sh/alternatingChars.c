@@ -10,7 +10,7 @@ int main() {
   int t,i;
   scanf("%d",&t);
 
-  char inStr[100001];
+  char inStr[100001];`
   char* inStrPtr = inStr;
 
 
