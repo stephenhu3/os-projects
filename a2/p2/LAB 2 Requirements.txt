@@ -1,0 +1,29 @@
+LAB 2 Requirements:
+Create multithreaded fibonacci program:
+1) 4.26 Page 197 - use Windows32 Thread library
+
+
+2) Create a shell program:
+design and implement a simple, interactive shell program that prompts the user for a command, parses the command, and then executes it with a child process.
+
+Feature 1 - Internal commands: Some shell commands are internal, that is, they are shell built-in commands. Examples of such commands are cd, pwd, and echo. You do not need to “implement” internal command internally in the shell, though you must consider an alternative way so that your shell executes the two important internal commands of cd and pwd (Hint: for example, use system().) The shell should also respond to the exit and quit commands.
+
+Feature 2 - Running in the background: Similar to an Ubuntu shell, your shell must be able to run a command in the background. Implement the ‘&’ modifier so that if the last character on the command line is ‘&’, the program is executed in parallel with the shell, rather than the shell’s having to wait for it.
+
+Feature 3 - Implement redirection: normally the standard input or output file are stdin and stdout. Allow that the standard input or output files to be redirected using the ‘>’ symbol. (Hint: this feature is more involved than the previous two. Add it after you have a working shell). Also Note that the implementation of ‘<’ redirection is not a requirement here.
+
+
+TIPS:
+A shell could use many different strategies to execute the user's computation. The basic approach used in modern shells is the one described in the attached document - to create a new process (or thread) to execute any new computation. For example, if a user decides to compile a program, the process interacting with the user creates a new child process. The first process then directs the new child process to execute the compiler program.
+This idea of creating a new process to execute a computation may seem like overkill, but it has a very important characteristic. When the original process decides to execute a new computation, it protects itself from any fatal errors that might arise during that execution.
+EECE 315 14W2 – PA2 Page 7 of 12
+If it did not use a child process to execute the command, a chain of fatal errors could cause the initial process to fail, thus crashing the entire machine.
+The UNIX paradigm for executing commands is illustrated in the following figure.
+Here, the shell has prompted the user with the % character and the user has typed "grep first f3." This command means the shell should create a child process and cause it to execute the grep string search program with parameters first and f3. (The semantics of grep are that the first string is to be interpreted as a search pattern and the second string is a filename.)
+The Bourne shell is described in Ritchie and Thompson's original UNIX paper. The Bourne shell and others accept a command line from the user, parse the command line, and then invoke the OS to run the specified command with the specified arguments. When a user passes a command line to the shell, it is interpreted as a request to execute a program in the specified file-even if the file contains a program that the user wrote. That is, a programmer can write an ordinary C program, compile it, and then have the shell execute it just like it was a normal UNIX command. For example, you could write a C program in a file named main.c, then compile and execute it with shell commands like
+kiowa$ cc main.c kiowa$ a.out
+The shell finds the cc command (the C compiler) in the /bin directory, and then passes it the string "main.c" when it creates a child process to execute the cc program. The C compiler, by default, translates the C program that is stored in main.c, then writes the resulting executable program into a file named a.out in the current directory. In the second command, the command line is just the name of the file to be executed, a.out (without any parameters). The shell finds the a.out file in the current directory, and then loads it and executes it.
+Consider the detailed steps that a shell must take to accomplish its job:
+Printing a prompt: There is a default prompt string, sometimes hardcoded into the shell, e.g., the single character string "%," "#," ">" or other. When the shell is started, it can look up the name of the machine on which it is running, and prepend this string name to the standard prompt character, for example, giving a prompt string such as "kiowa$." The shell can also be designed to print the current directory as part of the prompt, meaning that each time the user employs cd to change to a different directory, the prompt string is redefined.
+Once the prompt string is determined, the shell prints it to stdout whenever it is ready to accept a command line.
+
