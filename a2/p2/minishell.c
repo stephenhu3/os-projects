@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
 	char cmdLine[MAX_LINE_LEN]; 
 	struct command_t command;
 
-	char *command = (char *) malloc(MAX_LINE_LEN);
+	char *commandLine = (char *) malloc(MAX_LINE_LEN);
 	char *pathv[] = (char *) malloc(MAX_PATH_LEN);
 	parsePath(pathv); /* Get directory paths from PATH */
 	
