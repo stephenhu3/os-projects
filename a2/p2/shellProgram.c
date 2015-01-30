@@ -10,7 +10,7 @@
 
 struct command_t { char *name;
 	int argc;
-	char *argv[MAX_ARG];
+	char *argv[MAX_ARGS];
 };
 
 /* Function prototypes */
@@ -102,15 +102,20 @@ int parsePath(char *dirs[]) {
 	/* This function reads the PATH variable for this environment, then builds an array, dirs[], of the directories in PATH */
 	char *pathEnvVar; 
 	char *thePath;
+        int i;
 	
 	for(i=0; i<MAX_ARGS; i++) 
-		dirs[i] = ...; /* set to null */
+		dirs[i] = NULL; /* set to null */
 	pathEnvVar = (char *) getenv ("PATH");
 	thePath = (char *) malloc(strlen(pathEnvVar) + 1); 
 	strcpy(thePath, pathEnvVar);
 	
 	/* Loop to parse thePath. Look for a ':' delimiter between each path name. */
-	... 
+	for(i=0; (dirs[i] = strsep(thePath, ":")) != NULL; i++) {
+                dirs[++i] = (char *) malloc(MAX_ARG_LEN);
+        }
+
+        return 1;
 }
 
 char *lookupPath(char **argv, char **dir) {
