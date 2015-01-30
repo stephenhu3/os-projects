@@ -1,1 +1,0 @@
-cmd_/home/stephen/G20_Repo/a2/p1/activity3_sh/simple.ko := ld -r -m elf_x86_64 -T /usr/src/linux-headers-3.8.0-44-generic/scripts/module-common.lds --build-id  -o /home/stephen/G20_Repo/a2/p1/activity3_sh/simple.ko /home/stephen/G20_Repo/a2/p1/activity3_sh/simple.o /home/stephen/G20_Repo/a2/p1/activity3_sh/simple.mod.o
