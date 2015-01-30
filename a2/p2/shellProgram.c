@@ -99,11 +99,7 @@ void printPrompt() {
         gethostname(hostname, sizeof(hostname));
         getcwd(cwd, MAX_ARG_LEN);
 
-        strcat(promptString, getenv("USER"));
-        strcat(promptString, "@");
-        strcat(promptString, hostname);
-        strcat(promptString, ":");
-        strcat(promptString, cwd);
+        char promptString[] = getenv("USER") + "@" + hostname + ":" + cwd;
 
 	printf (”%s”, promptString);
 }
