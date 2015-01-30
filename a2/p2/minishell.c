@@ -14,7 +14,8 @@ int main(int argc, char *argv[]) {
 	char cmdLine[MAX_LINE_LEN]; 
 	struct command_t command;
 
-	char *pathv[] = (char *) malloc(MAX_LINE_LEN);
+	char *command = (char *) malloc(MAX_LINE_LEN);
+	char *pathv[] = (char *) malloc(MAX_PATH_LEN);
 	parsePath(pathv); /* Get directory paths from PATH */
 	
 	while (TRUE) { 
@@ -141,7 +142,7 @@ void printPrompt() {
 	strcat(promptString, ":");
 	strcat(promptString, cwd);
 
-	printf (”%s”, promptString);
+	printf ("%s", promptString);
 	free(cwd);
 	
 	fflush(stdout);
@@ -178,7 +179,7 @@ char *lookupPath(char **argv, char **dir) {
 	Allocate a new string, place the full path name in it, then return the string. */
 	char *result;
 	char pName[MAX_PATH_LEN];
-	int MAX_PATHS = sizeof(*dir)/sizeof(char);
+	int pathSize = sizeof(*dir)/sizeof(char);
 	char *filepath = (char *) malloc(MAX_LINE_LEN);
 
 	/* Check to see if file name is already an absolute path name */ 
@@ -188,7 +189,7 @@ char *lookupPath(char **argv, char **dir) {
 
 	/* Look in PATH directories
 	   use access() to see if the file is in a dir */
-	for (int i = 0; i < MAX_PATHS; i++) {
+	for (int i = 0; i < pathSize; i++) {
 		strcat(*filepath, *dir[i]);
 		strcat(*filepath, *argv[0]);
 		if (access(*filepath, F_OK) == 0) {
