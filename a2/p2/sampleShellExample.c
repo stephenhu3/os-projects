@@ -2,7 +2,8 @@
 #include ...
 #include “minishell.h”
 char *lookupPath(char **, char **);
-int parseCommand(char *, struct command_t *); int parsePath(char **);
+int parseCommand(char *, struct command_t *); 
+int parsePath(char **);
 void printPrompt();
 void readCommand(char *);
 ...
