@@ -128,13 +128,18 @@ int parseCommand(char *cLine, struct command_t *cmd) {
 
 void printPrompt() {
 	/* Build the prompt string to have the machine name, current directory, or other desired information */
+        char promptString[];
         char hostname[CHAR_MAX];
         char *cwd = (char *)malloc(MAX_ARG_LEN);
 
         gethostname(hostname, sizeof(hostname));
         getcwd(cwd, MAX_ARG_LEN);
 
-        char promptString[] = getenv("USER") + "@" + hostname + ":" + cwd;
+	strcat(promptString, getenv("USER"));
+	strcat(promptString, "@");
+	strcat(promptString, hostname);
+	strcat(promptString, ":");
+	strcat(promptString, cwd);
 
 	printf (”%s”, promptString);
 	free(cwd);
