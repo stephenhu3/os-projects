@@ -15,7 +15,8 @@ int main(int argc, char *argv[]) {
 	struct command_t command;
 
 	char *commandLine = (char *) malloc(MAX_LINE_LEN);
-	char *pathv[] = (char *) malloc(MAX_PATH_LEN);
+	char directories[1000] = {""}; // this needs to be declared differently
+	char *pathv[] = &directories;
 	parsePath(pathv); /* Get directory paths from PATH */
 	
 	while (TRUE) { 
@@ -129,7 +130,7 @@ int parseCommand(char *cLine, struct command_t *cmd) {
 
 void printPrompt() {
 	/* Build the prompt string to have the machine name, current directory, or other desired information */
-        char promptString[];
+        char *promptString;
         char hostname[CHAR_MAX];
         char *cwd = (char *)malloc(MAX_ARG_LEN);
 
