@@ -92,7 +92,10 @@ int parseCommand(char *cLine, struct command_t *cmd) {
 
 void printPrompt() {
 	/* Build the prompt string to have the machine name, current directory, or other desired information */
-	char promptString[] = ... ; 
+        char hostname[32];
+        hostname[31] = '\0';
+        gethostname(hostname, 31);
+	char promptString[] = {hostname}; 
 	printf (”%s”, promptString);
 }
 
