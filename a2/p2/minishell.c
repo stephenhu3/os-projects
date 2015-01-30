@@ -1,4 +1,4 @@
-#include <minishell.h>
+#include "minishell.h"
 
 /* Function prototypes */
 int parseCommand(char *, struct command_t *);
@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
 		wait(&status);
 	}
 	
-	/* Shell termination */ 
+	/* Shell termination */
 	printf("Terminating successfully.\n"); 
 	return 0;
 
