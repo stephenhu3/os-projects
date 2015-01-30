@@ -48,7 +48,12 @@ int main(int argc, char *argv[]) {
 		/* Create a child process to execute the command */ 
 		if((pid = fork()) == 0) {
 			/* Child executing command */ 
-			execvp(command.name, command.argv);
+			//execvp(command.name, command.argv); // must use execv instead
+			if(command.name[0] == '/') {
+				execv(command.name, command.argv);
+			} else {
+				execv(lookupPath(*pathv, command.argv), command.argv);
+			}
 		}
 
 		/* Parent continuing to the next command in the file */ 
