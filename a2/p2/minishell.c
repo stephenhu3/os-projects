@@ -136,7 +136,10 @@ void printPrompt() {
 
         char promptString[] = getenv("USER") + "@" + hostname + ":" + cwd;
 
-		printf (”%s”, promptString);
+	printf (”%s”, promptString);
+	free(cwd);
+	
+	fflush(stdout);
 }
 
 void readCommand(char *buffer) {
