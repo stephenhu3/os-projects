@@ -6,6 +6,7 @@
 #define MAX_ARGS 64 
 #define MAX_ARG_LEN 16 
 #define MAX_LINE_LEN 80 
+#define CHAR_MAX 1024
 #define WHITESPACE " .,\t\n"
 
 struct command_t { 
@@ -92,13 +93,13 @@ int parseCommand(char *cLine, struct command_t *cmd) {
 
 void printPrompt() {
 	/* Build the prompt string to have the machine name, current directory, or other desired information */
-        char hostname[1024];
-        char cwd[1024];
+        char hostname[CHAR_MAX];
+        char *cwd = (char *)malloc(MAX_ARG_LEN);
 
-        hostname[1023] = '\0';
-        gethostname(hostname, 1023);
-        getcwd(cwd, sizeof(cwd));
+        gethostname(hostname, sizeof(hostname));
+        getcwd(cwd, MAX_ARG_LEN);
 
+        strcat(promptString, getenv("USER"));
         strcat(promptString, hostname);
         strcat(promptString, ":");
         strcat(promptString, cwd);
