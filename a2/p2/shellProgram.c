@@ -132,7 +132,7 @@ char *lookupPath(char **argv, char **dir) {
 
 	/* Check to see if file name is already an absolute path name */ 
 	if(*argv[0] == '/') {
-		return *argv; 
+		return *argv[0]; 
 	}
 
 	/* Look in PATH directories
