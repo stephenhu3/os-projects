@@ -29,6 +29,9 @@ int main(int argc, char *argv[]) {
 	char cmdLine[MAX_LINE_LEN]; 
 	struct command_t command;
 
+	char *pathv[] = (char *) malloc(MAX_LINE_LEN);
+	parsePath(pathv); /* Get directory paths from PATH */
+
 	/* Read the command line parameters */ 
 	if ( argc != 2) {
 		fprintf(stderr, "Usage: launch <launch_set_filename>\n");
@@ -106,7 +109,7 @@ void printPrompt() {
 
         char promptString[] = getenv("USER") + "@" + hostname + ":" + cwd;
 
-	printf (”%s”, promptString);
+		printf (”%s”, promptString);
 }
 
 void readCommand(char *buffer) {
@@ -141,11 +144,11 @@ char *lookupPath(char **argv, char **dir) {
 	char *result;
 	char pName[MAX_PATH_LEN];
 	int MAX_PATHS = sizeof(*dir)/sizeof(char);
-	char *filepath = new char[1000];
+	char *filepath = (char *) malloc(MAX_LINE_LEN);
 
 	/* Check to see if file name is already an absolute path name */ 
 	if(*argv[0] == '/') {
-		return *argv[0]; 
+		return argv[0]; 
 	}
 
 	/* Look in PATH directories
@@ -154,7 +157,7 @@ char *lookupPath(char **argv, char **dir) {
 		strcat(*filepath, *dir[i]);
 		strcat(*filepath, *argv[0]);
 		if (access(*filepath, F_OK) == 0) {
-			return *filepath;
+			return filepath;
 		}
 	}
 
