@@ -11,33 +11,33 @@ int main(int argc, char *argv[]) {
 	int i;
 	int pid, numChildren;
 	int status;
-	FILE *fid;
 	char cmdLine[MAX_LINE_LEN]; 
 	struct command_t command;
 
 	char *pathv[] = (char *) malloc(MAX_LINE_LEN);
 	parsePath(pathv); /* Get directory paths from PATH */
-
-	/* Read the command line parameters */ 
-	if ( argc != 2) {
-		fprintf(stderr, "Usage: launch <launch_set_filename>\n");
-		exit (0);
-	}
-
-	/* Open a file that contains a set of commands */ 
-	fid = fopen(argv[1], "r");
-
-	/* Process each command in the launch file */ 
-	numChildren = 0;
 	
-	while(fgets(cmdLine, MAX_LINE_LEN, fid) != NULL) {
-		parseCommand(cmdLine, &command); 
-		command.argv[command.argc] = NULL;
+	while (TRUE) { 
+		printPrompt();
+		
+		/* Read the command line and parse it */ 
+		readCommand(commandLine);
+		// ...
+		parseCommand(commandLine, &command); 
+		// ...
+		
+		/* Get the full pathname for the file */
+		command.name = lookupPath(command.argv, pathv); 
+		if(command.name == NULL) {
+			/* Report error */ 
+			printf("Invalid command name.\n"); 
+			continue;
+		}
 
-		/* Create a child process to execute the command */ 
+		/* Create child process and execute the command */ 
 		if((pid = fork()) == 0) {
 			/* Child executing command */ 
-			//execvp(command.name, command.argv); // must use execv instead
+			
 			if(command.name[0] == '/') {
 				execv(command.name, command.argv);
 			} else {
@@ -45,20 +45,61 @@ int main(int argc, char *argv[]) {
 			}
 		}
 
-		/* Parent continuing to the next command in the file */ 
-		numChildren++;
-	}
-
-	printf("\n\nlaunch: Launched %d commands\n", numChildren);
-
-	/* Terminate after all children have terminated */ 
-	for(i = 0; i < numChildren; i++) {
+		
+		/* Wait for the child to terminate */
 		wait(&status);
-		/* Should free dynamic storage in command data structure */
 	}
-
-	printf("\n\nlaunch: Terminating successfully\n"); 
+	
+	/* Shell termination */ 
+	printf("Terminating successfully.\n"); 
 	return 0;
+
+	
+
+	// char *pathv[] = (char *) malloc(MAX_LINE_LEN);
+	// parsePath(pathv); /* Get directory paths from PATH */
+
+	// /* Read the command line parameters */ 
+	// if ( argc != 2) {
+	// 	fprintf(stderr, "Usage: launch <launch_set_filename>\n");
+	// 	exit (0);
+	// }
+
+	// /* Open a file that contains a set of commands */ 
+	// fid = fopen(argv[1], "r");
+
+	// /* Process each command in the launch file */ 
+	// numChildren = 0;
+	
+	// while(fgets(cmdLine, MAX_LINE_LEN, fid) != NULL) {
+	// 	parseCommand(cmdLine, &command); 
+	// 	command.argv[command.argc] = NULL;
+
+	// 	 Create a child process to execute the command  
+	// 	if((pid = fork()) == 0) {
+	// 		/* Child executing command */ 
+	// 		//execvp(command.name, command.argv); // must use execv instead
+	// 		if(command.name[0] == '/') {
+	// 			execv(command.name, command.argv);
+	// 		} else {
+	// 			execv(lookupPath(*pathv, command.argv), command.argv);
+	// 		}
+	// 	}
+
+	// 	/* Parent continuing to the next command in the file */ 
+	// 	numChildren++;
+	// }
+
+	// printf("\n\nlaunch: Launched %d commands\n", numChildren);
+
+	// /* Terminate after all children have terminated */ 
+	// for(i = 0; i < numChildren; i++) {
+	// 	wait(&status);
+	// 	/* Should free dynamic storage in command data structure */
+	// }
+
+	// printf("\n\nlaunch: Terminating successfully\n"); 
+	// return 0;
 }
 
 /* Determine command name and construct the parameter list. This function will build argv[] and set the argc value.
