@@ -6,6 +6,7 @@
 #define MAX_ARGS 64 
 #define MAX_ARG_LEN 16 
 #define MAX_LINE_LEN 80 
+#define CHAR_MAX 1024
 #define WHITESPACE " .,\t\n"
 
 struct command_t { 
@@ -28,6 +29,9 @@ int main(int argc, char *argv[]) {
 	char cmdLine[MAX_LINE_LEN]; 
 	struct command_t command;
 
+	char* pathv = new char[1000];
+	parsePath(pathv); /* Get directory paths from PATH */
+
 	/* Read the command line parameters */ 
 	if ( argc != 2) {
 		fprintf(stderr, "Usage: launch <launch_set_filename>\n");
@@ -47,7 +51,14 @@ int main(int argc, char *argv[]) {
 		/* Create a child process to execute the command */ 
 		if((pid = fork()) == 0) {
 			/* Child executing command */ 
-			execvp(command.name, command.argv);
+			//execvp(command.name, command.argv); // must use execv instead
+			if(command.name[0] == '/') {
+				execv(command.name, command.argv);
+			} else {
+				execv(lookupPath(*pathv, command.argv), command.argv);
+			}
+
+			
 		}
 
 		/* Parent continuing to the next command in the file */ 
@@ -92,7 +103,17 @@ int parseCommand(char *cLine, struct command_t *cmd) {
 
 void printPrompt() {
 	/* Build the prompt string to have the machine name, current directory, or other desired information */
-	char promptString[] = ... ; 
+        char hostname[CHAR_MAX];
+        char *cwd = (char *)malloc(MAX_ARG_LEN);
+
+        gethostname(hostname, sizeof(hostname));
+        getcwd(cwd, MAX_ARG_LEN);
+
+        strcat(promptString, getenv("USER"));
+        strcat(promptString, hostname);
+        strcat(promptString, ":");
+        strcat(promptString, cwd);
+
 	printf (”%s”, promptString);
 }
 
@@ -105,15 +126,21 @@ int parsePath(char *dirs[]) {
 	/* This function reads the PATH variable for this environment, then builds an array, dirs[], of the directories in PATH */
 	char *pathEnvVar; 
 	char *thePath;
+        int i;
 	
 	for(i=0; i<MAX_ARGS; i++) 
-		dirs[i] = ...; /* set to null */
+		dirs[i] = NULL; /* set to null */
 	pathEnvVar = (char *) getenv ("PATH");
 	thePath = (char *) malloc(strlen(pathEnvVar) + 1); 
 	strcpy(thePath, pathEnvVar);
 	
 	/* Loop to parse thePath. Look for a ':' delimiter between each path name. */
-	... 
+        dirs[0] = (char *) malloc(MAX_ARG_LEN);
+	for(i=0; (dirs[i] = strsep(thePath, ":")) != NULL; i++) {
+                dirs[++i] = (char *) malloc(MAX_ARG_LEN);
+        }
+
+        return 1;
 }
 
 char *lookupPath(char **argv, char **dir) {
