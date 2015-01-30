@@ -93,7 +93,7 @@ int parseCommand(char *cLine, struct command_t *cmd) {
 void printPrompt() {
 	/* Build the prompt string to have the machine name, current directory, or other desired information */
         char hostname[1024];
-        char cwd[1023];
+        char cwd[1024];
 
         hostname[1023] = '\0';
         gethostname(hostname, 1023);
