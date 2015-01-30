@@ -112,7 +112,6 @@ int parsePath(char *dirs[]) {
 	
 	/* Loop to parse thePath. Look for a ':' delimiter between each path name. */
 	for(i=0; (dirs[i] = strsep(thePath, ":")) != NULL; i++) {
-                dirs[++i] = (char *) malloc(MAX_ARG_LEN);
         }
 
         return 1;
