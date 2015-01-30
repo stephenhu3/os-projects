@@ -29,9 +29,6 @@ int main(int argc, char *argv[]) {
 	char cmdLine[MAX_LINE_LEN]; 
 	struct command_t command;
 
-	char* pathv = new char[1000];
-	parsePath(pathv); /* Get directory paths from PATH */
-
 	/* Read the command line parameters */ 
 	if ( argc != 2) {
 		fprintf(stderr, "Usage: launch <launch_set_filename>\n");
@@ -57,8 +54,6 @@ int main(int argc, char *argv[]) {
 			} else {
 				execv(lookupPath(*pathv, command.argv), command.argv);
 			}
-
-			
 		}
 
 		/* Parent continuing to the next command in the file */ 
@@ -109,10 +104,7 @@ void printPrompt() {
         gethostname(hostname, sizeof(hostname));
         getcwd(cwd, MAX_ARG_LEN);
 
-        strcat(promptString, getenv("USER"));
-        strcat(promptString, hostname);
-        strcat(promptString, ":");
-        strcat(promptString, cwd);
+        char promptString[] = getenv("USER") + "@" + hostname + ":" + cwd;
 
 	printf (”%s”, promptString);
 }
