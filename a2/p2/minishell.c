@@ -16,39 +16,41 @@ int main(int argc, char *argv[]) {
 
 	char *commandLine = (char *) malloc(MAX_LINE_LEN);
 	char **directories = (char **) malloc(MAX_LINE_LEN);// this needs to be declared differently
-	parsePath(*directories); /* Get directory paths from PATH */
+	// parsePath(*directories); /* Get directory paths from PATH */
 	
 	while (TRUE) { 
 		printPrompt();
 		
-		/* Read the command line and parse it */ 
+		//  Read the command line and parse it  
 		readCommand(commandLine);
-		// ...
+		// // ...
 		parseCommand(commandLine, &command); 
-		// ...
+		// // ...
 		
-		/* Get the full pathname for the file */
-		command.name = lookupPath(command.argv, *directories); 
-		if(command.name == NULL) {
-			/* Report error */ 
-			printf("Invalid command name.\n"); 
-			continue;
-		}
+		parsePath(*directories);
+		// /* Get the full pathname for the file */
+		// command.name = lookupPath(command.argv, *directories); //thisone
+		// printf(command.name);
+		// if(command.name == NULL) {
+		// 	/* Report error */ 
+		// 	printf("Invalid command name.\n"); 
+		// 	continue;
+		// }
 
-		/* Create child process and execute the command */ 
-		if((pid = fork()) == 0) {
-			/* Child executing command */ 
+		//  Create child process and execute the command  
+		// if((pid = fork()) == 0) {
+		// 	/* Child executing command */ 
 			
-			if(command.name[0] == '/') {
-				execv(command.name, command.argv);
-			} else {
-				execv(lookupPath(*directories, command.argv), command.argv);
-			}
-		}
+		// 	if(command.name[0] == '/') {
+		// 		execv(command.name, command.argv);
+		// 	} else {
+		// 		execv(lookupPath(*directories, command.argv), command.argv);
+		// 	}
+		// }
 
 		
-		/* Wait for the child to terminate */
-		wait(&status);
+		// /* Wait for the child to terminate */
+		// wait(&status);
 	}
 	
 	/* Shell termination */
@@ -129,19 +131,19 @@ int parseCommand(char *cLine, struct command_t *cmd) {
 
 void printPrompt() {
 	/* Build the prompt string to have the machine name, current directory, or other desired information */
-        char *promptString;
-        char hostname[CHAR_MAX];
-        char *cwd = (char *)malloc(MAX_ARG_LEN);
+    char promptString[CHAR_MAX];
+    strcpy(promptString, "");
+    char hostname[CHAR_MAX];
+    char *cwd = (char *)malloc(MAX_ARG_LEN);
 
-        gethostname(hostname, sizeof(hostname));
-        getcwd(cwd, MAX_ARG_LEN);
+    gethostname(hostname, sizeof(hostname));
+    getcwd(cwd, MAX_ARG_LEN);
 
 	strcat(promptString, getenv("USER"));
 	strcat(promptString, "@");
 	strcat(promptString, hostname);
 	strcat(promptString, ":");
 	strcat(promptString, cwd);
-
 	printf ("%s", promptString);
 	free(cwd);
 	
@@ -177,28 +179,39 @@ int parsePath(char **dirs) {
 char *lookupPath(char **argv, char **dir) {
 	/* This function searches the directories identified by the dir argument to see if argv[0] (the file name) appears there.
 	Allocate a new string, place the full path name in it, then return the string. */
+	int i;
 	char *result;
 	char pName[MAX_PATH_LEN];
 	int pathSize = sizeof(*dir)/sizeof(char);
-	char *filepath = (char *) malloc(MAX_LINE_LEN);
+	char filepath[CHAR_MAX];
+	strcpy(filepath, "");
 
 	/* Check to see if file name is already an absolute path name */ 
 	if(*argv[0] == '/') {
 		return argv[0]; 
 	}
 
+
+
 	/* Look in PATH directories
 	   use access() to see if the file is in a dir */
-	for (int i = 0; i < pathSize; i++) {
-		strcat(*filepath, *dir[i]);
-		strcat(*filepath, *argv[0]);
-		if (access(*filepath, F_OK) == 0) {
+	for (i = 0; i < pathSize; i++) {
+		// strcat(filepath, dir[i]); // this line is causing crashes
+		strcat(filepath, argv[0]);
+		printf(dir[i]);
+
+		if (access(filepath, F_OK) == 0) {
 			return filepath;
 		}
+
+		printf(filepath);
+		char filepath[CHAR_MAX];
+		strcpy(filepath, "");
+
 	}
 
 
-	/* if file name not found in any path variable till now then*/ 
-	fprintf(stderr, "%s: command not found\n", argv[0]); 
+	// /* if file name not found in any path variable till now then*/ 
+	// fprintf(stderr, "%s: command not found\n", argv[0]); 
 	return NULL;
 }
