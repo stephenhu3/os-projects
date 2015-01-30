@@ -8,7 +8,8 @@
 #define MAX_LINE_LEN 80 
 #define WHITESPACE " .,\t\n"
 
-struct command_t { char *name;
+struct command_t { 
+	char *name;
 	int argc;
 	char *argv[MAX_ARGS];
 };
@@ -43,15 +44,16 @@ int main(int argc, char *argv[]) {
 		parseCommand(cmdLine, &command); 
 		command.argv[command.argc] = NULL;
 
-	/* Create a child process to execute the command */ 
-	if((pid = fork()) == 0) {
-		/* Child executing command */ 
-		execvp(command.name, command.argv);
+		/* Create a child process to execute the command */ 
+		if((pid = fork()) == 0) {
+			/* Child executing command */ 
+			execvp(command.name, command.argv);
+		}
+
+		/* Parent continuing to the next command in the file */ 
+		numChildren++;
 	}
 
-	/* Parent continuing to the next command in the file */ 
-	numChildren++;
-	}
 	printf("\n\nlaunch: Launched %d commands\n", numChildren);
 
 	/* Terminate after all children have terminated */ 
@@ -59,6 +61,7 @@ int main(int argc, char *argv[]) {
 		wait(&status);
 		/* Should free dynamic storage in command data structure */
 	}
+
 	printf("\n\nlaunch: Terminating successfully\n"); 
 	return 0;
 }
@@ -124,10 +127,24 @@ char *lookupPath(char **argv, char **dir) {
 	Allocate a new string, place the full path name in it, then return the string. */
 	char *result;
 	char pName[MAX_PATH_LEN];
+	int MAX_PATHS = sizeof(*dir)/sizeof(char);
+	char *filepath = new char[1000];
+
 	/* Check to see if file name is already an absolute path name */ 
 	if(*argv[0] == '/') {
-		... 
+		return *argv; 
 	}
+
+	/* Look in PATH directories
+	   use access() to see if the file is in a dir */
+	for (int i = 0; i < MAX_PATHS; i++) {
+		strcat(*filepath, *dir[i]);
+		strcat(*filepath, *argv[0]);
+		if (access(*filepath, F_OK) == 0) {
+			return *filepath;
+		}
+	}
+
 
 	/* if file name not found in any path variable till now then*/ 
 	fprintf(stderr, "%s: command not found\n", argv[0]); 
