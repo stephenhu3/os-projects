@@ -15,94 +15,44 @@ int main(int argc, char *argv[]) {
 	struct command_t command;
 
 	char *commandLine = (char *) malloc(MAX_LINE_LEN);
-	char **directories = (char **) malloc(MAX_LINE_LEN);// this needs to be declared differently
-	// parsePath(*directories); /* Get directory paths from PATH */
+	char **directories = (char **) malloc(sizeof(char)*MAX_PATHS);
 	
 	while (TRUE) { 
 		printPrompt();
 		
 		//  Read the command line and parse it  
 		readCommand(commandLine);
-		// // ...
 		parseCommand(commandLine, &command); 
-		// // ...
 		
 		parsePath(*directories);
-		// /* Get the full pathname for the file */
-		// command.name = lookupPath(command.argv, *directories); //thisone
-		// printf(command.name);
-		// if(command.name == NULL) {
-		// 	/* Report error */ 
-		// 	printf("Invalid command name.\n"); 
-		// 	continue;
-		// }
+		/* Get the full pathname for the file */
+		command.name = lookupPath(command.argv, *directories); //thisone
+		printf(command.name);
+		if(command.name == NULL) {
+			/* Report error */ 
+			printf("Invalid command name.\n"); 
+			continue;
+		}
 
-		//  Create child process and execute the command  
-		// if((pid = fork()) == 0) {
-		// 	/* Child executing command */ 
+		 Create child process and execute the command  
+		if((pid = fork()) == 0) {
+			/* Child executing command */ 
 			
-		// 	if(command.name[0] == '/') {
-		// 		execv(command.name, command.argv);
-		// 	} else {
-		// 		execv(lookupPath(*directories, command.argv), command.argv);
-		// 	}
-		// }
+			if(command.name[0] == '/') {
+				execv(command.name, command.argv);
+			} else {
+				execv(lookupPath(*directories, command.argv), command.argv);
+			}
+		}
 
 		
 		// /* Wait for the child to terminate */
-		// wait(&status);
+		wait(&status);
 	}
 	
 	/* Shell termination */
 	printf("Terminating successfully.\n"); 
 	return 0;
-
-	
-
-	// char *pathv[] = (char *) malloc(MAX_LINE_LEN);
-	// parsePath(pathv); /* Get directory paths from PATH */
-
-	// /* Read the command line parameters */ 
-	// if ( argc != 2) {
-	// 	fprintf(stderr, "Usage: launch <launch_set_filename>\n");
-	// 	exit (0);
-	// }
-
-	// /* Open a file that contains a set of commands */ 
-	// fid = fopen(argv[1], "r");
-
-	// /* Process each command in the launch file */ 
-	// numChildren = 0;
-	
-	// while(fgets(cmdLine, MAX_LINE_LEN, fid) != NULL) {
-	// 	parseCommand(cmdLine, &command); 
-	// 	command.argv[command.argc] = NULL;
-
-	// 	 Create a child process to execute the command  
-	// 	if((pid = fork()) == 0) {
-	// 		/* Child executing command */ 
-	// 		//execvp(command.name, command.argv); // must use execv instead
-	// 		if(command.name[0] == '/') {
-	// 			execv(command.name, command.argv);
-	// 		} else {
-	// 			execv(lookupPath(*pathv, command.argv), command.argv);
-	// 		}
-	// 	}
-
-	// 	/* Parent continuing to the next command in the file */ 
-	// 	numChildren++;
-	// }
-
-	// printf("\n\nlaunch: Launched %d commands\n", numChildren);
-
-	// /* Terminate after all children have terminated */ 
-	// for(i = 0; i < numChildren; i++) {
-	// 	wait(&status);
-	// 	/* Should free dynamic storage in command data structure */
-	// }
-
-	// printf("\n\nlaunch: Terminating successfully\n"); 
-	// return 0;
 }
 
 /* Determine command name and construct the parameter list. This function will build argv[] and set the argc value.
@@ -159,19 +109,24 @@ int parsePath(char **dirs) {
 	/* This function reads the PATH variable for this environment, then builds an array, dirs[], of the directories in PATH */
 	char *pathEnvVar; 
 	char *thePath;
+
+	const char delimiter = ":";
+
         int i;
 	
-	for(i=0; i<MAX_ARGS; i++) 
-		dirs[i] = NULL; /* set to null */
+	for(i=0; i<MAX_PATHS; i++) 
+		dirs[i] = NULL;  set to null 
 	pathEnvVar = (char *) getenv ("PATH");
-	thePath = (char *) malloc(strlen(pathEnvVar) + 1); 
+
+
+	char *test = (char *) malloc(100000000); 
+	thePath = (char *) malloc(strlen(pathEnvVar) + 1);
 	strcpy(thePath, pathEnvVar);
 	
-	/* Loop to parse thePath. Look for a ':' delimiter between each path name. */
-        dirs[0] = (char *) malloc(MAX_ARG_LEN);
+	// /* Loop to parse thePath. Look for a ':' delimiter between each path name. */
 	for(i=0; (dirs[i] = strsep(thePath, ":")) != NULL; i++) {
                 dirs[++i] = (char *) malloc(MAX_ARG_LEN);
-        }
+    }
 
         return 1;
 }
@@ -212,6 +167,6 @@ char *lookupPath(char **argv, char **dir) {
 
 
 	// /* if file name not found in any path variable till now then*/ 
-	// fprintf(stderr, "%s: command not found\n", argv[0]); 
+	fprintf(stderr, "%s: command not found\n", argv[0]); 
 	return NULL;
 }
