@@ -15,9 +15,8 @@ int main(int argc, char *argv[]) {
 	struct command_t command;
 
 	char *commandLine = (char *) malloc(MAX_LINE_LEN);
-	char directories[1000] = {""}; // this needs to be declared differently
-	char *pathv[] = &directories;
-	parsePath(pathv); /* Get directory paths from PATH */
+	char **directories = (char **) malloc(MAX_LINE_LEN);// this needs to be declared differently
+	parsePath(*directories); /* Get directory paths from PATH */
 	
 	while (TRUE) { 
 		printPrompt();
@@ -29,7 +28,7 @@ int main(int argc, char *argv[]) {
 		// ...
 		
 		/* Get the full pathname for the file */
-		command.name = lookupPath(command.argv, pathv); 
+		command.name = lookupPath(command.argv, *directories); 
 		if(command.name == NULL) {
 			/* Report error */ 
 			printf("Invalid command name.\n"); 
@@ -43,7 +42,7 @@ int main(int argc, char *argv[]) {
 			if(command.name[0] == '/') {
 				execv(command.name, command.argv);
 			} else {
-				execv(lookupPath(*pathv, command.argv), command.argv);
+				execv(lookupPath(*directories, command.argv), command.argv);
 			}
 		}
 
@@ -154,7 +153,7 @@ void readCommand(char *buffer) {
 	gets (buffer);
 }
 
-int parsePath(char *dirs[]) {
+int parsePath(char **dirs) {
 	/* This function reads the PATH variable for this environment, then builds an array, dirs[], of the directories in PATH */
 	char *pathEnvVar; 
 	char *thePath;
