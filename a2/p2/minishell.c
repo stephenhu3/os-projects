@@ -28,22 +28,59 @@ int main(int argc, char *argv[]) {
 
 		/* Get the full pathname for the file */
 		command.name = lookupPath(command.argv, directories);
+		// printf("command.name %s\n", command.name);
+		// printf("command.argv %s\n", *command.argv);	
 
-		// printf("%s \n", command.argv[0]);
+		if (strcmp(command.argv[0], "quit") == 0 || strcmp(command.argv[0], "exit") == 0) {
+			printf("Closing program.\n");
+			break;
+		}
 		
+		// if command not found in any directories in PATH variable
 		if(command.name == NULL) {
 			/* Report error */ 
 			printf("Invalid command name.\n"); 
-			continue;
+			continue; // breaks out of loop, back to printprompt
 		}
 
-		 // Create child process and execute the command  
+		// printf("command.name %s\n", command.name);
+		// printf("command.argv %s\n", command.argv[0]);
+		// execv(command.name, command.argv);
+
+		 // Create child process and execute the command 
+		 // if the command is found in one of the directories
 		if((pid = fork()) == 0) {
 			/* Child executing command */ 
 			
-			if(command.name[0] == '/') {
+			printf("I'm a child process with command name: %s\n", command.name);
+
+			if(command.name[0] == '/') { 
+				// echo, pwd, ls, etc are all running through here because the file is found
+				// printf("command.name %s\n", command.name);
+				printf("command.argv: %s\n", command.argv[0]);
+				if (strcmp(command.argv[0], "echo") == 0) { // implement echo
+					printf("this is echo \n");
+					char echoStr[CHAR_MAX];
+				    // Generate string of form "echo str"
+				    sprintf(echoStr, "echo %s", argv[1]);
+				    system(echoStr);
+				} else if (strcmp(command.argv[0], "cd") == 0) { // implement cd
+					printf("this is cd \n");
+				}
+			//
+
 				execv(command.name, command.argv);
-			} else {
+			} else if (strcmp(command.argv[0], "echo") == 0) { // implement echo
+				printf("this is echo");
+				// execv
+			} else if (strcmp(command.argv[0], "cd") == 0) { // implement cd
+				printf("this is cd");
+			// execv
+			} else { // ls and pwd work here already
+				// this never gets executed since if it's not "/", it doesnt go in this loop at all
+				// printf("command.name %s\n", command.name);
+				// printf("command.argv %s\n", command.argv[0]);
+				printf("Executing command: %s\n", *command.argv);
 				execv(lookupPath(*directories, command.argv), command.argv);
 			}
 		}
@@ -182,15 +219,15 @@ char *lookupPath(char **argv, char **dir) {
 	/* Look in PATH directories
 	   use access() to see if the file is in a dir */
 	for (i = 1; i < pathSize; i++) {
-		// printf("dir: %s \n", *dir++);
+		// printf("dir: %s \n", *dir);
 		dir++;
-		// printf("%s\n", *dir); 
 		strcat(filepath, *dir);
 		strcat(filepath, "/");
 		strcat(filepath, argv[0]);
 		
 
 		if (access(filepath, F_OK) == 0) {
+			printf("Found valid filepath: %s\n", filepath);
 			return filepath;
 		}
 
