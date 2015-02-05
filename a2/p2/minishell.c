@@ -24,10 +24,13 @@ int main(int argc, char *argv[]) {
 		readCommand(commandLine);
 		parseCommand(commandLine, &command); 
 		
-		parsePath(*directories);
+		parsePath(directories);
+
 		/* Get the full pathname for the file */
-		command.name = lookupPath(command.argv, *directories);
-		printf(command.name);
+		command.name = lookupPath(command.argv, directories);
+
+		// printf("%s \n", command.argv[0]);
+		
 		if(command.name == NULL) {
 			/* Report error */ 
 			printf("Invalid command name.\n"); 
@@ -46,7 +49,7 @@ int main(int argc, char *argv[]) {
 		}
 
 		
-		// /* Wait for the child to terminate */
+		/* Wait for the child to terminate */
 		wait(&status);
 	}
 	
@@ -80,6 +83,7 @@ int parseCommand(char *cLine, struct command_t *cmd) {
 	cmd->argc = argc - 1;
 	cmd->name = (char *) malloc(sizeof(cmd->argv[0])); 
 	strcpy(cmd->name, cmd->argv[0]);
+	// printf("%s", cmd->argv[0]);
 	return 1;
 }
 
@@ -118,27 +122,38 @@ int parsePath(char **dirs) {
 	char *pathEnvVar; 
 	char *thePath;
 
-	const char delimiter = ":";
+	const char delimiter[2] = ":";
 
-        int i;
+    int i;
 	
-	for(i=0; i<MAX_PATHS; i++) 
-		dirs[i] = NULL;  //set to null 
+	while(*dirs++) {
+		*dirs = NULL; 
+	} 
 	
-	pathEnvVar = (char *) getenv ("PATH");
-
-
-	char *test = (char *) malloc(100000000); 
+	pathEnvVar = (char *) getenv ("PATH"); 
 	thePath = (char *) malloc(strlen(pathEnvVar) + 1);
 	strcpy(thePath, pathEnvVar);
 	
-	/* Loop to parse thePath. 
-	Look for a ':' delimiter between each path name. */
-	for(i=0; (dirs[i] = strsep(thePath, ":")) != NULL; i++) {
-                dirs[++i] = (char *) malloc(MAX_ARG_LEN);
-    }
 
-        return 1;
+	// printf("%s\n", thePath);
+
+   char *token = (char *) malloc(strlen(pathEnvVar));
+   
+   /* get first token */
+   token = strtok(thePath, delimiter);
+
+   // printf("%s\n", token);
+   
+   /* get other tokens */
+   while( token != NULL ) 
+	{
+	  token = strtok(NULL, delimiter);
+	  // printf("%s\n", token);
+	  *dirs = token;
+	  dirs++;
+   }
+
+   return 1;
 }
 
 char *lookupPath(char **argv, char **dir) {
@@ -149,10 +164,14 @@ char *lookupPath(char **argv, char **dir) {
 	int i;
 	char *result;
 	char pName[MAX_PATH_LEN];
-	int pathSize = sizeof(*dir)/sizeof(char);
+	int pathSize = sizeof(*dir)/sizeof(char);//double check this
+
+	// printf("size of dir %d", pathSize);
 	char filepath[CHAR_MAX];
 	strcpy(filepath, "");
 
+
+	// printf(argv[0]);
 	/* Check to see if file name is already an absolute path name */ 
 	if(*argv[0] == '/') {
 		return argv[0]; 
@@ -162,18 +181,22 @@ char *lookupPath(char **argv, char **dir) {
 
 	/* Look in PATH directories
 	   use access() to see if the file is in a dir */
-	for (i = 0; i < pathSize; i++) {
-		strcat(filepath, dir[i]);
+	for (i = 1; i < pathSize; i++) {
+		// printf("dir: %s \n", *dir++);
+		dir++;
+		// printf("%s\n", *dir); 
+		strcat(filepath, *dir);
+		strcat(filepath, "/");
 		strcat(filepath, argv[0]);
-		printf(dir[i]);
+		
 
 		if (access(filepath, F_OK) == 0) {
 			return filepath;
 		}
 
-		printf(filepath);
-		char filepath[CHAR_MAX];
-		strcpy(filepath, "");
+		// printf("filepath: %s\n", filepath); // extremely useful for debugging, prints the full filepath 
+		memset(filepath, 0, CHAR_MAX); //clear the char array
+		char filepath[CHAR_MAX] = "";
 
 	}
 
