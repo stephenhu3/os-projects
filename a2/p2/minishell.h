@@ -2,6 +2,7 @@
 #include <stdlib.h> 
 #include <unistd.h>
 #include <string.h>
+#include <dirent.h>
 
 #define	MAX_LINE_LEN 	80
 #define MAX_ARGS 		64

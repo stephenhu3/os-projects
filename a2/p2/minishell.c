@@ -8,10 +8,11 @@ int parsePath(char **);
 char *lookupPath(char **, char **);
 
 int main(int argc, char *argv[]) {
-	int i;
+	int i, chSuccess;
 	int pid, numChildren, parseRe;
 	int status;
 	char cmdLine[MAX_LINE_LEN]; 
+	char pathBuffer[MAX_PATH_LEN];
 	struct command_t command;
 
 	char *commandLine = (char *) malloc(MAX_LINE_LEN);
@@ -28,7 +29,7 @@ int main(int argc, char *argv[]) {
 			// runInBackground check
 			if ((strcmp(command.argv[command.argc], "&")) != 0) {
 				command.runInBackground = 0;
-				printf("Run in background: FALSE...\n");
+				// printf("Run in background: FALSE...\n");
 				// printf("%i \n", strcmp(command.argv[command.argc - 1], "&"));
 				// printf("%s \n", command.argv[command.argc]);
 			}
@@ -36,7 +37,7 @@ int main(int argc, char *argv[]) {
 				command.argv[command.argc] = NULL;
 
 				command.runInBackground = 1;
-				printf("Run in background: TRUE...\n");
+				// printf("Run in background: TRUE...\n");
 			}
 		}
 		parsePath(directories);
@@ -86,16 +87,17 @@ int main(int argc, char *argv[]) {
 			    	strcat(cdStr, " ");
 			    	strcat(cdStr, command.argv[i]);
 			    }
-			    chdir(cdStr);
+			    chSuccess = chdir(cdStr);
 			    command.name = "yes"; // to avoid the invalid command name
 
-			    //TODO:Implement using getcwd to check if the cd path
-			    // is valid, else display no such file message
-			    // if (access(FULL_PATH_TODO_USING_GETCWD, F_OK) == 0) {
+			    if (chSuccess == 0 || cdStr[0] == NULL) {
 			    	system("pwd");
-				// } else {
-				// 	system("No such file or directory.\n");
-				// } 
+				printf("%s\n", cdStr);
+				printf("%s\n", command.argv[1]);
+				} else {
+					printf("No such file or directory.\n");
+					printf("%s\n", cdStr);
+				} 
 			}
 			else if (command.name[0] == '/') { 
 				execv(command.name, command.argv);
