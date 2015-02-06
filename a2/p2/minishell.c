@@ -6,10 +6,11 @@ void printPrompt();
 void readCommand(char *);
 int parsePath(char **);
 char *lookupPath(char **, char **);
+int delLastArg(struct command_t *);
 
 int main(int argc, char *argv[]) {
 	int i;
-	int pid, numChildren;
+	int pid, numChildren, parseRe;
 	int status;
 	char cmdLine[MAX_LINE_LEN]; 
 	struct command_t command;
@@ -22,8 +23,23 @@ int main(int argc, char *argv[]) {
 		
 		//  Read the command line and parse it  
 		readCommand(commandLine);
-		parseCommand(commandLine, &command); 
+		parseRe = parseCommand(commandLine, &command); 
 		
+		if(parseRe == 1) {
+			if ((strcmp(command.argv[command.argc], "&")) != 0) {
+				command.runInBackground = 0;
+				printf("Run in background: FALSE...\n");
+				// printf("%i \n", strcmp(command.argv[command.argc - 1], "&"));
+				// printf("%s \n", command.argv[command.argc]);
+			}
+			else {
+				command.argv[command.argc] = NULL;
+
+				delLastArg(&command);
+				command.runInBackground = 1;
+				printf("Run in background: TRUE...\n");
+			}
+		}
 		parsePath(directories);
 
 		/* Get the full pathname for the file */
@@ -59,6 +75,7 @@ int main(int argc, char *argv[]) {
 			    	strcat(echoStr, command.argv[i]);
 			    }
 			    system(echoStr);
+			    command.name = "yes";
 			}
 		 	else if (strcmp(command.argv[0], "cd") == 0) {
 				// printf("this is cd \n");
@@ -104,7 +121,8 @@ int main(int argc, char *argv[]) {
 		
 		
 		/* Wait for the child to terminate */
-		wait(&status);
+		if(command.runInBackground == 0)
+			wait(&status);
 
 		if (command.name == NULL) {
 			/* Report error */ 
@@ -116,6 +134,13 @@ int main(int argc, char *argv[]) {
 	/* Shell termination */
 	printf("Terminating successfully.\n"); 
 	return 0;
+}
+
+/* Frees and nulls the last arg in argv.
+*/
+int delLastArg(struct command_t *command) {
+
+	return 1;
 }
 
 /* Determine command name and construct the parameter list. 

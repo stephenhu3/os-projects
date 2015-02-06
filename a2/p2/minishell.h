@@ -16,4 +16,5 @@ struct command_t {
 	char *name;
 	int argc;
 	char *argv[MAX_ARGS];
+	int runInBackground;
 };
