@@ -62,10 +62,16 @@ int main(int argc, char *argv[]) {
 
 		 // Create child process and execute the command 
 		 // if the command is found in one of the directories
+		// if (command.runInBackground == 1 && command.name == NULL) {
+		// 	command.name = "not null";
+		// }
+
 		if((pid = fork()) == 0) {
+
+
 			/* Child executing command */ 
 			if (strcmp(command.argv[0], "echo") == 0) { 
-				// printf("this is echo \n");
+				printf("I'm a child process running echo\n");
 				char echoStr[CHAR_MAX];
 			    // Generate string of form "echo str"
 			    sprintf(echoStr, "echo %s", command.argv[1]);
@@ -77,8 +83,8 @@ int main(int argc, char *argv[]) {
 			    system(echoStr);
 			    command.name = "yes";
 			}
-		 	else if (strcmp(command.argv[0], "cd") == 0) {
-				// printf("this is cd \n");
+		 	else if (strcmp(command.argv[0], "cd") == 0) { 
+				printf("I'm a child process running cd\n");
 				char cdStr[CHAR_MAX];
 			    // Generate string of form "cd str"
 			    sprintf(cdStr, "%s", command.argv[1]);
@@ -99,36 +105,27 @@ int main(int argc, char *argv[]) {
 				} 
 			}
 			else if (command.name[0] == '/') { 
+				printf("I'm a child process running a command!\n");
 				execv(command.name, command.argv);
 			}
-			// } else { // ls and pwd work here already
-			// 	// this never gets executed since if it's not "/", it doesnt go in this loop at all
-			// 	// printf("command.name %s\n", command.name);
-			// 	// printf("command.argv %s\n", command.argv[0]);
-
-			// 	printf("Executing command: %s\n", *command.argv);
-			// 	execv(lookupPath(*directories, command.argv), command.argv);
-			// }
-		}
-
-		// if command not found in any directories in PATH variable,
-		// don't need this since lookup path takes care of it
-		// if(command.name == NULL) {
-		// 	/* Report error */ 
-		// 	printf("Invalid command name.\n"); 
-		// 	continue; // breaks out of loop, back to printprompt
-		// }
-		
-		
-		/* Wait for the child to terminate */
-		if(command.runInBackground == 0)
-			wait(&status);
+			} else {
+				if (command.runInBackground == 1)
+					printf("I'm a parent process. My child is running in background!\n");
+			}
 
 		if (command.name == NULL) {
-			/* Report error */ 
+			/* Report error */
 			printf("Invalid command name.\n"); 
 			continue; // breaks out of loop, back to printprompt
 		}
+		
+		/* Wait for the child to terminate */
+		if(command.runInBackground == 0) {
+			printf("I'm a parent process. I am waiting for my child to finish!\n");
+			wait(&status);
+		}
+
+		
 	}
 	free(commandLine);
 	free(directories);
