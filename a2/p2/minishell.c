@@ -92,11 +92,10 @@ int main(int argc, char *argv[]) {
 
 			    if (chSuccess == 0 || cdStr[0] == NULL) {
 			    	system("pwd");
-				printf("%s\n", cdStr);
-				printf("%s\n", command.argv[1]);
+				// printf("%s\n", cdStr);
 				} else {
 					printf("No such file or directory.\n");
-					printf("%s\n", cdStr);
+					// printf("%s\n", cdStr);
 				} 
 			}
 			else if (command.name[0] == '/') { 
