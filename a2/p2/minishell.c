@@ -6,7 +6,6 @@ void printPrompt();
 void readCommand(char *);
 int parsePath(char **);
 char *lookupPath(char **, char **);
-int delLastArg(struct command_t *);
 
 int main(int argc, char *argv[]) {
 	int i;
@@ -26,6 +25,7 @@ int main(int argc, char *argv[]) {
 		parseRe = parseCommand(commandLine, &command); 
 		
 		if(parseRe == 1) {
+			// runInBackground check
 			if ((strcmp(command.argv[command.argc], "&")) != 0) {
 				command.runInBackground = 0;
 				printf("Run in background: FALSE...\n");
@@ -35,7 +35,6 @@ int main(int argc, char *argv[]) {
 			else {
 				command.argv[command.argc] = NULL;
 
-				delLastArg(&command);
 				command.runInBackground = 1;
 				printf("Run in background: TRUE...\n");
 			}
@@ -130,17 +129,12 @@ int main(int argc, char *argv[]) {
 			continue; // breaks out of loop, back to printprompt
 		}
 	}
+	free(commandLine);
+	free(directories);
 	
 	/* Shell termination */
 	printf("Terminating successfully.\n"); 
 	return 0;
-}
-
-/* Frees and nulls the last arg in argv.
-*/
-int delLastArg(struct command_t *command) {
-
-	return 1;
 }
 
 /* Determine command name and construct the parameter list. 
