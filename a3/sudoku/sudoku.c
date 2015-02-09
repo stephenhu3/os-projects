@@ -60,7 +60,8 @@ int testRows(int **sudokuArray) {
 //PARAMS:	sudokuArray -- 9x9 sudoku number array
 //EFFECTS:	tests columns for sudoku rules
 //RETURNS:	0 if columns are valid, 1-9 for first invalid column
-int testColummns(int **sudokuArray) {	
+int testColummns(int **sudokuArray) {
+	// TODO
 	return 0;
 }
 
