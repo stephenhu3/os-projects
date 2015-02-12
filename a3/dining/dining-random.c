@@ -1,4 +1,4 @@
-#include "phil.h"
+#include "dining.h"
 
 // Stephen Hu
 // Adapted from a similar program I had previously coded when working with pthreads
