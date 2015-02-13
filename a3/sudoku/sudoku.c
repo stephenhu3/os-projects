@@ -149,7 +149,7 @@ void *testRows(struct Pass *pass) {
 					
 					// printf("NOTIFICATION: Sudoku string provided is invalid at row #%i\n", i);
 					*pass->validArray = i;
-					return;
+					return NULL;
 				}
 			}	
 		}
@@ -175,7 +175,7 @@ void *testColumns(struct Pass *pass) {
 					
 					//printf("NOTIFICATION: Sudoku string provided is invalid at column #%i\n", j);
 					*pass->validArray = j;
-					return;
+					return NULL;
 				}
 			}
 		}
@@ -199,7 +199,7 @@ void *testCell(struct CellPass *cellPass) {
 					if(temp == cellPass->sudokuArray[k][l]){
 						printf("NOTIFICATION: Sudoku string provided is invalid at cell #%i\n", (cellPass->cell->cellNum + 1));
 						cellPass->validArray[cellPass->cell->cellNum] = (cellPass->cell->cellNum + 1);
-						return;
+						return NULL;
 					}
 				}
 			}	
