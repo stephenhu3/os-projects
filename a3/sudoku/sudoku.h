@@ -8,12 +8,12 @@
 #include <string.h>
 #include <pthread.h>
 #include <math.h>
-#include <time.h>
 
 // Defines
 
 #define NUM_COLS 9
 #define NUM_ROWS 9
+#define NUM_CELLS 9
 
 #define ROW_VALUE 9
 
@@ -22,19 +22,33 @@
 
 #define ISVALID 0
 
+#define TRUE 1
+#define FALSE 0
+
 // Struct Typedefs
 
-typedef struct Cell{
+struct Cell{
 	int col;
 	int row;
 	int cellNum;
-} Cell;
+};
+
+struct Pass{
+	int **sudokuArray;
+	int *validArray;
+};
+
+struct CellPass{
+	int **sudokuArray;
+	int *validArray;
+	struct Cell *cell;
+};
 
 // Function Prototypes
 
 int **sudokuStringToArray(char *);
-void *testColummns(int **, int *);
-void *testRows(int **, int *);
-void *testCell(int **, Cell *, int *);
+void *testColumns(struct Pass *);
+void *testRows(struct Pass *);
+void *testCell(struct CellPass *);
 
 #endif
