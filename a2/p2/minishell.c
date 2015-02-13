@@ -75,11 +75,13 @@ int main(int argc, char *argv[]) {
 
 			    //TODO:Implement using getcwd to check if the cd path
 			    // is valid, else display no such file message
-			    // if (access(FULL_PATH_TODO_USING_GETCWD, F_OK) == 0) {
+			    int pwd;
+			    pwd = access(getcwd(chdir,MAX_LINE_LEN), );
+			    if (pwd == 0) { //
 			    	system("pwd");
-				// } else {
-				// 	system("No such file or directory.\n");
-				// } 
+				} else {
+				 	system("No such file or directory.\n");
+				}
 			}
 			else if (command.name[0] == '/') { 
 				execv(command.name, command.argv);
