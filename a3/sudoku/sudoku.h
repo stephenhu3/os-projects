@@ -17,23 +17,24 @@
 
 #define ROW_VALUE 9
 
-#define TRUE 1
-#define FALSE 0
+#define CELL_ROWS 3
+#define CELL_COLS 3
+
+#define ISVALID 0
 
 // Struct Typedefs
 
-typedef struct {
-	int Col;
-	int Row;
+typedef struct Cell{
+	int col;
+	int row;
+	int cellNum;
 } Cell;
 
 // Function Prototypes
 
 int **sudokuStringToArray(char *);
-int testColummns(int **);
-int testRows(int **);
-int testCell(int **, Cell *);
-
-// TODO -- more functions to add later
+void *testColummns(int **, int *);
+void *testRows(int **, int *);
+void *testCell(int **, Cell *, int *);
 
 #endif
