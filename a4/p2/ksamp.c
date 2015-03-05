@@ -260,7 +260,7 @@ void getLoadAvgs(double samplingRate, double runTime) {
 		fclose(fp);
 		printf(MAGENTA "%s " RESET, load);
 
-		//we meet again fflush >.< why is it that every other printf is fine and yet this one is note
+		//we meet again fflush >.< why is it that every other printf is fine and yet this one is not
 		fflush(stdout);
 
 		usleep(samplingRate * 1000000);		
