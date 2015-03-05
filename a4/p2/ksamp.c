@@ -26,6 +26,9 @@ int main(int argc, char *argv[]) {
 
 	if(mode == 3) {
 		printf(RED "\nMemory Info...\n" RESET);
+
+		getMemInfo();
+		getLoadAvgs(atof(argv[2]), atof(argv[3]));
 	}
 
 	//printf("%i\n", numProc);
@@ -46,24 +49,24 @@ int getMode(int argc, char *argv[]) {
 				return VER2;
 			else {
 				printf("Error processing Argument: %s \nArgument is not supported or is missing parameters. \n", argv[1]);
-				exit(1);
+				exit(BAD_MODE);
 			}
 		case 4: 
 			if(!strcmp("-1", argv[1])) {
 				for(i = 2; i < 4; i++)
 					if(!atof(argv[i])) {
 						printf("Bad parameters... usage of -1 requires numbers.\n");
-						exit(1);
+						exit(BAD_MODE);
 					}
 				return VER3;
 			}
 			else {
 				printf("Error processing Argument: %s \n Argument is not supported or is missing parameters. \n", argv[1]);
-				exit(1);
+				exit(BAD_MODE);
 			}
 		default:
 			printf("Invalid number of arguments.\n");
-			exit(1);
+			exit(BAD_MODE);
 	}
 }
 
@@ -75,6 +78,7 @@ void getProcType(void) {
 
 	FILE *fp;
 	fp = fopen("/proc/cpuinfo", "r");
+	if(!fp) exit(NO_FILE);
 
 	while(fgets(line, sizeof(line), fp) != NULL) {
 		//Scan until the ':' for the label then scan after ':' until \n for info
@@ -85,7 +89,7 @@ void getProcType(void) {
 			//strcmp doesn't work here as there are irregular spaces within the label... 
 			//took me way too long to figure this out
 			if(strstr(label, "processor")) {
-				printf("Processor #%s: ", info);
+				printf(GREEN "Processor #%s: " RESET, info);
 			}
 			if(strstr(label, "model name"))
 				printf("%s\n", info);
@@ -102,9 +106,10 @@ void getKernalVersion(void) {
 
 	FILE *fp;
 	fp = fopen("/proc/sys/kernel/version", "r");
+	if(!fp) exit(NO_FILE);
 	fscanf(fp, "%[^\n]", version);
 
-	printf("Kernel Version: %s\n", version);
+	printf(GREEN "Kernel Version: " RESET "%s\n", version);
 	fclose(fp);
 }
 
@@ -116,9 +121,10 @@ void getTLastBoot(void) {
 
 	FILE *fp;
 	fp = fopen("/proc/uptime", "r");
+	if(!fp) exit(NO_FILE);
 	fscanf(fp, "%i", &uptime);
 
-	printf("Uptime: %i seconds \n", uptime);
+	printf(GREEN "Uptime: " RESET "%i seconds \n", uptime);
 	fclose(fp);
 }
 
@@ -135,6 +141,7 @@ void getTStats(void) {
 
 	FILE *fp;
 	fp = fopen("/proc/stat", "r");
+	if(!fp) exit(NO_FILE);
 
 	while(fgets(line, sizeof(line), fp) != NULL) {
 		if(sscanf(line, "%s %i %*i %i %i", label, &userTime, &sysTime, &idleTime) > 0) {
@@ -143,7 +150,7 @@ void getTStats(void) {
 				sysTime /= USER_HZ;
 				idleTime /= USER_HZ;
 
-				printf("%s: User Time:%i System Time:%i Idle Time:%i\n", label, userTime, sysTime, idleTime);
+				printf(CYAN "%s: " RESET "User Time:%i System Time:%i Idle Time:%i (seconds)\n", label, userTime, sysTime, idleTime);
 			}
 		}
 	}
@@ -160,6 +167,7 @@ void getDiskStats(void) {
 
 	FILE *fp;
 	fp = fopen("/proc/diskstats", "r");
+	if(!fp) exit(NO_FILE);
 
 	while(fgets(line, sizeof(line), fp) != NULL) {
 		if(sscanf(line, "%*[^a-z]%s %i %i %*i %*i %i %i", label, &readsDone, &readsMerged, &writesDone, &writesMerged) > 0) {
@@ -167,7 +175,7 @@ void getDiskStats(void) {
 				readsDone += readsMerged;
 				writesDone += writesMerged;
 
-				printf("Disk reads/writes made on system: %i/%i\n", readsDone, writesDone);
+				printf(CYAN "Disk reads/writes made on system: " RESET "%i/%i\n", readsDone, writesDone);
 			}
 		}
 	}
@@ -187,31 +195,78 @@ void getMiscStats(void) {
 
 	FILE *fp;
 	fp = fopen("/proc/stat", "r");
+	if(!fp) exit(NO_FILE);
 
 	while(fgets(line, sizeof(line), fp) != NULL) {
 		if(sscanf(line, "%s %i", label, &info) > 0) {
 			//context switches
 			if(strstr(label, "ctxt")) {
-				printf("Kernel Context Switches: %i\n", info);
+				printf(CYAN "Kernel Context Switches: " RESET "%i\n", info);
 			}
 
 			//time since system was booted (since UNIX epoch)
 			if(strstr(label, "btime")) {
 				info /= USER_HZ;
 
-				printf("System was booted at: %i seconds since the UNIX epoch \n", info);
+				printf(CYAN "System Booted: " RESET "%i seconds (since the UNIX epoch) \n", info);
 			}
 
 			//number of processes created since the system was booted
 			if(strstr(label, "processes")) {
-				printf("Processes Created: %i\n", info);
+				printf(CYAN "Processes Created: " RESET "%i\n", info);
 			}
 		}
 	}
 	fclose(fp);
 }
 
+//PARAMS: none
+//EFFECTS: prints total and available memory
+//RETURNS: none
+void getMemInfo(void) {
+	char line[1024], label[16], info[1024];
 
+	FILE *fp;
+	fp = fopen("/proc/meminfo", "r");
+	if(!fp) exit(NO_FILE);
+
+	while(fgets(line, sizeof(line), fp) != NULL) {
+		if(sscanf(line, "%[^:]: %[^\n]", label, info) > 0) {
+			if(strstr(label, "MemTotal") || strstr(label, "MemFree")) {
+				printf(RED "%s: " RESET "%s\n", label, info);
+			}
+		}
+	}
+	fclose(fp);
+}
+
+//PARAMS: samplingRate and runTime (both are numbers and can have decimals)
+//EFFECTS: samples load averages every samplingRate seconds for runTime seconds, prints
+//	   each samplex
+//RETURNS: none
+void getLoadAvgs(double samplingRate, double runTime) {
+	char load[16];
+	double timeElapsed = 0;
+
+	FILE *fp;
+	
+	printf(YELLOW "\nSampling load averages...\nSampling Rate: %f seconds\nSampling Time: %f seconds\n" RESET, samplingRate, runTime);
+
+	while(timeElapsed < runTime) {
+		fp = fopen("/proc/loadavg", "r");
+		if(!fp) exit(NO_FILE);
+		fscanf(fp, "%s", load);
+
+		fclose(fp);
+		printf(MAGENTA "%s " RESET, load);
+
+		//we meet again fflush >.< why is it that every other printf is fine and yet this one is note
+		fflush(stdout);
+
+		usleep(samplingRate * 1000000);		
+		timeElapsed += samplingRate;
+	}	
+}
 
 
 

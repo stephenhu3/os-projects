@@ -14,6 +14,9 @@
 #define VER2 2
 #define VER3 3
 
+#define BAD_MODE 1
+#define NO_FILE 2
+
 #define RED     "\x1b[31m"
 #define GREEN   "\x1b[32m"
 #define YELLOW  "\x1b[33m"
@@ -32,5 +35,7 @@ void getTLastBoot(void);
 void getTStats(void);
 void getDiskStats(void);
 void getMiscStats(void);
+void getMemInfo(void);
+void getLoadAvgs(double samplingRate, double runTime);
 
 #endif
