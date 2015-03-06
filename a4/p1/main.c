@@ -10,10 +10,11 @@
 int main(VOID)
 {
 HANDLE ReadHandle, WriteHandle;
-TCHAR childPath[500] = TEXT("..\\..\\main\\Debug\\sink.exe"); // filter child . need to implement filtering  ..
+//TCHAR sourcePath[500] = TEXT("..\\..\\main\\Debug\\source.exe"); // filter child . need to implement filtering  ..
+//TCHAR sinkPath[500] = TEXT("..\\..\\main\\Debug\\filter.exe");
 STARTUPINFO si;
 PROCESS_INFORMATION pi;
-char message[BUFFER_SIZE] = "make me BIG \n";
+//char message[BUFFER_SIZE] = "make me BIG \n";
 DWORD written;
 
 /* set up security attributes allowing pipes to be inherited */
@@ -27,31 +28,28 @@ if (!CreatePipe(&ReadHandle, &WriteHandle, &sa, 0)) {
 	return 1;
 }
 
-/* establish the START INFO structure for the child process */
-GetStartupInfo(&si);
+GetStartupInfo(&si);/* establish the START INFO structure for the child process */
 si.hStdOutput = GetStdHandle(STD_OUTPUT_HANDLE);
-
-/* redirect standard input to the read end of the pipe */
-si.hStdInput = ReadHandle;
+si.hStdInput = ReadHandle;/* redirect standard input to the read end of the pipe */
 si.dwFlags = STARTF_USESTDHANDLES;
 
 /* don’t allow the child to inherit the write end of pipe */
 SetHandleInformation(WriteHandle, HANDLE_FLAG_INHERIT, 0);
 
 /* create the child process */
-CreateProcess(NULL, childPath, NULL, NULL,
+CreateProcess(NULL, "C:\\Users\\steven\\Desktop\\pipe\\source\\Debug\\source.exe", NULL, NULL,
 TRUE, /* inherit handles */
 0, NULL, NULL, &si, &pi);
 
 /* close the unused end of the pipe */
-CloseHandle(ReadHandle);
+//CloseHandle(ReadHandle);
 
 /* the parent writes to the pipe */
-if (!WriteFile(WriteHandle, message,BUFFER_SIZE,&written,NULL))
-fprintf(stderr, "Error writing to pipe.");
+//if (!WriteFile(WriteHandle, message,BUFFER_SIZE,&written,NULL))
+//fprintf(stderr, "Error writing to pipe.");
 
 /* close the write end of the pipe */
-CloseHandle(WriteHandle);
+//CloseHandle(WriteHandle); not needed since we are calling not writting in this main 
 
 /* wait for the child to exit */
 WaitForSingleObject(pi.hProcess, INFINITE);
