@@ -10,3 +10,5 @@ Sending in mixture of both capital and small like “MYpapa” will prints “my
 Passed
 If buffer is empty(garbage value), it will not filter it and just print out garbage value too.
 Passed
+If elements in buffer is above 25, it will gives error
+Passed
