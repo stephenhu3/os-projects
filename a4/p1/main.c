@@ -33,13 +33,13 @@ si.hStdOutput = GetStdHandle(STD_OUTPUT_HANDLE);
 si.hStdInput = ReadHandle;/* redirect standard input to the read end of the pipe */
 si.dwFlags = STARTF_USESTDHANDLES;
 
-/* don’t allow the child to inherit the write end of pipe */
+/* don't allow the child to inherit the write end of pipe */
 SetHandleInformation(WriteHandle, HANDLE_FLAG_INHERIT, 0);
 
 /* create the child process */
-CreateProcess(NULL, "..\\..\\source\\Debug\\source.exe", NULL, NULL,TRUE, 0, NULL, NULL, &si, &pi);
-CreateProcess(NULL,"..\\..\\filter\\Debug\\filter.exe" , NULL, NULL, TRUE, 0, NULL, NULL, &si, &pi);
-CreateProcess(NULL,"..\\..\\sink\\Debug\\sink.exe" , NULL, NULL, TRUE, 0, NULL, NULL, &si, &pi);
+CreateProcess(NULL, "..\\..\\source\\Debug\\source.exe", NULL, NULL,
+TRUE, /* inherit handles */
+0, NULL, NULL, &si, &pi);
 
 /* close the unused end of the pipe */
 //CloseHandle(ReadHandle);

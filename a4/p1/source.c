@@ -34,14 +34,14 @@ int main(VOID) {
 
 	SetHandleInformation(WriteHandle, HANDLE_FLAG_INHERIT, 0);
 
-	//LPTSTR szCmdline = _tcsdup(TEXT("..\\..\\main\\Debug\\filter.exe")); <-- gives me error with this idk why
+	//LPTSTR szCmdline = _tcsdup(TEXT("..\\..\\main\\Debug\\filter.exe"));
 
-	//CreateProcess(NULL,"C:\\Users\\steven\\Desktop\\pipe\\filter\\Debug\\filter.exe" , NULL, NULL, TRUE, 0, NULL, NULL, &si, &pi);
+	CreateProcess(NULL,"..\\..\\filter\\Debug\\filter.exe" , NULL, NULL, TRUE, 0, NULL, NULL, &si, &pi);
 
 	CloseHandle(ReadHandle);
 
 	if (!WriteFile(WriteHandle, message, BUFFER_SIZE, &written, NULL)) {
-		fprintf(stderr, "Failed to write to the anonymous pipe buddy.\n");
+		fprintf(stderr, "Failed to write to the anonymous pipe.");
 	}
 
 	CloseHandle(WriteHandle);
