@@ -37,9 +37,9 @@ si.dwFlags = STARTF_USESTDHANDLES;
 SetHandleInformation(WriteHandle, HANDLE_FLAG_INHERIT, 0);
 
 /* create the child process */
-CreateProcess(NULL, "C:\\Users\\steven\\Desktop\\pipe\\source\\Debug\\source.exe", NULL, NULL,
-TRUE, /* inherit handles */
-0, NULL, NULL, &si, &pi);
+CreateProcess(NULL, "C:\\Users\\steven\\Desktop\\pipe\\source\\Debug\\source.exe", NULL, NULL,TRUE, 0, NULL, NULL, &si, &pi);
+CreateProcess(NULL,"C:\\Users\\steven\\Desktop\\pipe\\filter\\Debug\\filter.exe" , NULL, NULL, TRUE, 0, NULL, NULL, &si, &pi);
+CreateProcess(NULL,"C:\\Users\\steven\\Desktop\\pipe\\sink\\Debug\\sink.exe" , NULL, NULL, TRUE, 0, NULL, NULL, &si, &pi);
 
 /* close the unused end of the pipe */
 //CloseHandle(ReadHandle);
