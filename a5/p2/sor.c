@@ -2,13 +2,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <math.h>
 
 
 
 // n symbolic constant between 3 to 6
-#define n 3
-#define MAX_FLOAT 100000
-#define MIN_FLOAT 0
+#define n 6
+/* relaxation factor must be 0 < omega < 2 */
+/* set to greater than 1 for speeding up convergency of a 
+   slow-converging process, while values less than 1 are used to help 
+   establish convergence of a diverging iterative process or speed up 
+   convergence of an overshooting process */
+#define omega 0.25
+#define MAX_double 100000
+#define MIN_double 0
+
+// TODO: FOR STEVEN
+// I have implemented the SOR algorithm as a single process program. 
+// You will need to break this into multiple processes program
 
 // may use shmget, shmat, shmdt, shmctl,...
 // may use shm_open, mmap, shm_unlink,...
@@ -32,102 +43,117 @@
 // inputs: A, b, omega
 // outputs: phi (solutions to n variables)
 
-float * solveSystem(float A[n][n], float b[n]);
+double * solveSystem(double A[n][n], double b[n]);
 
 int main() {
-	float A[3][3] = { { 12.0, 3.0, -5.0 }, { 1.0, 5.0, 3.0 }, { 3.0, 7.0, 13.0 } };
-	float b[3] = { 1, 28, 76 };
+	// 3 x 3 system of equations CORRECT
+	// double A[n][n] = { { 12.0, 3.0, -5.0 }, { 1.0, 5.0, 3.0 }, { 3.0, 7.0, 13.0 } };
+	// double b[n] = { 1, 28, 76 };
+
+	// 4 x 4 system of equations CORRECT
+	// double A[n][n] = { { 5, 0, 0, 0}, { 0, 8, 0, 0}, { 2, 3, 4, 5}, { 3, 3, 2, 3} };
+	// double b[n] = { 60, 56, 3, 3 };
+
+	// 5 x 5 system of equations CORRECT
+	// double A[n][n] = { { -7, 1, 0, 1, 1 }, { 1, 1, 0, 0, 1}, { 1, 1, 1, 0, 1}, { 1, -1, 1, 1, 1}, { 1, 0, 1, 0, 1} };
+	// double b[n] = { 1, 0, 1, 1, 0 };
+
+	// 6 x 6 system of equations INCORRECT - TODO FOR STEVEN: find a valid 6 x 6 equation that can be solved using this method
+	double A[n][n] = { { 9, 0, 0, 0, 0, 0 }, { 1, 2, 0, 0, 0, 0}, { 0, 0, 1, 0, 0, 0}, { 0, 1, 7, -1, -1, 1}, { 1, 1, 1, 1, 1, -4}, { 7, 1, 1, 12, 1, 1} };
+	double b[n] = { 90, 15, 16, 19, -20, 10 };
+
+	// double A[n][n] = { { 1, 1, -2, 1, 3, -1 }, { 2, -1, 1, 2, 1, -3 }, { 1, 3, -3, -1, 2, 1 }, 
+	// 				  { 5, 2, -1, -1, 2, 1 }, { -3, -1, 2, 3, 1, 3 }, { 4, 3, 1, -6, -3, -2 }
+	// 				};
+	// double b[n] = { 4, 20, -15, -3, 16, -27 };0
 
 	int i;
 	for (i = 0; i < n; i++) {
-		printf("%f \n", *(solveSystem(A, b)+i));
+		printf("X%i = %f \n", i, *(solveSystem(A, b)+i));
 	}
+
 
 	return 0;
 }
 
-float * solveSystem(float A[n][n], float b[n]) {
+double * solveSystem(double A[n][n], double b[n]) {
 
-	float error[n];
+	double error[n];
 
-	float maxError = MIN_FLOAT;
-	float currentError = MAX_FLOAT;
+	double maxError = MIN_double;
+	double currentError = MAX_double;
 
-	/* relaxation factor must be 0 < omega < 2
+	/* 
 	   check convergence: the new value is same as previous value
 	   accomplish this by checking for approximate error between 
 	   new value and old value, the max should be close to 0 */
 
-	static float phi[n];
-	int i;
-	for (i = 0; i < n; i++)
-		phi[i] = 0; // set initial guess to zeroes
+	static double phi[n];
+	double oldphi[n], sigma;
+	int i, j, k, m;
 
-	float oldphi[n];
 	for (i = 0; i < n; i++)
-		oldphi[i] = 0; // set initial guess to zeroes
-	// Alternatively, we can clear to zeroes using calloc
+		phi[i] = 0; // set initial guess to ones
 
-	while (currentError > 0.0001) {
+	// for (i = 0; i < n; i++)
+	// 	oldphi[i] = 1; // set initial guess to zeroes
+	// // Alternatively, we can clear to zeroes using calloc
+
+	// while (currentError > 0.0001) {
+	while (currentError > 0.001) {
 		
 
-		float sigma;
-		/* set to greater than 1 for speeding up convergency of a 
-		slow-converging process, while values less than 1 are used to help 
-		establish convergence of a diverging iterative process or speed up 
-		convergence of an overshooting process */
-		float omega = 1.75;
-		int j;
-
-		int k;
+		
+		
+		
+		
 		for (k = 0; k < n; k++)
-				oldphi[k] = phi[k]; // old phi has previous values
+				oldphi[k] = phi[k]; // old phi gets previous values
 
 		for (i = 0; i < n; i++) {
 			sigma = 0;
 			for (j = 0; j < n; j++) {
-				if (j != i)
-					sigma = sigma + (A[i][j] * phi[j]);
+				sigma =  j != i ? sigma + (A[i][j] * phi[j]) : sigma;
 			}
 			
-			phi[i] = (1-omega)*phi[i] + (omega / A[i][i]) * (b[i]-sigma);
+			phi[i] = ((1-omega)*oldphi[i]) + ((omega / A[i][i]) * (b[i]-sigma));
 
 		}
 
-		/* for debugging purposes
-		printf("oldphi: \n");
-		for (k = 0; k < n; k++) {
-			printf("%f \n", oldphi[k]); // old phi has previous values
-		}
+		//  for debugging purposes
+		// printf("oldphi: \n");
+		// for (k = 0; k < n; k++) {
+		// 	printf("%f \n", oldphi[k]); // old phi has previous values
+		// }
 
-		printf("phi: \n");
-		for (k = 0; k < n; k++) {
-			printf("%f \n", phi[k]); // new calculated phi values
-		} */
+		// printf("phi: \n");
+		// for (k = 0; k < n; k++) {
+		// 	printf("%f \n", phi[k]); // new calculated phi values
+		// } 
 		
 
 		//calculate errors
-		int m;
+		
 		for (m = 0; m < n; m++) {
-			error[m] = ((phi[m]-oldphi[m])/(phi[m])) * 100;
+			error[m] = fabs( ( ( phi[m] - oldphi[m] )  / (phi[m]) )  * 100 );
 		}
 		
-		/* for debugging purposes
-		printf("errors: \n");
-		for (k = 0; k < n; k++) {
-			printf("%f \n", error[k]); // new calculated phi values
-		} */
+		 // for debugging purposes
+		// printf("errors: \n");
+		// for (k = 0; k < n; k++) {
+		// 	printf("%f \n", error[k]); // new calculated phi values
+		// } 
 
 
 		// check for max error
-		maxError = MIN_FLOAT;
+		maxError = MIN_double;
 
 		for (m = 0; m < n; m++) {
-			if (error[m] > maxError)
-				maxError = error[m];
+			maxError = error[m] > maxError ? error[m] : maxError;
 		}
 
 		currentError = maxError;
+		// printf("%f \n", currentError); // current error
 		
 	}
 	return phi;
