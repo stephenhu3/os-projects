@@ -3,6 +3,8 @@
 int main(int argc, char **argv) {
 	// int addresses[NUMTESTADDR] = {1,256,32768,128,65534,33153};
 
+	// TODO: implement checking for arguments (ie. ./vmm filename.txt derperperpdp)
+
 	int addrCount;
 	
 	// time to read from addresses.txt
