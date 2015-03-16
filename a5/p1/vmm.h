@@ -14,6 +14,7 @@
 // STRUCT DEFINITIONSS
 
 // FUNCTION PROTOTYPES
-
+int getPageNum(int address);
+int getPageOffset(int address);
 
 #endif
