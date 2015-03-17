@@ -4,10 +4,15 @@
 #include <assert.h>
 #include <math.h>
 
+#include <string.h> 
+#include <fcntl.h> 
+#include <sys/shm.h> 
+#include <sys/stat.h>
+
 
 
 // n symbolic constant between 3 to 6
-#define n 6
+#define n 3
 /* relaxation factor must be 0 < omega < 2 */
 /* set to greater than 1 for speeding up convergency of a 
    slow-converging process, while values less than 1 are used to help 
@@ -43,12 +48,72 @@
 // inputs: A, b, omega
 // outputs: phi (solutions to n variables)
 
+// shared memory is phi
+// process i solves for Xi, and puts it in phi[i]
+
 double * solveSystem(double A[n][n], double b[n]);
 
 int main() {
+	// size of shared memory object
+	const int SIZE 4096;
+
+	// name of the shared memory object
+	const char *name = "PHI";
+
+	double phi[n];
+	
+	// initialize phi
+	int i;
+	for (i = 0; i < n; i++)
+		phi[i] = 0; // set initial guess to zeroes
+
+	// shared memory file descriptor
+	int shm_fd;
+
+	// pointer to shared memory object is a void ptr
+	void *ptr;
+	
+
+	// create the shared memory object
+	shm_fd = shm_open(name, O_CREAT | O_RDRW, 0666);
+	
+	// configure the size of the shared memory object
+	ftruncate(shm_fd, SIZE);
+
+	// memory map the shared memory object
+	ptr = mmap(0, SIZE, PROT_WRITE, MAP_SHARED, shm_fd, 0);
+	
+	// write to the shared memory object
+	for (i = 0; i < n; i++) {
+		*ptr = &phi[n];
+		ptr += sizeof(double);
+	}
+	
+
+	int main()
+	{
+	 /* the size (in bytes) of shared memory object */
+	 const int SIZE 4096;
+	 /* name of the shared memory object */
+	 const char *name = "OS";
+	/* shared memory file descriptor */ int shm fd;
+	/* pointer to shared memory obect */ void *ptr;
+	/* open the shared memory object */
+	shm_fd = shm_open(name, O RDONLY, 0666);
+	/* memory map the shared memory object */
+	ptr = mmap(0, SIZE, PROT READ, MAP SHARED, shm fd, 0);
+    /* read from the shared memory object */
+    printf("%s",(char *)ptr);
+	/* remove the shared memory object */ 
+	shm unlink(name);
+	return 0;
+	}
+
+
+
 	// 3 x 3 system of equations CORRECT
-	// double A[n][n] = { { 12.0, 3.0, -5.0 }, { 1.0, 5.0, 3.0 }, { 3.0, 7.0, 13.0 } };
-	// double b[n] = { 1, 28, 76 };
+	double A[n][n] = { { 12.0, 3.0, -5.0 }, { 1.0, 5.0, 3.0 }, { 3.0, 7.0, 13.0 } };
+	double b[n] = { 1, 28, 76 };
 
 	// 4 x 4 system of equations CORRECT
 	// double A[n][n] = { { 5, 0, 0, 0}, { 0, 8, 0, 0}, { 2, 3, 4, 5}, { 3, 3, 2, 3} };
@@ -59,8 +124,8 @@ int main() {
 	// double b[n] = { 1, 0, 1, 1, 0 };
 
 	// 6 x 6 system of equations INCORRECT - TODO FOR STEVEN: find a valid 6 x 6 equation that can be solved using this method
-	double A[n][n] = { { 9, 0, 0, 0, 0, 0 }, { 1, 2, 0, 0, 0, 0}, { 0, 0, 1, 0, 0, 0}, { 0, 1, 7, -1, -1, 1}, { 1, 1, 1, 1, 1, -4}, { 7, 1, 1, 12, 1, 1} };
-	double b[n] = { 90, 15, 16, 19, -20, 10 };
+	// double A[n][n] = { { 9, 0, 0, 0, 0, 0 }, { 1, 2, 0, 0, 0, 0}, { 0, 0, 1, 0, 0, 0}, { 0, 1, 7, -1, -1, 1}, { 1, 1, 1, 1, 1, -4}, { 7, 1, 1, 12, 1, 1} };
+	// double b[n] = { 90, 15, 16, 19, -20, 10 };
 
 	// double A[n][n] = { { 1, 1, -2, 1, 3, -1 }, { 2, -1, 1, 2, 1, -3 }, { 1, 3, -3, -1, 2, 1 }, 
 	// 				  { 5, 2, -1, -1, 2, 1 }, { -3, -1, 2, 3, 1, 3 }, { 4, 3, 1, -6, -3, -2 }
