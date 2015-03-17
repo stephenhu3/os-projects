@@ -10,6 +10,7 @@
 #include <sys/shm.h> 
 #include <sys/stat.h>
 #include <sys/fcntl.h>
+#include <fcntl.h>
 
 
 
@@ -53,11 +54,14 @@
 // shared memory is phi
 // process i solves for Xi, and puts it in phi[i]
 
-double * solveSystem(double A[n][n], double b[n]);
+void writer();
+void reader();
 
 int main() {
+	int status;
+
 	// size of shared memory object
-	const int SIZE = 4096;
+	const int SIZE = 8 * n; // 8 bytes per double
 
 	// name of the shared memory object
 	const char *name = "PHI";
@@ -72,52 +76,102 @@ int main() {
 	// shared memory file descriptor
 	int shm_fd;
 
-	// pointer to shared memory object is a void ptr
+	// pointer to shared memory object is a double ptr
 	double *ptr;
 	
 
 	// create the shared memory object
-	shm_fd = shm_open(name, O_CREAT | O_RDRW, 0666);
+	shm_fd = shm_open(name, O_CREAT | O_RDWR, 0666);
 	
 	// configure the size of the shared memory object
 	ftruncate(shm_fd, SIZE);
 
 	// memory map the shared memory object
 	ptr = mmap(0, SIZE, PROT_WRITE, MAP_SHARED, shm_fd, 0);
+	// ptr is now shared
 	
 	// write to the shared memory object
-	for (i = 0; i < n; i++) {
-		*ptr = phi[n];
-		ptr++;
+	if (ptr != MAP_FAILED) {
+		for (i = 0; i < n; i++) {
+			ptr[i] = 0;
+			// *ptr = phi[i];
+			// ptr += sizeof(double);
+		}
+	} else
+		perror("mmap()");
+
+	// note the race condition here
+	// this is why we need synchronization
+	reader();
+	writer();
+	reader();
+
+
+	
+}
+
+void reader() {
+	int status;
+	int pid = fork();
+
+	// child process
+	if (pid == 0) { 
+		/* the size (in bytes) of shared memory object */
+		const int SIZE = 8 * n;
+		/* name of the shared memory object */
+		const char *name = "PHI";
+		/* shared memory file descriptor */ 
+		int shm_fd;
+		/* pointer to shared memory obect */ 
+	 	double *ptr;
+		/* open the shared memory object */
+		shm_fd = shm_open(name, O_RDWR, 0666);
+		/* memory map the shared memory object */
+		ptr = mmap(0, SIZE, PROT_READ, MAP_SHARED, shm_fd, 0);
+	    /* read from the shared memory object */
+	    
+	    
+	    int i;
+	    for (i = 0; i < n; i++) {
+	    	
+	    	printf("%f \n", ptr[i]);
+	    	// ptr += sizeof(double);
+	    }
+
+		/* remove the shared memory object */ 
+		shm_unlink(name);
+
 	}
+}
+
+
+void writer() {
 
 	int pid = fork();
 
 	// child process
 	if (pid == 0) { 
 		/* the size (in bytes) of shared memory object */
-		 const int SIZE = 4096;
-		 /* name of the shared memory object */
-		 const char *name = "PHI";
+		const int SIZE = 8 * n;
+		/* name of the shared memory object */
+		const char *name = "PHI";
 		/* shared memory file descriptor */ 
-		 int shm_fd;
+		int shm_fd;
 		/* pointer to shared memory obect */ 
 	 	double *ptr;
 		/* open the shared memory object */
-		shm_fd = shm_open(name, O_RDONLY, 0666);
+		shm_fd = shm_open(name, O_RDWR, 0666);
 		/* memory map the shared memory object */
-		ptr = mmap(0, SIZE, PROT_READ, MAP_SHARED, shm_fd, 0);
-	    /* read from the shared memory object */
-	    
+		ptr = mmap(0, SIZE, PROT_WRITE, MAP_SHARED, shm_fd, 0);
+
+		// trying to write to it	    
 	    int i;
 	    for (i = 0; i < n; i++) {
-	    	printf("%d",(double *)ptr);
-	    	ptr++;
+	    	ptr[i] = 1242;
 	    }
 
 		/* remove the shared memory object */ 
 		shm_unlink(name);
-		return 0;
 
 	}
 }
