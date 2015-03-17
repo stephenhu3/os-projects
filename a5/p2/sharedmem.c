@@ -1,14 +1,15 @@
-// #include <pthread.h>
+#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h> 
-// #include <assert.h>
-// #include <math.h>
+#include <assert.h>
+#include <math.h>
 
 
-#include <fcntl.h> 
+#include <sys/mman.h>
 #include <sys/shm.h> 
 #include <sys/stat.h>
+#include <sys/fcntl.h>
 
 
 
