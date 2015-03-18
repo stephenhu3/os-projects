@@ -1,2 +1,2 @@
 make: *.c
-	gcc -g -o sor sor.c
+	gcc -g -o sor sor.c -lrt
