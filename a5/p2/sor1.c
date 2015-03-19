@@ -57,7 +57,7 @@ void solveSystem(double A[n][n], double b[n], int Xi);
 void function();
 
 int main() {
-	int status; // for wait
+	int status;
 	// Initialize shared memory
 	// size of shared memory object
 	const int SIZE = 8 * n; // 8 bytes per double
@@ -118,9 +118,6 @@ int main() {
 	// 				  { 5, 2, -1, -1, 2, 1 }, { -3, -1, 2, 3, 1, 3 }, { 4, 3, 1, -6, -3, -2 }
 	// 				};
 	// double b[n] = { 4, 20, -15, -3, 16, -27 };0
-	 int parentpid = getpid();
-	 printf("parentpid : %i",parentpid);
-	 printf("pid# : %i \n",getpid());
 	for (i = 0; i < n; i++) { 
 		solveSystem(A,b,i); // this solve the matrix n times.. we want it to compute for Xi n times and not the whole program
 	wait(&status);
@@ -129,11 +126,10 @@ int main() {
 	// wait(&status);
 
 	// this part should only be executed by the original, not forked functions
-	if(parentpid == getpid()){
 	for (i = 0; i < n; i++) {
 		printf("X%i = %f \n", i+1, *(ptr+i));
-		printf("pid# : %i \n",getpid());
-	}}
+		
+	}
 
 	/* TODO FOR STEVEN:
 	As you can see, I have implemented shared memory and forking.
@@ -271,3 +267,4 @@ void solveSystem(double A[n][n], double b[n], int Xi) {
 	printf("exiting child %d \n", Xi);
 	}
 }
+

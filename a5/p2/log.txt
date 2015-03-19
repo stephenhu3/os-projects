@@ -1,699 +1,1237 @@
+parentpid : 2533pid# : 2533 
 parent 0 
 entering child 0 
 halfway child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.020833 ptr[0] = 0.020833stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 1.398958 ptr[1] = 1.398958stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 1.272015 ptr[2] = 1.272015almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.081525 ptr[0] = 0.081525stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 2.254340 ptr[1] = 2.254340stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 2.107378 ptr[2] = 2.107378almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.160599 ptr[0] = 0.160599stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 2.766619 ptr[1] = 2.766619stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 2.660377 ptr[2] = 2.660377almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.245492 ptr[0] = 0.245492stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.063633 ptr[1] = 3.063633stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.030246 ptr[2] = 3.030246almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.329126 ptr[0] = 0.329126stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.226731 ptr[1] = 3.226731stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.280867 ptr[2] = 3.280867almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.407764 ptr[0] = 0.407764stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.307530 ptr[1] = 3.307530stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.453420 ptr[2] = 3.453420almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.479667 ptr[0] = 0.479667stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.338651 ptr[1] = 3.338651stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.574496 ptr[2] = 3.574496almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.544261 ptr[0] = 0.544261stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.340601 ptr[1] = 3.340601stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.661315 ptr[2] = 3.661315almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.601629 ptr[0] = 0.601629stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.326172 ptr[1] = 3.326172stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.725061 ptr[2] = 3.725061almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.652196 ptr[0] = 0.652196stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.303260 ptr[1] = 3.303260stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.773038 ptr[2] = 3.773038almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.696552 ptr[0] = 0.696552stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.276662 ptr[1] = 3.276662stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.810042 ptr[2] = 3.810042almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.735335 ptr[0] = 0.735335stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.249223 ptr[1] = 3.249223stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.839252 ptr[2] = 3.839252almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.769180 ptr[0] = 0.769180stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.222571 ptr[1] = 3.222571stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.862794 ptr[2] = 3.862794almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.798682 ptr[0] = 0.798682stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.197575 ptr[1] = 3.197575stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.882113 ptr[2] = 3.882113almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.824383 ptr[0] = 0.824383stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.174645 ptr[1] = 3.174645stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.898207 ptr[2] = 3.898207almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.846769 ptr[0] = 0.846769stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.153914 ptr[1] = 3.153914stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.911776 ptr[2] = 3.911776almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.866267 ptr[0] = 0.866267stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.135356 ptr[1] = 3.135356stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.923326 ptr[2] = 3.923326almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.883254 ptr[0] = 0.883254stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.118855 ptr[1] = 3.118855stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.933230 ptr[2] = 3.933230almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.898057 ptr[0] = 0.898057stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.104254 ptr[1] = 3.104254stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.941770 ptr[2] = 3.941770almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.910961 ptr[0] = 0.910961stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.091377 ptr[1] = 3.091377stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.949164 ptr[2] = 3.949164almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.922214 ptr[0] = 0.922214stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.080048 ptr[1] = 3.080048stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.955585 ptr[2] = 3.955585almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.932031 ptr[0] = 0.932031stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.070096 ptr[1] = 3.070096stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.961174 ptr[2] = 3.961174almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.940598 ptr[0] = 0.940598stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.061366 ptr[1] = 3.061366stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.966047 ptr[2] = 3.966047almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.948076 ptr[0] = 0.948076stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.053714 ptr[1] = 3.053714stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.970300 ptr[2] = 3.970300almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.954606 ptr[0] = 0.954606stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.047010 ptr[1] = 3.047010stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.974015 ptr[2] = 3.974015almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.960310 ptr[0] = 0.960310stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.041140 ptr[1] = 3.041140stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.977263 ptr[2] = 3.977263almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.965293 ptr[0] = 0.965293stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.036001 ptr[1] = 3.036001stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.980104 ptr[2] = 3.980104almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.969647 ptr[0] = 0.969647stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.031503 ptr[1] = 3.031503stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.982588 ptr[2] = 3.982588almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.973453 ptr[0] = 0.973453stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.027566 ptr[1] = 3.027566stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.984762 ptr[2] = 3.984762almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.976779 ptr[0] = 0.976779stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.024121 ptr[1] = 3.024121stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.986664 ptr[2] = 3.986664almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.979688 ptr[0] = 0.979688stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.021107 ptr[1] = 3.021107stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.988328 ptr[2] = 3.988328almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.982231 ptr[0] = 0.982231stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.018470 ptr[1] = 3.018470stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.989785 ptr[2] = 3.989785almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.984455 ptr[0] = 0.984455stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.016162 ptr[1] = 3.016162stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.991060 ptr[2] = 3.991060almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.986400 ptr[0] = 0.986400stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.014142 ptr[1] = 3.014142stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.992176 ptr[2] = 3.992176almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.988101 ptr[0] = 0.988101stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.012375 ptr[1] = 3.012375stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.993153 ptr[2] = 3.993153almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.989589 ptr[0] = 0.989589stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.010829 ptr[1] = 3.010829stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.994007 ptr[2] = 3.994007almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.990891 ptr[0] = 0.990891stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.009476 ptr[1] = 3.009476stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.994755 ptr[2] = 3.994755almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.992029 ptr[0] = 0.992029stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.008292 ptr[1] = 3.008292stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.995410 ptr[2] = 3.995410almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.993026 ptr[0] = 0.993026stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.007256 ptr[1] = 3.007256stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.995983 ptr[2] = 3.995983almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.993897 ptr[0] = 0.993897stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.006350 ptr[1] = 3.006350stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.996485 ptr[2] = 3.996485almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.994660 ptr[0] = 0.994660stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.005557 ptr[1] = 3.005557stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.996924 ptr[2] = 3.996924almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.995327 ptr[0] = 0.995327stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.004863 ptr[1] = 3.004863stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.997308 ptr[2] = 3.997308almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.995911 ptr[0] = 0.995911stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.004255 ptr[1] = 3.004255stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.997644 ptr[2] = 3.997644almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.996422 ptr[0] = 0.996422stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.003724 ptr[1] = 3.003724stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.997938 ptr[2] = 3.997938almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.996869 ptr[0] = 0.996869stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.003259 ptr[1] = 3.003259stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.998195 ptr[2] = 3.998195almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.997260 ptr[0] = 0.997260stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.002852 ptr[1] = 3.002852stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.998421 ptr[2] = 3.998421almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.997602 ptr[0] = 0.997602stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.002496 ptr[1] = 3.002496stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.998618 ptr[2] = 3.998618almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.997902 ptr[0] = 0.997902stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.002184 ptr[1] = 3.002184stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.998791 ptr[2] = 3.998791almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.998164 ptr[0] = 0.998164stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.001911 ptr[1] = 3.001911stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.998942 ptr[2] = 3.998942almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.998393 ptr[0] = 0.998393stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.001672 ptr[1] = 3.001672stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.999074 ptr[2] = 3.999074almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.998594 ptr[0] = 0.998594stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.001464 ptr[1] = 3.001464stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.999189 ptr[2] = 3.999189almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.998769 ptr[0] = 0.998769stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.001281 ptr[1] = 3.001281stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.999291 ptr[2] = 3.999291almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.998923 ptr[0] = 0.998923stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.001121 ptr[1] = 3.001121stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.999379 ptr[2] = 3.999379almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.999058 ptr[0] = 0.999058stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.000981 ptr[1] = 3.000981stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.999457 ptr[2] = 3.999457almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.999175 ptr[0] = 0.999175stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.000858 ptr[1] = 3.000858stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.999525 ptr[2] = 3.999525almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.999278 ptr[0] = 0.999278stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 3.000751 ptr[1] = 3.000751stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-stuck here? child 0 
-stuck here? child 0 
-almostend child 0 
+ aas = 3.999584 ptr[2] = 3.999584almostend child 0 
 half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
 before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.999368 ptr[0] = 0.999368stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.000657 ptr[1] = 3.000657stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.999636 ptr[2] = 3.999636almostend child 0 
+half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
+ aas = 0.999447 ptr[0] = 0.999447stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.000575 ptr[1] = 3.000575stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.999681 ptr[2] = 3.999681almostend child 0 
+half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
 stuck here? child 0 
-almostend child 0 
+ aas = 0.999516 ptr[0] = 0.999516stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.000503 ptr[1] = 3.000503stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.999721 ptr[2] = 3.999721almostend child 0 
+half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 0.999577 ptr[0] = 0.999577stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.000441 ptr[1] = 3.000441stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.999756 ptr[2] = 3.999756almostend child 0 
+half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 0.999630 ptr[0] = 0.999630stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.000386 ptr[1] = 3.000386stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.999786 ptr[2] = 3.999786almostend child 0 
+half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 0.999676 ptr[0] = 0.999676stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.000337 ptr[1] = 3.000337stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.999813 ptr[2] = 3.999813almostend child 0 
+half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 0.999716 ptr[0] = 0.999716stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.000295 ptr[1] = 3.000295stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.999836 ptr[2] = 3.999836almostend child 0 
+half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 0.999752 ptr[0] = 0.999752stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.000258 ptr[1] = 3.000258stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.999857 ptr[2] = 3.999857almostend child 0 
+half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 0.999783 ptr[0] = 0.999783stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.000226 ptr[1] = 3.000226stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.999875 ptr[2] = 3.999875almostend child 0 
+half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 0.999810 ptr[0] = 0.999810stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.000198 ptr[1] = 3.000198stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.999890 ptr[2] = 3.999890almostend child 0 
+half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 0.999834 ptr[0] = 0.999834stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.000173 ptr[1] = 3.000173stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.999904 ptr[2] = 3.999904almostend child 0 
+half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 0.999854 ptr[0] = 0.999854stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.000152 ptr[1] = 3.000152stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.999916 ptr[2] = 3.999916almostend child 0 
+half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 0.999873 ptr[0] = 0.999873stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.000133 ptr[1] = 3.000133stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.999927 ptr[2] = 3.999927almostend child 0 
+half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 0.999889 ptr[0] = 0.999889stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.000116 ptr[1] = 3.000116stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.999936 ptr[2] = 3.999936almostend child 0 
+half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 0.999902 ptr[0] = 0.999902stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.000102 ptr[1] = 3.000102stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.999944 ptr[2] = 3.999944almostend child 0 
+half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 0.999915 ptr[0] = 0.999915stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.000089 ptr[1] = 3.000089stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.999951 ptr[2] = 3.999951almostend child 0 
+half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 0.999925 ptr[0] = 0.999925stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.000078 ptr[1] = 3.000078stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.999957 ptr[2] = 3.999957almostend child 0 
+half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 0.999935 ptr[0] = 0.999935stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.000068 ptr[1] = 3.000068stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.999962 ptr[2] = 3.999962almostend child 0 
+exiting child 0 
+parent 1 
+entering child 1 
+halfway child 1 
+half-end child 1 
+before stuck 12321here? child 1 
+before stuck 12321here? child 1 
+before stuck 12321here? child 1 
+before stuck here? child 1 
+stuck here? child 1 
+stuck here? child 1 
+stuck here? child 1 
+ aas = 0.999943 ptr[0] = 0.999943stuck here? child 1 
+stuck here? child 1 
+stuck here? child 1 
+ aas = 3.000060 ptr[1] = 3.000060stuck here? child 1 
+stuck here? child 1 
+stuck here? child 1 
+ aas = 3.999967 ptr[2] = 3.999967almostend child 1 
+exiting child 1 
+parent 2 
+entering child 2 
+halfway child 2 
+half-end child 2 
+before stuck 12321here? child 2 
+before stuck 12321here? child 2 
+before stuck 12321here? child 2 
+before stuck here? child 2 
+stuck here? child 2 
+stuck here? child 2 
+stuck here? child 2 
+ aas = 0.999950 ptr[0] = 0.999950stuck here? child 2 
+stuck here? child 2 
+stuck here? child 2 
+ aas = 3.000052 ptr[1] = 3.000052stuck here? child 2 
+stuck here? child 2 
+stuck here? child 2 
+ aas = 3.999971 ptr[2] = 3.999971almostend child 2 
+exiting child 2 
+ here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 0.999925 ptr[0] = 0.999925stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.000078 ptr[1] = 3.000078stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.999957 ptr[2] = 3.999957almostend child 0 
+half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 0.999935 ptr[0] = 0.999935stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.000068 ptr[1] = 3.000068stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.999962 ptr[2] = 3.999962almostend child 0 
+exiting child 0 
+parent 1 
+entering child 1 
+halfway child 1 
+half-end child 1 
+before stuck 12321here? child 1 
+before stuck 12321here? child 1 
+before stuck 12321here? child 1 
+before stuck here? child 1 
+stuck here? child 1 
+stuck here? child 1 
+stuck here? child 1 
+ aas = 0.999943 ptr[0] = 0.999943stuck here? child 1 
+stuck here? child 1 
+stuck here? child 1 
+ aas = 3.000060 ptr[1] = 3.000060stuck here? child 1 
+stuck here? child 1 
+stuck here? child 1 
+ aas = 3.999967 ptr[2] = 3.999967almostend child 1 
+exiting child 1 
+parent 2 
+ here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 0.999925 ptr[0] = 0.999925stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.000078 ptr[1] = 3.000078stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.999957 ptr[2] = 3.999957almostend child 0 
+half-end child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck 12321here? child 0 
+before stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 0.999935 ptr[0] = 0.999935stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.000068 ptr[1] = 3.000068stuck here? child 0 
+stuck here? child 0 
+stuck here? child 0 
+ aas = 3.999962 ptr[2] = 3.999962almostend child 0 
 exiting child 0 
 parent 1 
 parent 2 
-X1 = 0.999368 
-X2 = 3.000657 
-X3 = 3.999636 
+parentpid : 2533pid# : 2533 
 parent 0 
 parent 1 
 parent 2 
-X1 = 0.999368 
-X2 = 3.000657 
-X3 = 3.999636 
+X1 = 0.999950 
+pid# : 2533 
+X2 = 3.000052 
+pid# : 2533 
+X3 = 3.999971 
+pid# : 2533 
