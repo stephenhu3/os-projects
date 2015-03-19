@@ -15,7 +15,7 @@
 
 
 // n symbolic constant between 3 to 6
-#define n 3
+#define n 4
 /* relaxation factor must be 0 < omega < 2 */
 /* set to greater than 1 for speeding up convergency of a 
    slow-converging process, while values less than 1 are used to help 
@@ -55,7 +55,7 @@ void solveSystem(double A[n][n], double b[n], int Xi);
 void function();
 
 int main() {
-	int status;
+	//int status;
 	// Initialize shared memory
 	// size of shared memory object
 	const int SIZE = 8 * n; // 8 bytes per double
@@ -97,12 +97,12 @@ int main() {
 
 
 	// 3 x 3 system of equations CORRECT
-	 double A[n][n] = { { 12.0, 3.0, -5.0 }, { 1.0, 5.0, 3.0 }, { 3.0, 7.0, 13.0 } };
-	 double b[n] = { 1, 28, 76 };
+	// double A[n][n] = { { 12.0, 3.0, -5.0 }, { 1.0, 5.0, 3.0 }, { 3.0, 7.0, 13.0 } };
+	// double b[n] = { 1, 28, 76 };
 
 	// 4 x 4 system of equations CORRECT
-	// double A[n][n] = { { 5, 0, 0, 0}, { 0, 8, 0, 0}, { 2, 3, 4, 5}, { 3, 3, 2, 3} };
-	// double b[n] = { 60, 56, 3, 3 };
+	double A[n][n] = { { 5, 0, 0, 0}, { 0, 8, 0, 0}, { 2, 3, 4, 5}, { 3, 3, 2, 3} };
+	double b[n] = { 60, 56, 3, 3 };
 
 	// 5 x 5 system of equations CORRECT
 	// double A[n][n] = { { -7, 1, 0, 1, 1 }, { 1, 1, 0, 0, 1}, { 1, 1, 5, 0, 1}, { 1, -1, 1, 1, 2}, { 1, 0, 1, 0, 1} };
@@ -118,7 +118,6 @@ int main() {
 	// double b[n] = { 4, 20, -15, -3, 16, -27 };0
 	for (i = 0; i < n; i++) { 
 		solveSystem(A,b,i); // this solve the matrix n times.. we want it to compute for Xi n times and not the whole program
-	wait(&status);
 	}
 
 	// wait(&status);
@@ -126,7 +125,6 @@ int main() {
 	// this part should only be executed by the original, not forked functions
 	for (i = 0; i < n; i++) {
 		printf("X%i = %f \n", i+1, *(ptr+i));
-		
 	}
 
 	/* TODO FOR STEVEN:
@@ -144,7 +142,7 @@ int main() {
 	Please provide updates to the team.
 	*/
 
-	shm_unlink(name);
+
 	return 0;
 }
 
@@ -181,7 +179,7 @@ void solveSystem(double A[n][n], double b[n], int Xi) {
 		double maxError = MIN_double;
 		double currentError = MAX_double;
 
-		printf("halfway child %d \n", Xi);
+
 
 		/* 
 		   check convergence: the new value is same as previous value
@@ -201,23 +199,19 @@ void solveSystem(double A[n][n], double b[n], int Xi) {
 
 		// while (currentError > 0.0001) {
 		while (currentError > 0.001) {
-			printf("half-end child %d \n", Xi);
+
 			
-			for (k = 0; k < n; k++){
-				printf("before stuck 12321here? child %d \n", Xi);
+			
+			for (k = 0; k < n; k++)
 					oldphi[k] = ptr[k]; // old phi gets previous values
-				}
-				printf("before stuck here? child %d \n", Xi);
+
 			for (i = 0; i < n; i++) {
 				sigma = 0;
 				for (j = 0; j < n; j++) {
 					sigma =  j != i ? sigma + (A[i][j] * ptr[j]) : sigma;
-					printf("stuck here? child %d \n", Xi);
 				}
-				double aasd = ((1-omega)*oldphi[i]) + ((omega / A[i][i]) * (b[i]-sigma)); // test if we saved files to the shared memory
-				printf(" aas = %l",aasd);
+				
 				ptr[i] = ((1-omega)*oldphi[i]) + ((omega / A[i][i]) * (b[i]-sigma));
-
 
 			}
 
@@ -234,13 +228,12 @@ void solveSystem(double A[n][n], double b[n], int Xi) {
 			
 
 			//calculate errors
-			printf("almostend child %d \n", Xi);
+			
 			for (m = 0; m < n; m++) {
 				error[m] = fabs( ( ( ptr[m] - oldphi[m] )  / (ptr[m]) )  * 100 );
 			}
-			//fabs =absolute value
 			
-			// for debugging purposes
+			 // for debugging purposes
 			// printf("errors: \n");
 			// for (k = 0; k < n; k++) {
 			// 	printf("%f \n", error[k]); // new calculated phi values
@@ -258,9 +251,9 @@ void solveSystem(double A[n][n], double b[n], int Xi) {
 			// printf("%f \n", currentError); // current error
 			
 			/* remove the shared memory object */ 
-			//shm_unlink(name);
+			shm_unlink(name);
+			printf("exiting child %d \n", Xi);
 			
 		}
-	printf("exiting child %d \n", Xi);
 	}
 }
