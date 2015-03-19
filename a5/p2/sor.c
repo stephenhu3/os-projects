@@ -119,16 +119,16 @@ int main() {
 	// 				};
 	// double b[n] = { 4, 20, -15, -3, 16, -27 };0
 	 int parentpid = getpid();
-	 printf("parentpid : %i",parentpid);
-	 printf("pid# : %i \n",getpid());
-	for (i = 0; i < n; i++) { 
+	// printf("parentpid : %i",parentpid);
+	// printf("pid# : %i \n",getpid());
+	for (i = 0; i < n; i++) { //i is the process number. eg process  1 does x1 and so on
 		solveSystem(A,b,i); // this solve the matrix n times.. we want it to compute for Xi n times and not the whole program
 	wait(&status);
 	}
 
 	// wait(&status);
 
-	// this part should only be executed by the original, not forked functions
+	// this part should only be executed by the original, not forked functions //done
 	if(parentpid == getpid()){
 	for (i = 0; i < n; i++) {
 		printf("X%i = %f \n", i+1, *(ptr+i));
@@ -207,23 +207,23 @@ void solveSystem(double A[n][n], double b[n], int Xi) {
 
 		// while (currentError > 0.0001) {
 		while (currentError > 0.001) {
-			printf("half-end child %d \n", Xi);
+			//printf("half-end child %d \n", Xi);
 			
 			for (k = 0; k < n; k++){
-				printf("before stuck 12321here? child %d \n", Xi);
+				//printf("before stuck 12321here? child %d \n", Xi);
 					oldphi[k] = ptr[k]; // old phi gets previous values
 				}
-				printf("before stuck here? child %d \n", Xi);
+				//printf("before stuck here? child %d \n", Xi);
 			for (i = 0; i < n; i++) {
 				sigma = 0;
 				for (j = 0; j < n; j++) {
 					sigma =  j != i ? sigma + (A[i][j] * ptr[j]) : sigma;
-					printf("stuck here? child %d \n", Xi);
+					//printf("stuck here? child %d \n", Xi);
 				}
 				double aasd = ((1-omega)*oldphi[i])+  ((omega / A[i][i]) * (b[i]-sigma)); // test if we saved files to the shared memory
-				printf(" aas = %f",aasd);
+				printf("aas = %f  ",aasd);
 				ptr[i] = ((1-omega)*oldphi[i]) + ((omega / A[i][i]) * (b[i]-sigma));
-				printf(" ptr[%d] = %f",i, ptr[i]);
+				printf("   ptr[%d] = %f",i, ptr[i]);
 
 
 			}
