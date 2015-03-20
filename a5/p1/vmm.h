@@ -11,7 +11,7 @@
 // DEFINES
 
 #define NUMTESTADDR 6
-#define MAXADDR 1024
+#define MAXADDR 2048
 
 #define PAGE_SIZE 256
 #define FRAME_SIZE 128
