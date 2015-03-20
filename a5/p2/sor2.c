@@ -149,7 +149,7 @@ int main() {
 	You need to start this today. This is a large task. 
 	Please provide updates to the team.
 	*/
-
+	printf("\n\nTHIS IS A TEST FILE ONLY\n \n");
 	shm_unlink(name);
 	return 0;
 }
@@ -268,6 +268,8 @@ void solveSystem(double A[n][n], double b[n], int Xi) {
 			//shm_unlink(name);
 			
 		}
+		//kill(pid,SIGTERM);
 	printf("exiting child %d \n", Xi);
 	}
+	kill(pid,SIGTERM);
 }
