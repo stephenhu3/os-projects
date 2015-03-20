@@ -1,8 +1,12 @@
-Virtual Addresses
+Program output Virtual Addresses matches correct.txt results
 Passed
-Physical Addresses
+Program output Physical Addresses matches correct.txt results
 Passed
-Values
+Program output Values matches correct.txt results
 Passed
-Statistics (Page Fault Rate, TLB Hit Rate, etc.)
+Program output Statistics (Page Fault Rate, TLB Hit Rate, etc.) matches correct.txt results
+Passed
+Program has no memory leaks
+Passed
+Program does not have segmentation faults
 Passed
