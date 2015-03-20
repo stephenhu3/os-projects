@@ -18,7 +18,7 @@
 
 // n symbolic constant between 3 to 6, if you changed the value of n, change 
 // the matrix accordingly below
-#define n 3
+#define n 6
 /* relaxation factor must be 0 < omega < 2 */
 /* set to greater than 1 for speeding up convergency of a 
    slow-converging process, while values less than 1 are used to help 
@@ -100,8 +100,8 @@ int main() {
 
 
 	// 3 x 3 system of equations CORRECT
-	 double A[n][n] = { { 12.0, 3.0, -5.0 }, { 1.0, 5.0, 3.0 }, { 3.0, 7.0, 13.0 } };
-	 double b[n] = { 1, 28, 76 };
+	 // double A[n][n] = { { 12.0, 3.0, -5.0 }, { 1.0, 5.0, 3.0 }, { 3.0, 7.0, 13.0 } };
+	 // double b[n] = { 1, 28, 76 };
 
 	// 4 x 4 system of equations CORRECT
 	// double A[n][n] = { { 5, 0, 0, 0}, { 0, 8, 0, 0}, { 2, 3, 4, 5}, { 3, 3, 2, 3} };
@@ -111,9 +111,9 @@ int main() {
 	// double A[n][n] = { { -7, 1, 0, 1, 1 }, { 1, 1, 0, 0, 1}, { 1, 1, 5, 0, 1}, { 1, -1, 1, 1, 2}, { 1, 0, 1, 0, 1} };
 	// double b[n] = { 1, 0, 9, 1, 0 };
 
-	// 6 x 6 system of equations INCORRECT - TODO FOR STEVEN: find a valid 6 x 6 equation that can be solved using this method
-	// double A[n][n] = { { 9, 0, 0, 0, 0, 0 }, { 1, 2, 0, 0, 0, 0}, { 0, 0, 1, 0, 0, 0}, { 0, 1, 7, -1, -1, 1}, { 1, 1, 1, 1, 1, -4}, { 7, 1, 1, 12, 1, 1} };
-	// double b[n] = { 90, 15, 16, 19, -20, 10 };
+	// 6 x 6 system of equations CORRECT
+	double A[n][n] = { { 9, 0, 0, 0, 0, 0 }, { 1, 2, 0, 0, 0, 0}, { 0, 0, 1, 0, 0, 0}, { 0, 1, 7, -1, 0, 1}, { 1, 1, 1, 1, 1, 1}, { 7, 0, 1, 12, 1, 1} };
+	double b[n] = { 90, 15, 16, 19, -20, 10 };
 
 	// double A[n][n] = { { 1, 1, -2, 1, 3, -1 }, { 2, -1, 1, 2, 1, -3 }, { 1, 3, -3, -1, 2, 1 }, 
 	// 				  { 5, 2, -1, -1, 2, 1 }, { -3, -1, 2, 3, 1, 3 }, { 4, 3, 1, -6, -3, -2 }
@@ -207,7 +207,7 @@ void solveSystem(double A[n][n], double b[n], int Xi) {
 		// // Alternatively, we can clear to zeroes using calloc
 
 		// while (currentError > 0.0001) {
-		while (currentError > 0.001) {
+		while (currentError > 0.0001) {
 			//printf("half-end child %d \n", Xi);
 			
 			for (k = 0; k < n; k++){
