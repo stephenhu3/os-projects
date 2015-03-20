@@ -13,18 +13,15 @@
 #include <sys/types.h>
 
 
-
-
-
 // n symbolic constant between 3 to 6, if you changed the value of n, change 
 // the matrix accordingly below
-#define n 6
+#define n 3
 /* relaxation factor must be 0 < omega < 2 */
 /* set to greater than 1 for speeding up convergency of a 
    slow-converging process, while values less than 1 are used to help 
    establish convergence of a diverging iterative process or speed up 
    convergence of an overshooting process */
-#define omega 0.25
+#define omega 1.25
 #define MAX_double 100000
 #define MIN_double 0
 
@@ -65,29 +62,43 @@ int main() {
 
 	// name of the shared memory object
 	const char *name = "PHI";
+	const char *errname = "ERR";
+	const char *oldphiname = "OLDPHI";
 
 	double phi[n];
+	double oldphi[n];
+	double error[n];
+	int i, j, k, m;
+
 	
 	// initialize phi
-	int i;
 	for (i = 0; i < n; i++)
 		phi[i] = 0; // set initial guess to zeroes
 
 	// shared memory file descriptor
 	int shm_fd;
+	int shm_fd_oldphi;
 
 	// pointer to shared memory object is a double ptr
 	double *ptr;
+	// double *err;
+	double *oldptr;
 	
 
 	// create the shared memory object
 	shm_fd = shm_open(name, O_CREAT | O_RDWR, 0666);
+	// shm_fd_err = shm_open(errname, O_CREAT | O_RDWR, 0666);
+	shm_fd_oldphi = shm_open(oldphiname, O_CREAT | O_RDWR, 0666);
 	
 	// configure the size of the shared memory object
 	ftruncate(shm_fd, SIZE);
+	// ftruncate(shm_fd_err, SIZE);
+	ftruncate(shm_fd_oldphi, SIZE);
 
 	// memory map the shared memory object
 	ptr = mmap(0, SIZE, PROT_WRITE, MAP_SHARED, shm_fd, 0);
+	// err = mmap(0, SIZE, PROT_WRITE, MAP_SHARED, shm_fd_err, 0);
+	oldptr = mmap(0, SIZE, PROT_WRITE, MAP_SHARED, shm_fd_oldphi, 0);
 	// ptr is now shared
 	
 	// write to the shared memory object
@@ -100,8 +111,8 @@ int main() {
 
 
 	// 3 x 3 system of equations CORRECT
-	 // double A[n][n] = { { 12.0, 3.0, -5.0 }, { 1.0, 5.0, 3.0 }, { 3.0, 7.0, 13.0 } };
-	 // double b[n] = { 1, 28, 76 };
+	 double A[n][n] = { { 12.0, 3.0, -5.0 }, { 1.0, 5.0, 3.0 }, { 3.0, 7.0, 13.0 } };
+	 double b[n] = { 1, 28, 76 };
 
 	// 4 x 4 system of equations CORRECT
 	// double A[n][n] = { { 5, 0, 0, 0}, { 0, 8, 0, 0}, { 2, 3, 4, 5}, { 3, 3, 2, 3} };
@@ -112,8 +123,8 @@ int main() {
 	// double b[n] = { 1, 0, 9, 1, 0 };
 
 	// 6 x 6 system of equations CORRECT
-	double A[n][n] = { { 9, 0, 0, 0, 0, 0 }, { 1, 2, 0, 0, 0, 0}, { 0, 0, 1, 0, 0, 0}, { 0, 1, 7, -1, 0, 1}, { 1, 1, 1, 1, 1, 1}, { 7, 0, 1, 12, 1, 1} };
-	double b[n] = { 90, 15, 16, 19, -20, 10 };
+	// double A[n][n] = { { 9, 0, 0, 0, 0, 0 }, { 1, 2, 0, 0, 0, 0}, { 0, 0, 1, 0, 0, 0}, { 0, 1, 7, -1, 0, 1}, { 1, 1, 1, 1, 1, 1}, { 7, 0, 1, 12, 1, 1} };
+	// double b[n] = { 90, 15, 16, 19, -20, 10 };
 
 	// double A[n][n] = { { 1, 1, -2, 1, 3, -1 }, { 2, -1, 1, 2, 1, -3 }, { 1, 3, -3, -1, 2, 1 }, 
 	// 				  { 5, 2, -1, -1, 2, 1 }, { -3, -1, 2, 3, 1, 3 }, { 4, 3, 1, -6, -3, -2 }
@@ -122,9 +133,59 @@ int main() {
 	 int parentpid = getpid();
 	// printf("parentpid : %i",parentpid);
 	// printf("pid# : %i \n",getpid());
-	for (i = 0; i < n; i++) { //i is the process number. eg process  1 does x1 and so on
-		solveSystem(A,b,i); // this solve the matrix n times.. we want it to compute for Xi n times and not the whole program
-	wait(&status);
+	
+	double maxError = MIN_double;
+	double currentError = MAX_double;
+
+	while (currentError > 0.001) {
+
+		// NOTE: UPDATE OLDPTR ONLY AFTER X1, X2, X3 HAVE BEEN CALCULATED
+		for (k = 0; k < n; k++){
+			oldptr[k] = ptr[k]; // old ptr gets previous values after iteration
+		}
+
+		for (i = 0; i < n; i++) { //i is the process number. eg process  1 does x1 and so on
+			solveSystem(A,b,i); // this solve the matrix n times.. we want it to compute for Xi n times and not the whole program
+			wait(&status);
+		}
+
+
+		for (m = 0; m < n; m++) {
+			error[m] = fabs( ( ( ptr[m] - oldptr[m] )  / (ptr[m]) )  * 100 );
+		}
+
+		// for debugging purposes
+		// printf("errors: \n");
+		// for (k = 0; k < n; k++) {
+		// 	printf("%f \n", error[k]);
+		// } 
+
+		// printf("phi: \n");
+		// for (k = 0; k < n; k++) {
+		// 	printf("%f \n", oldptr[k]); // new calculated phi values
+		// } 
+
+
+		maxError = MIN_double;
+		for (m = 0; m < n; m++) {
+			maxError = error[m] > maxError ? error[m] : maxError;
+		}
+
+		// printf("max error %f \n", maxError); // new calculated phi values
+
+		currentError = maxError;
+		// printf("Current error %f \n", currentError); // new calculated phi values
+
+
+
+		//fabs =absolute value
+		
+		// for debugging purposes
+		// printf("errors: \n");
+		// for (k = 0; k < n; k++) {
+		// 	printf("%f \n", error[k]); // new calculated phi values
+		// } 
+
 	}
 
 	// wait(&status);
@@ -133,7 +194,7 @@ int main() {
 	if(parentpid == getpid()){
 	for (i = 0; i < n; i++) {
 		printf("X%i = %f \n", i+1, *(ptr+i));
-		printf("pid# : %i \n",getpid());
+		// printf("pid# : %i \n",getpid());
 	}}
 
 	/* TODO FOR STEVEN:
@@ -161,34 +222,35 @@ int main() {
 void solveSystem(double A[n][n], double b[n], int Xi) {
 
 	int pid = fork();
-	printf("parent %d \n", Xi);
+	// printf("parent %d \n", Xi);
 
 
 	if (pid == 0) {
-		 printf("entering child %d \n", Xi);
+		 // printf("entering child %d \n", Xi);
 
 		/* the size (in bytes) of shared memory object */
 		const int SIZE = 8 * n;
 		/* name of the shared memory object */
 		const char *name = "PHI";
+		const char *oldphiname = "OLDPHI";
 		/* shared memory file descriptor */ 
 		int shm_fd;
+		int shm_fd_oldphi;
 		/* pointer to shared memory obect */ 
 	 	double *ptr;
+	 	double *oldptr;
 		/* open the shared memory object */
 		shm_fd = shm_open(name, O_RDWR, 0666);
+		shm_fd_oldphi = shm_open(name, O_RDWR, 0666);
 		/* memory map the shared memory object */
 		ptr = mmap(0, SIZE, PROT_WRITE, MAP_SHARED, shm_fd, 0);
+		oldptr = mmap(0, SIZE, PROT_WRITE, MAP_SHARED, shm_fd, 0);
 	    /* read from the shared memory object */
 
 		
 
-		double error[n];
 
-		double maxError = MIN_double;
-		double currentError = MAX_double;
-
-		printf("halfway child %d \n", Xi);
+		// printf("halfway child %d \n", Xi);
 
 		/* 
 		   check convergence: the new value is same as previous value
@@ -196,7 +258,7 @@ void solveSystem(double A[n][n], double b[n], int Xi) {
 		   new value and old value, the max should be close to 0 */
 
 		// static double phi[n];
-		double oldphi[n], sigma;
+		double sigma;
 		int i, j, k, m;
 
 		// for (i = 0; i < n; i++)
@@ -207,27 +269,28 @@ void solveSystem(double A[n][n], double b[n], int Xi) {
 		// // Alternatively, we can clear to zeroes using calloc
 
 		// while (currentError > 0.0001) {
-		while (currentError > 0.0001) {
+		// while (currentError > 0.0001) {
 			//printf("half-end child %d \n", Xi);
 			
-			for (k = 0; k < n; k++){
-				//printf("before stuck 12321here? child %d \n", Xi);
-					oldphi[k] = ptr[k]; // old phi gets previous values
-				}
+			// for (k = 0; k < n; k++){
+			// 	//printf("before stuck 12321here? child %d \n", Xi);
+			// 		oldphi[k] = ptr[k]; // old phi gets previous values
+			// 		// NOTE: UPDATE OLDPHI ONLY AFTER X1, X2, X3 HAVE BEEN CALCULATED
+			// 	}
 				//printf("before stuck here? child %d \n", Xi);
-			for (i = 0; i < n; i++) {
+			// for (i = 0; i < n; i++) {
 				sigma = 0;
 				for (j = 0; j < n; j++) {
-					sigma =  j != i ? sigma + (A[i][j] * ptr[j]) : sigma;
+					sigma =  j != Xi ? sigma + (A[Xi][j] * ptr[j]) : sigma;
 					//printf("stuck here? child %d \n", Xi);
 				}
 				//double aasd = ((1-omega)*oldphi[i])+  ((omega / A[i][i]) * (b[i]-sigma)); // test if we saved files to the shared memory
 				//printf("aas = %f  ",aasd);
-				ptr[i] = ((1-omega)*oldphi[i]) + ((omega / A[i][i]) * (b[i]-sigma));
-				printf(" ptr[%d] = %f ",i, ptr[i]);
+				ptr[Xi] = ((1-omega)*oldptr[Xi]) + ((omega / A[Xi][Xi]) * (b[Xi]-sigma));
+				// printf(" ptr[%d] = %f ",i, ptr[i]);
 
 
-			}
+			// }
 
 			//  for debugging purposes
 			// printf("oldphi: \n");
@@ -237,16 +300,17 @@ void solveSystem(double A[n][n], double b[n], int Xi) {
 
 			// printf("phi: \n");
 			// for (k = 0; k < n; k++) {
-			// 	printf("%f \n", phi[k]); // new calculated phi values
+			// 	printf("%f \n", oldptr[k]); // new calculated phi values
 			// } 
 			
 
 			//calculate errors
 			//printf("almostend child %d \n", Xi);
-			for (m = 0; m < n; m++) {
-				error[m] = fabs( ( ( ptr[m] - oldphi[m] )  / (ptr[m]) )  * 100 );
-			}
-			//fabs =absolute value
+
+			// for (m = 0; m < n; m++) {
+			// 	error[m] = fabs( ( ( ptr[m] - oldphi[m] )  / (ptr[m]) )  * 100 );
+			// }
+			// //fabs =absolute value
 			
 			// for debugging purposes
 			// printf("errors: \n");
@@ -255,20 +319,21 @@ void solveSystem(double A[n][n], double b[n], int Xi) {
 			// } 
 
 
-			// check for max error
-			maxError = MIN_double;
+			// // check for max error
+			// maxError = MIN_double;
 
-			for (m = 0; m < n; m++) {
-				maxError = error[m] > maxError ? error[m] : maxError;
-			}
+			// for (m = 0; m < n; m++) {
+			// 	maxError = error[m] > maxError ? error[m] : maxError;
+			// }
 
-			currentError = maxError;
+			// currentError = maxError;
 			// printf("%f \n", currentError); // current error
 			
 			/* remove the shared memory object */ 
-			//shm_unlink(name);
+			// shm_unlink(name);
+			// shm_unlink(oldphiname);
 			
-		}
-	printf("exiting child %d \n", Xi);
+		// }
+	// printf("exiting child %d \n", Xi);
 	}
 }
