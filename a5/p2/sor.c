@@ -15,7 +15,7 @@
 
 // n symbolic constant between 3 to 6, if you changed the value of n, change 
 // the matrix accordingly below
-#define n 3
+#define n 4
 /* relaxation factor must be 0 < omega < 2 */
 /* set to greater than 1 for speeding up convergency of a 
    slow-converging process, while values less than 1 are used to help 
@@ -81,12 +81,12 @@ int main() {
 
 
 	// 3 x 3 system of equations CORRECT
-	 double A[n][n] = { { 12.0, 3.0, -5.0 }, { 1.0, 5.0, 3.0 }, { 3.0, 7.0, 13.0 } };
-	 double b[n] = { 1, 28, 76 };
+	 // double A[n][n] = { { 12.0, 3.0, -5.0 }, { 1.0, 5.0, 3.0 }, { 3.0, 7.0, 13.0 } };
+	 // double b[n] = { 1, 28, 76 };
 
 	// 4 x 4 system of equations CORRECT
-	// double A[n][n] = { { 5, 0, 0, 0}, { 0, 8, 0, 0}, { 2, 3, 4, 5}, { 3, 3, 2, 3} };
-	// double b[n] = { 60, 56, 3, 3 };
+	double A[n][n] = { { 5, 0, 0, 0}, { 0, 8, 0, 0}, { 2, 3, 4, 5}, { 3, 3, 2, 3} };
+	double b[n] = { 60, 56, 3, 3 };
 
 	// 5 x 5 system of equations CORRECT
 	// double A[n][n] = { { -7, 1, 0, 1, 1 }, { 1, 1, 0, 0, 1}, { 1, 1, 5, 0, 1}, { 1, -1, 1, 1, 2}, { 1, 0, 1, 0, 1} };
@@ -101,7 +101,7 @@ int main() {
 	double maxError = MIN_double;
 	double currentError = MAX_double;
 
-	while (currentError > 0.001) {
+	while (currentError > 0.01) {
 
 		// NOTE: UPDATE OLDPTR ONLY AFTER X1, X2, X3 HAVE BEEN CALCULATED
 		for (k = 0; k < n; k++){
