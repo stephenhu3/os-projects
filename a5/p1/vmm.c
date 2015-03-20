@@ -16,10 +16,7 @@ int main(int argc, char **argv) {
 	int pageNum = 0;
 	int frameNum = 0;
 	int pageOffset = 0;
-
 	// int addresses[NUMTESTADDR] = {1,256,32768,128,65534,33153};
-
-	// TODO: implement checking for arguments (ie. ./vmm filename.txt derperperpdp)
 
 	// Open BACKING_STORE.bin into a file
 	backStore = NULL;
@@ -40,8 +37,8 @@ int main(int argc, char **argv) {
 
 	// Read from addresses.txt
 	int *addresses = (int *) malloc(sizeof(int *) * MAXADDR);
-	getAddr("addresses.txt", &addrRead, addresses);
-	printf("%i\n", addrRead);
+	getAddr(argv[1], &addrRead, addresses);
+	// printf("%i\n", ++addrRead);
 
 	for(addrCount = 0; addrCount <= addrRead; ++addrCount) {
 		int pageNum = getPageNum(addresses[addrCount]);
@@ -65,9 +62,9 @@ int main(int argc, char **argv) {
 		// printf("Frame Number: %i  ", frameNum);
 		printf("Virtual Address: %i  ", addresses[addrCount]);
 		printf("Physical Address: %i  ", (frameNum * 0x100) + pageOffset);
-		// printf("Value: %i\n", page[pageOffset]);
+		printf("Value: %i\n", page[pageOffset]);
 		// printf("Page Number: %i  ", pageNum);
-		// printf("Page Offset: %i\n", pageOffset);
+		// printf("Page Offset: %i", pageOffset);
 
 		updateTLB(&tlb, pageNum, frameNum);
 	}
@@ -131,11 +128,17 @@ void initPageTable(struct page_table *pagetable) {
 // MODIFIES: none
 // EFFECTS: seek to byte position offset * PAGE_SIZE, and returns the buffer.
 char *readPage(FILE *backStore, int offset){
-    char *buffer = malloc(PAGE_SIZE);
+	if(offset < 0 || offset >= PAGE_SIZE)
+		return NULL;	
 
-    fseek(backStore, offset * PAGE_SIZE, SEEK_SET);
+    	char *buffer = malloc(PAGE_SIZE);
 
-    return buffer;
+    	fseek(backStore, offset * PAGE_SIZE, SEEK_SET);
+
+	if(!fread(buffer, sizeof(char), PAGE_SIZE, backStore))
+		return NULL;
+
+    	return buffer;
 }
 
 //PARAMS: page table and page number (0 to 255)
@@ -236,4 +239,3 @@ void updateTLB(struct tlb *tlb, int pageNum, int frameNum) {
 	for(i = 0; i < tlb->tlbCount; i++)
 		tlb->counter[i]++;
 }
-
