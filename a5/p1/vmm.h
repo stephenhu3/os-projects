@@ -15,7 +15,9 @@
 
 #define PAGE_SIZE 256
 #define FRAME_SIZE 128
+#define TLB_SIZE 16
 
+// STRUCT DEFINITIONSS
 
 struct page_table{
 	char *page[FRAME_SIZE];
@@ -24,7 +26,12 @@ struct page_table{
 	int frame_count;
 };
 
-// STRUCT DEFINITIONSS
+struct tlb{
+	int pageNum[TLB_SIZE];
+	int frameNum[TLB_SIZE];
+	int counter[TLB_SIZE];
+	int tlbCount;
+};
 
 // FUNCTION PROTOTYPES
 int getPageNum(int address);
@@ -33,6 +40,7 @@ void getAddr(char *fileName, int *addrRead, int *addresses);
 
 void initPageTable(struct page_table *pagetable);
 char *readPage(FILE *backStore, int offset);
+int findPageNum(struct page_table *pageTable, int pageNum);
 
 
 #endif
