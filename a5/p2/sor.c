@@ -16,7 +16,8 @@
 
 
 
-// n symbolic constant between 3 to 6
+// n symbolic constant between 3 to 6, if you changed the value of n, change 
+// the matrix accordingly below
 #define n 3
 /* relaxation factor must be 0 < omega < 2 */
 /* set to greater than 1 for speeding up convergency of a 
@@ -220,10 +221,10 @@ void solveSystem(double A[n][n], double b[n], int Xi) {
 					sigma =  j != i ? sigma + (A[i][j] * ptr[j]) : sigma;
 					//printf("stuck here? child %d \n", Xi);
 				}
-				double aasd = ((1-omega)*oldphi[i])+  ((omega / A[i][i]) * (b[i]-sigma)); // test if we saved files to the shared memory
-				printf("aas = %f  ",aasd);
+				//double aasd = ((1-omega)*oldphi[i])+  ((omega / A[i][i]) * (b[i]-sigma)); // test if we saved files to the shared memory
+				//printf("aas = %f  ",aasd);
 				ptr[i] = ((1-omega)*oldphi[i]) + ((omega / A[i][i]) * (b[i]-sigma));
-				printf("   ptr[%d] = %f",i, ptr[i]);
+				printf(" ptr[%d] = %f ",i, ptr[i]);
 
 
 			}
@@ -241,7 +242,7 @@ void solveSystem(double A[n][n], double b[n], int Xi) {
 			
 
 			//calculate errors
-			printf("almostend child %d \n", Xi);
+			//printf("almostend child %d \n", Xi);
 			for (m = 0; m < n; m++) {
 				error[m] = fabs( ( ( ptr[m] - oldphi[m] )  / (ptr[m]) )  * 100 );
 			}
