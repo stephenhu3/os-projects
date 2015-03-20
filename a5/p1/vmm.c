@@ -36,29 +36,32 @@ int main(int argc, char **argv) {
 	initTLB(&tlb);
 
 	// Read from addresses.txt
-	int *addresses = (int *) malloc(sizeof(int *) * MAXADDR);
+	int *addresses = (int *) malloc(sizeof(int) * MAXADDR);
 	getAddr(argv[1], &addrRead, addresses);
 	// printf("%i\n", ++addrRead);
 
 	for(addrCount = 0; addrCount <= addrRead; ++addrCount) {
-		int pageNum = getPageNum(addresses[addrCount]);
-		int pageOffset = getPageOffset(addresses[addrCount]);
+		pageNum = getPageNum(addresses[addrCount]);
+		pageOffset = getPageOffset(addresses[addrCount]);
 
-		int frameNum = checkTLB(&tlb, pageNum);
+		frameNum = checkTLB(&tlb, pageNum);
 		
 		if(frameNum == -1)
 			frameNum = findPageNum(&pageTable, pageNum);
 		else
 			tlbHits++;
 
-		if(frameNum != -1)
+		if(frameNum != -1) {
 			page = pageTable.page[frameNum];
+			// printf("ver1  ");
+ 		}
 		else {
+			// printf("ver2  ");
 			page = readPage(backStore, pageNum);
 			frameNum = backStoreUpdate(&pageTable, page, pageNum);
 			pageFaults++;
 		}
-		
+	
 		// printf("Frame Number: %i  ", frameNum);
 		printf("Virtual Address: %i  ", addresses[addrCount]);
 		printf("Physical Address: %i  ", (frameNum * 0x100) + pageOffset);
@@ -67,6 +70,8 @@ int main(int argc, char **argv) {
 		// printf("Page Offset: %i", pageOffset);
 
 		updateTLB(&tlb, pageNum, frameNum);
+
+		fflush(stdout);
 	}
 
 	printf("Number of Translated Addresses = %i\n", ++addrRead);
@@ -129,8 +134,8 @@ void initPageTable(struct page_table *pagetable) {
 // EFFECTS: seek to byte position offset * PAGE_SIZE, and returns the buffer.
 char *readPage(FILE *backStore, int offset){
 	if(offset < 0 || offset >= PAGE_SIZE)
-		return NULL;	
-
+		return NULL;
+	
     	char *buffer = malloc(PAGE_SIZE);
 
     	fseek(backStore, offset * PAGE_SIZE, SEEK_SET);
@@ -168,6 +173,7 @@ int backStoreUpdate(struct page_table *pageTable, char *page, int pageNum) {
 				freeIndex = i;
 			}
 		}
+	free(pageTable->page[freeIndex]);
 	pageTable->page[freeIndex] = page;
 	pageTable->page_num[freeIndex] = pageNum;
 	pageTable->counter[freeIndex] = 0;
