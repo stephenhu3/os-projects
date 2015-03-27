@@ -13,48 +13,22 @@
 #include <sys/types.h>
 
 
-
-
-
-// n symbolic constant between 3 to 6
+// n symbolic constant between 3 to 6, if you changed the value of n, change 
+// the matrix accordingly below
 #define n 3
 /* relaxation factor must be 0 < omega < 2 */
 /* set to greater than 1 for speeding up convergency of a 
    slow-converging process, while values less than 1 are used to help 
    establish convergence of a diverging iterative process or speed up 
    convergence of an overshooting process */
-#define omega 0.25
-#define MAX_double 100000
-#define MIN_double 0
-
-// TODO: FOR STEVEN
-// I have implemented the SOR algorithm as a single process program. 
-// You will need to break this into multiple processes program
-
-// may use shmget, shmat, shmdt, shmctl,...
-// may use shm_open, mmap, shm_unlink,...
-
-// segment_id = shmget(IPC_PRIVATE, size, S_IRUSR | S_IWUSR);
-
-// shared_memory = (char *) shmat(id, NULL, 0);
-
-// sprintf(shared_memory, "Writing to shared memory");
-
-// shmdt(shared_memory);
-
-// get this working on a single process first(done), then multiprocess using shared memory and IPC
-
-// implement SOR on an n-process system by having n different processes (all running same program
-// where the ith process computes the Xi (ith variable in vector x)
-
-// include A and b as arrays inside program
-// output to stdout
+#define omega 1.25
+#define MAX_NUM 100000
+#define MIN_NUM 0
 
 // inputs: A, b, omega
-// outputs: phi (solutions to n variables)
+// outputs: ptr (solutions to n variables)
 
 void solveSystem(double A[n][n], double b[n], int Xi);
-void function();
 
 int main() {
 	int status; // for wait
@@ -64,30 +38,37 @@ int main() {
 
 	// name of the shared memory object
 	const char *name = "PHI";
+	const char *oldphiname = "OLDPHI";
 
 	double phi[n];
+	double oldphi[n];
+	double error[n];
+	int i, k, m;
 	
 	// initialize phi
-	int i;
 	for (i = 0; i < n; i++)
 		phi[i] = 0; // set initial guess to zeroes
 
 	// shared memory file descriptor
 	int shm_fd;
+	int shm_fd_oldphi;
 
-	// pointer to shared memory object is a double ptr
+	// pointer to shared memory object is a double pointer
 	double *ptr;
+	double *oldptr;
 	
-
 	// create the shared memory object
 	shm_fd = shm_open(name, O_CREAT | O_RDWR, 0666);
+	shm_fd_oldphi = shm_open(oldphiname, O_CREAT | O_RDWR, 0666);
 	
 	// configure the size of the shared memory object
 	ftruncate(shm_fd, SIZE);
+	ftruncate(shm_fd_oldphi, SIZE);
 
 	// memory map the shared memory object
 	ptr = mmap(0, SIZE, PROT_WRITE, MAP_SHARED, shm_fd, 0);
-	// ptr is now shared
+	oldptr = mmap(0, SIZE, PROT_WRITE, MAP_SHARED, shm_fd_oldphi, 0);
+	// ptr, oldptr are now shared
 	
 	// write to the shared memory object
 	if (ptr != MAP_FAILED) {
@@ -110,47 +91,64 @@ int main() {
 	// double A[n][n] = { { -7, 1, 0, 1, 1 }, { 1, 1, 0, 0, 1}, { 1, 1, 5, 0, 1}, { 1, -1, 1, 1, 2}, { 1, 0, 1, 0, 1} };
 	// double b[n] = { 1, 0, 9, 1, 0 };
 
-	// 6 x 6 system of equations INCORRECT - TODO FOR STEVEN: find a valid 6 x 6 equation that can be solved using this method
-	// double A[n][n] = { { 9, 0, 0, 0, 0, 0 }, { 1, 2, 0, 0, 0, 0}, { 0, 0, 1, 0, 0, 0}, { 0, 1, 7, -1, -1, 1}, { 1, 1, 1, 1, 1, -4}, { 7, 1, 1, 12, 1, 1} };
+	// 6 x 6 system of equations CORRECT
+	// double A[n][n] = { { 9, 0, 0, 0, 0, 0 }, { 1, 2, 0, 0, 0, 0}, { 0, 0, 1, 0, 0, 0}, { 0, 1, 7, -1, 0, 1}, { 1, 1, 1, 1, 1, 1}, { 7, 0, 1, 12, 1, 1} };
 	// double b[n] = { 90, 15, 16, 19, -20, 10 };
 
-	// double A[n][n] = { { 1, 1, -2, 1, 3, -1 }, { 2, -1, 1, 2, 1, -3 }, { 1, 3, -3, -1, 2, 1 }, 
-	// 				  { 5, 2, -1, -1, 2, 1 }, { -3, -1, 2, 3, 1, 3 }, { 4, 3, 1, -6, -3, -2 }
-	// 				};
-	// double b[n] = { 4, 20, -15, -3, 16, -27 };0
 	 int parentpid = getpid();
-	// printf("parentpid : %i",parentpid);
-	// printf("pid# : %i \n",getpid());
-	for (i = 0; i < n; i++) { //i is the process number. eg process  1 does x1 and so on
-		solveSystem(A,b,i); // this solve the matrix n times.. we want it to compute for Xi n times and not the whole program
-	wait(&status);
+	
+	double maxError = MIN_NUM;
+	double currentError = MAX_NUM;
+
+	while (currentError > 0.01) {
+
+		// NOTE: UPDATES OLDPTR ONLY AFTER VALUES HAVE BEEN CALCULATED FOR PREVIOUS ITERATION
+		for (k = 0; k < n; k++){
+			oldptr[k] = ptr[k]; // old ptr gets previous values after iteration
+		}
+
+		for (i = 0; i < n; i++) { //i is the process number. eg process  1 does x1 and so on
+			solveSystem(A,b,i);
+			wait(&status);
+		}
+
+		for (m = 0; m < n; m++) {
+			error[m] = fabs( ( ( ptr[m] - oldptr[m] )  / (ptr[m]) )  * 100 );
+		}
+
+		// for debugging purposes
+		// printf("errors: \n");
+		// for (k = 0; k < n; k++) {
+		// 	printf("%f \n", error[k]);
+		// } 
+
+		for (k = 0; k < n; k++) {
+			printf("In progress, current computation... X%d = %f \n", k+1 ,oldptr[k]); // new calculated phi values
+		} 
+
+		/* 
+		   check convergence: the new value is same as previous value
+		   accomplish this by checking for approximate error between 
+		   new value and old value, the max should be close to 0 */
+
+		maxError = MIN_NUM;
+		for (m = 0; m < n; m++) {
+			maxError = error[m] > maxError ? error[m] : maxError;
+		}
+
+		currentError = maxError;
+		printf("Current Error %f \n", currentError);
+
 	}
 
-	// wait(&status);
-
-	// this part should only be executed by the original, not forked functions //done
-	if(parentpid == getpid()){
-	for (i = 0; i < n; i++) {
-		printf("X%i = %f \n", i+1, *(ptr+i));
-		printf("pid# : %i \n",getpid());
-	}}
-
-	/* TODO FOR STEVEN:
-	As you can see, I have implemented shared memory and forking.
-	However, currently it just forks the new process and the new process computes
-	the Xi for all the unknown variables like before.
-
-	You need to implement such that the forked process i only calculates for Xi
-	This is why I have added the argument Xi to "solveSystem"
-
-	You will also need to synchronize the actions so that Xi is computed before
-	Xi+1 tries to compute for Xi+1 before Xi has completed, and so forth.
-
-	You need to start this today. This is a large task. 
-	Please provide updates to the team.
-	*/
+	if (parentpid == getpid()) {
+		for (i = 0; i < n; i++) {
+			printf("Final Result: X%i = %f \n", i+1, *(ptr+i));
+		}
+	}
 
 	shm_unlink(name);
+	shm_unlink(oldphiname);
 	return 0;
 }
 
@@ -160,114 +158,40 @@ int main() {
 void solveSystem(double A[n][n], double b[n], int Xi) {
 
 	int pid = fork();
-	printf("parent %d \n", Xi);
-
 
 	if (pid == 0) {
-		 printf("entering child %d \n", Xi);
 
 		/* the size (in bytes) of shared memory object */
 		const int SIZE = 8 * n;
 		/* name of the shared memory object */
 		const char *name = "PHI";
+		const char *oldphiname = "OLDPHI";
 		/* shared memory file descriptor */ 
 		int shm_fd;
+		int shm_fd_oldphi;
 		/* pointer to shared memory obect */ 
 	 	double *ptr;
+	 	double *oldptr;
 		/* open the shared memory object */
 		shm_fd = shm_open(name, O_RDWR, 0666);
+		shm_fd_oldphi = shm_open(name, O_RDWR, 0666);
 		/* memory map the shared memory object */
 		ptr = mmap(0, SIZE, PROT_WRITE, MAP_SHARED, shm_fd, 0);
+		oldptr = mmap(0, SIZE, PROT_WRITE, MAP_SHARED, shm_fd, 0);
+
 	    /* read from the shared memory object */
 
-		
-
-		double error[n];
-
-		double maxError = MIN_double;
-		double currentError = MAX_double;
-
-		printf("halfway child %d \n", Xi);
-
-		/* 
-		   check convergence: the new value is same as previous value
-		   accomplish this by checking for approximate error between 
-		   new value and old value, the max should be close to 0 */
-
-		// static double phi[n];
-		double oldphi[n], sigma;
-		int i, j, k, m;
-
-		// for (i = 0; i < n; i++)
-		// 	phi[i] = 0; // set initial guess to ones
-
-		// for (i = 0; i < n; i++)
-		// 	oldphi[i] = 1; // set initial guess to zeroes
-		// // Alternatively, we can clear to zeroes using calloc
-
-		// while (currentError > 0.0001) {
-		while (currentError > 0.001) {
-			//printf("half-end child %d \n", Xi);
-			
-			for (k = 0; k < n; k++){
-				//printf("before stuck 12321here? child %d \n", Xi);
-					oldphi[k] = ptr[k]; // old phi gets previous values
-				}
-				//printf("before stuck here? child %d \n", Xi);
-			for (i = 0; i < n; i++) {
-				sigma = 0;
-				for (j = 0; j < n; j++) {
-					sigma =  j != i ? sigma + (A[i][j] * ptr[j]) : sigma;
-					//printf("stuck here? child %d \n", Xi);
-				}
-				double aasd = ((1-omega)*oldphi[i])+  ((omega / A[i][i]) * (b[i]-sigma)); // test if we saved files to the shared memory
-				printf("aas = %f  ",aasd);
-				ptr[i] = ((1-omega)*oldphi[i]) + ((omega / A[i][i]) * (b[i]-sigma));
-				printf("   ptr[%d] = %f",i, ptr[i]);
+		double sigma;
+		int j;
 
 
-			}
-
-			//  for debugging purposes
-			// printf("oldphi: \n");
-			// for (k = 0; k < n; k++) {
-			// 	printf("%f \n", oldphi[k]); // old phi has previous values
-			// }
-
-			// printf("phi: \n");
-			// for (k = 0; k < n; k++) {
-			// 	printf("%f \n", phi[k]); // new calculated phi values
-			// } 
-			
-
-			//calculate errors
-			printf("almostend child %d \n", Xi);
-			for (m = 0; m < n; m++) {
-				error[m] = fabs( ( ( ptr[m] - oldphi[m] )  / (ptr[m]) )  * 100 );
-			}
-			//fabs =absolute value
-			
-			// for debugging purposes
-			// printf("errors: \n");
-			// for (k = 0; k < n; k++) {
-			// 	printf("%f \n", error[k]); // new calculated phi values
-			// } 
-
-
-			// check for max error
-			maxError = MIN_double;
-
-			for (m = 0; m < n; m++) {
-				maxError = error[m] > maxError ? error[m] : maxError;
-			}
-
-			currentError = maxError;
-			// printf("%f \n", currentError); // current error
-			
-			/* remove the shared memory object */ 
-			//shm_unlink(name);
-			
+		sigma = 0;
+		// calculate sigma, which is used in computing the new values
+		for (j = 0; j < n; j++) {
+			sigma =  j != Xi ? sigma + (A[Xi][j] * ptr[j]) : sigma;
 		}
-	printf("exiting child %d \n", Xi);
+
+		// Compute new value based on previous answers in oldptr
+		ptr[Xi] = ((1-omega)*oldptr[Xi]) + ((omega / A[Xi][Xi]) * (b[Xi]-sigma));
 	}
 }
