@@ -1,5 +1,0 @@
-#include "hostds.h"
-
-int main(int argc, int argv[]) {
-
-}
