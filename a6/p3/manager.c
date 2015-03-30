@@ -18,20 +18,39 @@ Also:
    your function should operate as if O_RDWR | O_CREAT were used in the kernel function equivalent.
    The fLs() function should print all the information your system knows about the file, 
    then return -1 if detect an error and 0 otherwise. */
+
+// returns the fileid
 int fOpen (char *name) {
-	//TODO
+   // "a+ mode" opens file for reading or writing if it exists, creates if not
+   FILE *file = fopen( name, "a+");
+   return fileno(file);
 }
+
+// From FILE * to int
+
+// int fildes = fileno(f);
+// From int to FILE *:
+
+// FILE *f = fdopen(fildes, "r+");
 
 int fClose (int fileID) {
-	//TODO
+	return fclose(fdopen(fileID, "r+"));
 }
 
-int fRead (int fileID, char *buffer, int length); int fSeek (int fileID, int position) {
-	//TODO
+// issue reading, TODO
+int fRead (int fileID, char *buffer, int length) {
+   // return fread(buffer, sizeof(char), length, fdopen(fileID, "r"));
+   return fread(buffer, BLOCK_SIZE, length, fdopen(fileID, "r"));
+}
+
+int fSeek (int fileID, int position) {
+   return fseek(fdopen(fileID, "r"), position, SEEK_SET);
 }
 
 int fLs (void) {
 	//TODO
+   // The fLs() function should print all the information your system knows about the file, 
+   // then return -1 if detect an error and 0 otherwise. */
 }
 
 
@@ -50,9 +69,16 @@ int fMkdir (char *name) {
 }
 
 int fCd (char *name) {
-	//TODO
+	//TODO`
 }
 
 int main(int argc, char **argv) {
-
+   int fd = fOpen("testFile.txt");
+   printf("File id: %d \n", fd);
+   char buffer[NUM_BLOCKS];
+   fSeek(fd, 0);
+   /* Read and display data */
+   fRead(fd, buffer, NUM_BLOCKS);
+   printf("File contents: %s\n", buffer);
+   fClose(fd);
 }
