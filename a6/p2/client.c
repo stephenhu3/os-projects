@@ -1,16 +1,19 @@
+#include <windows.h>
+#include <WinSock2.h>
+#include <WS2tcpip.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include <pthread.h>
-#include <sys/types.h>
-#include <sys/socket.h>
+//#include <unistd.h>
+//#include <pthread.h>
+//#include <sys/types.h>
+//#include <sys/socket.h>
 #include <time.h>
 #include <ctype.h>
-#include <netinet/in.h>
+//#include <netinet/in.h>
 #include <string.h>
 #include <errno.h>
-#include <arpa/inet.h> 
-
+//#include <arpa/inet.h> 
+// NEED TO CHANGE ALL THIS TO windwos
 
 int tcp_connect(char *hostname[], int portnumber);
 // connect to server running at tcp port 11261 on lulu.ugrad.cs.ubc.ca
