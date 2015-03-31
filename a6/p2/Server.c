@@ -1,38 +1,59 @@
-#include <windows.h>
-#include <WinSock2.h>
-#include <WS2tcpip.h>
-#include <stdio.h>
-#include <stdlib.h>
-
-#pragma comment(lib, "Ws2_32.lib")
-
-int main() {
-	WSADATA wsaData;
-    int iResult;
-
-    SOCKET ListenSocket = INVALID_SOCKET;
-    SOCKET ClientSocket = INVALID_SOCKET;
-
-    struct addrinfo *result = NULL;
-    struct addrinfo hints;
-
-    int iSendResult;
-    char recvbuf[DEFAULT_BUFLEN];
-    int recvbuflen = DEFAULT_BUFLEN;
-
-	//initialize winsock
-	iResult = WSAStartup(MAKEWORD(2,2), &wsaData);
-    if (iResult != 0) {
-        printf("WSAStartup falhou, error: %d\n", iResult);
+#include<stdio.h>
+#include<winsock2.h>
+ 
+#pragma comment(lib,"ws2_32.lib") //Winsock Library
+ 
+int main(int argc , char *argv[])
+{
+    WSADATA wsa;
+    SOCKET s , new_socket;
+    struct sockaddr_in server , client;
+    int c;
+ 
+    printf("\nInitialising Winsock.......");
+    if (WSAStartup(MAKEWORD(2,2),&wsa) != 0){
+        printf("Failed. Error Code : %d",WSAGetLastError());
         return 1;
     }
-	ZeroMemory(&hints, sizeof(hints));
-    hints.ai_family = AF_INET;
-    hints.ai_socktype = SOCK_STREAM;
-    hints.ai_protocol = IPPROTO_TCP;
-    hints.ai_flags = AI_PASSIVE;
-
-	//initialize socket
-	//receive data from client
-  return 0;
+     
+    printf(" Initialised!\n");
+     
+    //Create a socket
+    if((s = socket(AF_INET , SOCK_STREAM , 0 )) == INVALID_SOCKET)
+        printf("Could not create socket : %d" , WSAGetLastError());
+ 
+    printf("Socket created!\n");
+     
+    //Prepare the sockaddr_in structure
+    server.sin_family = AF_INET;
+    server.sin_addr.s_addr = INADDR_ANY;
+    server.sin_port = htons( 8888 );
+     
+    //Bind
+    if( bind(s ,(struct sockaddr *)&server , sizeof(server)) == SOCKET_ERROR)
+        printf("Bind failed with error code : %d" , WSAGetLastError());
+     
+    puts("Bind done!");
+     
+ 
+    //Listen to incoming connections
+    listen(s , 3);
+     
+    //Accept and incoming connection
+    puts("Waiting for incoming connections...");
+     
+    c = sizeof(struct sockaddr_in);
+    new_socket = accept(s , (struct sockaddr *)&client, &c);
+    if (new_socket == INVALID_SOCKET)
+    {
+        printf("accept failed with error code : %d" , WSAGetLastError());
+    }
+     
+    puts(" Connection accepted!");
+ 
+	//close socket
+    closesocket(s);
+    WSACleanup();
+ 
+    return 0;
 }
