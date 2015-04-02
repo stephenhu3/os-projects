@@ -41,6 +41,8 @@ struct host {
 
 	int rtMemory;
 	int rtMemoryUsed;
+
+	struct pcb *currentProcess;
 };
 
 struct pcb {
@@ -70,8 +72,10 @@ struct queue {
 
 void initSys(void);
 void processCycle(void);
-void updateDispatcher(int time);
+int updateDispatcher(int time);
 
 void initQueue(struct queue *queue);
+void enqueue(struct queue *queue, struct pcb *currentProcess);
+struct queue* dequeue(struct queue **header);
 
 #endif

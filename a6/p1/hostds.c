@@ -56,13 +56,13 @@ void processCycle(void) {
 //PARAMS: current time quantum
 //EFFECTS: update the dispatcher
 //RETURNS: 1 for process put into real time queue else 0
-void updateDispatcher(int time) {
+int updateDispatcher(int time) {
 	// TODO
 }
 
 //PARAMS: valid uninitialized queue
 //EFFECTS: initializes queue and elements within
-//RETURNS: initialized queue
+//RETURNS: none
 void initQueue(struct queue *queue) {
 	queue = malloc(sizeof(queue));
 
@@ -71,4 +71,40 @@ void initQueue(struct queue *queue) {
 	queue->process = NULL;
 }
 
+//PARAMS: target queue to insert process, current process to queue up
+//EFFECTS: queues current process at end of given queue
+//RETURNS: none
+void enqueue(struct queue *queue, struct pcb *currentProcess) {
+	if(!queue->header) {
+		queue->process = currentProcess;
+		queue->header = 1;
+	}
+	else {
+		struct queue *cursor = queue;
+		while (cursor->next)
+			cursor = cursor->next;
+		struct queue *thisProcess = malloc(sizeof(queue));
+		cursor->next = thisProcess;
+		cursor->next->header = 0;
+		cursor->next->next = NULL;
+		cursor->next->process = currentProcess;
+	}
+}
 
+
+//PARAMS: pointer to queue containing header to dequeue
+//EFFECTS: dequeues the header of queue
+//RETURNS: dequeued header
+struct queue* dequeue(struct queue **header) {
+	if(!((*header)->process))
+		return NULL;
+
+	struct queue *dequeuedHeader = *header;
+
+	if((*header)->next == NULL)
+		*header = NULL;
+	else
+		*header = (*header)->next;
+
+	return dequeuedHeader;
+}
