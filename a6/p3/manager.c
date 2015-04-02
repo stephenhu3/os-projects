@@ -22,6 +22,7 @@ Also:
 // returns the fileid
 int fOpen (char *name) {
    // "a+ mode" opens file for reading or writing if it exists, creates if not
+   // file pointer at end of file after open, need to reset to start if reading
    FILE *file = fopen( name, "a+");
    return fileno(file);
 }
@@ -93,7 +94,13 @@ int fLs (void) {
    The fCd() function should change the current directory to the named directory 
    if it exists, then return -1 if you detect an error and 0 otherwise. */
 int fWrite (int fileID, char *buffer, int length) {
-	//TODO
+   if (!length) return 0; // nothing written if length is zero
+   FILE *file = fdopen(fileID, "a+"); //open file for writing
+   if (file) {
+      int written = fwrite(buffer, 1, length, file);
+      fflush(file); // write data to the file immediately
+      return written;
+   } else return 0;
 }
 
 int fMkdir (char *name) {
@@ -108,10 +115,27 @@ int main(int argc, char **argv) {
    int fd = fOpen("testFile.txt");
    printf("File id: %d \n", fd);
    char buffer[NUM_BLOCKS];
+   char buffer2[NUM_BLOCKS];
+
    fSeek(fd, 0);
    /* Read and display data */
    fRead(fd, buffer, NUM_BLOCKS);
    printf("File contents: %s\n", buffer);
+
+   char str[] = "Additional written information\n";
+   printf("Size of content written: %d\n", fWrite(fd, str, sizeof(str)));
+
+
+   // int fd2 = fOpen("testFile.txt");
+   // FILE *file = fdopen( fd2, "a+");
+   // // FILE *file = fopen( "testFile.txt", "a+");
+   // // printf("%d \n", fwrite(str, 1, sizeof(str), file));
+
+   // fSeek(fd2, 0);
+   // /* Read and display data */
+   // fRead(fd2, buffer2, NUM_BLOCKS);
+   // printf("File contents: %s\n", buffer2);
+
    fLs();
    fClose(fd);
 }
