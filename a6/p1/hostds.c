@@ -1,6 +1,8 @@
 #include "hostds.h"
 
+// Globals
 struct host host;
+struct queue *dispatcher, *RTQueue, *userQueue, *p1Queue, *p2Queue, *p3Queue;
 
 int main(int argc, char **argv) {
 	if (argc != 2) {
@@ -13,6 +15,9 @@ int main(int argc, char **argv) {
 	// printf("Printers: %i\n", host.numPrinters);
 }
 
+//PARAMS: none
+//EFFECTS: Initializes the host with relevant items
+//RETURNS: none
 void initSys(void) {
 	// initialize constants
 	host.numPrinters = NUM_PRINTERS;
@@ -30,5 +35,76 @@ void initSys(void) {
 	memset(host.drives, 0, NUM_DRIVES);
 	memset(host.memory, 0, TOTAL_MEM);
 
-	// TODO -- QUEUES
+	// initializes queues
+	initQueue(dispatcher);
+	initQueue(RTQueue);
+	initQueue(userQueue);
+	initQueue(p1Queue);
+	initQueue(p2Queue);
+	initQueue(p3Queue);
+
+}
+
+//PARAMS:
+//EFFECTS: simulates one processing cycle
+//RETURNS:
+void processCycle(void) {
+	// TODO
+}
+
+
+//PARAMS: current time quantum
+//EFFECTS: update the dispatcher
+//RETURNS: 1 for process put into real time queue else 0
+int updateDispatcher(int time) {
+	// TODO
+}
+
+//PARAMS: valid uninitialized queue
+//EFFECTS: initializes queue and elements within
+//RETURNS: none
+void initQueue(struct queue *queue) {
+	queue = malloc(sizeof(queue));
+
+	queue->header = 0;
+	queue->next = NULL;
+	queue->process = NULL;
+}
+
+//PARAMS: target queue to insert process, current process to queue up
+//EFFECTS: queues current process at end of given queue
+//RETURNS: none
+void enqueue(struct queue *queue, struct pcb *currentProcess) {
+	if(!queue->header) {
+		queue->process = currentProcess;
+		queue->header = 1;
+	}
+	else {
+		struct queue *cursor = queue;
+		while (cursor->next)
+			cursor = cursor->next;
+		struct queue *thisProcess = malloc(sizeof(queue));
+		cursor->next = thisProcess;
+		cursor->next->header = 0;
+		cursor->next->next = NULL;
+		cursor->next->process = currentProcess;
+	}
+}
+
+
+//PARAMS: pointer to queue containing header to dequeue
+//EFFECTS: dequeues the header of queue
+//RETURNS: dequeued header
+struct queue* dequeue(struct queue **header) {
+	if(!((*header)->process))
+		return NULL;
+
+	struct queue *dequeuedHeader = *header;
+
+	if((*header)->next == NULL)
+		*header = NULL;
+	else
+		*header = (*header)->next;
+
+	return dequeuedHeader;
 }
