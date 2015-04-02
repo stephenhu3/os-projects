@@ -12,6 +12,10 @@ Also:
 
 #include "manager.h"
 
+// keep track of the current active directory
+char currentDir[100];
+
+
 /* Generally, fOpen(), fClose(), fRead(), and fSeek() functions should behave like the UNIX 
    kernel functions open(), close(), read(), and lseek(), respectively, except the behaviour 
    is simplified by the assumptions. For example, fOpen() does not have a flag parameter, so 
@@ -60,8 +64,8 @@ int fLs (void) {
    // then return -1 if detect an error and 0 otherwise. */
 
    DIR *directory;
-   struct dirent *dir;
-   directory = opendir("."); // current directory
+   // struct dirent *dir;
+   directory = opendir(currentDir); // current directory
 
 
    if (directory) {
@@ -104,18 +108,19 @@ int fWrite (int fileID, char *buffer, int length) {
 }
 
 int fMkdir (char *name) {
-	//TODO
+   return mkdir(name, 0755);
 }
 
 int fCd (char *name) {
-	//TODO`
+	return chdir(name);
 }
 
 int main(int argc, char **argv) {
+   strcpy(currentDir, ".");
+
    int fd = fOpen("testFile.txt");
    printf("File id: %d \n", fd);
    char buffer[NUM_BLOCKS];
-   char buffer2[NUM_BLOCKS];
 
    fSeek(fd, 0);
    /* Read and display data */
@@ -136,6 +141,10 @@ int main(int argc, char **argv) {
    // fRead(fd2, buffer2, NUM_BLOCKS);
    // printf("File contents: %s\n", buffer2);
 
-   fLs();
+   
+   printf("%s\n", fLs() == -1 ? "Failed fLs" : "Succeeded fLs");
    fClose(fd);
+   printf("%s\n", fMkdir("burgers") == -1 ? "Failed fMkdir" : "Succeeded fMkdir");
+   printf("%s\n", fCd("burgers") == -1 ? "Failed fCd" : "Succeeded fCd");
+   printf("%s\n", fLs() == -1 ? "Failed fLs" : "Succeeded fLs");
 }
