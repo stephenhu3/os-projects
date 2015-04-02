@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include <pthread.h>
 
 // DEFINES
@@ -16,6 +17,13 @@
 #define NUM_DRIVES 2
 #define TOTAL_MEM 1024
 #define TOTAL_RTMEM 64
+
+#define TIME_QUANTUM 1
+
+#define INITIALIZED 0
+#define RUNNING 1
+#define PAUSED 2
+#define TERMINATED 3
 
 // STRUCT DEFINITIONS
 struct host {
@@ -36,15 +44,34 @@ struct host {
 };
 
 struct pcb {
-	// TODO
+	int pid;
+	int priority;
+	int arrivalTime;
+	int remainingTime;
+	int remainingTimeSplice;
+
+	int state;
+
+	struct pcbres *res;
 };
 
 struct pcbres {
 	// TODO
 };
 
+struct queue {
+	int header;
+
+	struct queue *next;
+	struct pcb *process;
+};
+
 // FUNCTION PROTOTYPES
 
 void initSys(void);
+void processCycle(void);
+void updateDispatcher(int time);
+
+void initQueue(struct queue *queue);
 
 #endif

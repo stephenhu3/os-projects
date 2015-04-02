@@ -1,6 +1,8 @@
 #include "hostds.h"
 
+// Globals
 struct host host;
+struct queue *dispatcher, *RTQueue, *userQueue, *p1Queue, *p2Queue, *p3Queue;
 
 int main(int argc, char **argv) {
 	if (argc != 2) {
@@ -13,6 +15,9 @@ int main(int argc, char **argv) {
 	// printf("Printers: %i\n", host.numPrinters);
 }
 
+//PARAMS: none
+//EFFECTS: Initializes the host with relevant items
+//RETURNS: none
 void initSys(void) {
 	// initialize constants
 	host.numPrinters = NUM_PRINTERS;
@@ -30,5 +35,40 @@ void initSys(void) {
 	memset(host.drives, 0, NUM_DRIVES);
 	memset(host.memory, 0, TOTAL_MEM);
 
-	// TODO -- QUEUES
+	// initializes queues
+	initQueue(dispatcher);
+	initQueue(RTQueue);
+	initQueue(userQueue);
+	initQueue(p1Queue);
+	initQueue(p2Queue);
+	initQueue(p3Queue);
+
 }
+
+//PARAMS:
+//EFFECTS: simulates one processing cycle
+//RETURNS:
+void processCycle(void) {
+	// TODO
+}
+
+
+//PARAMS: current time quantum
+//EFFECTS: update the dispatcher
+//RETURNS: 1 for process put into real time queue else 0
+void updateDispatcher(int time) {
+	// TODO
+}
+
+//PARAMS: valid uninitialized queue
+//EFFECTS: initializes queue and elements within
+//RETURNS: initialized queue
+void initQueue(struct queue *queue) {
+	queue = malloc(sizeof(queue));
+
+	queue->header = 0;
+	queue->next = NULL;
+	queue->process = NULL;
+}
+
+
