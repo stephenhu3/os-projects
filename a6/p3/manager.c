@@ -37,7 +37,6 @@ int fClose (int fileID) {
 	return fclose(fdopen(fileID, "r+"));
 }
 
-// issue reading, TODO
 int fRead (int fileID, char *buffer, int length) {
    // return fread(buffer, sizeof(char), length, fdopen(fileID, "r"));
    return fread(buffer, BLOCK_SIZE, length, fdopen(fileID, "r"));
@@ -47,10 +46,43 @@ int fSeek (int fileID, int position) {
    return fseek(fdopen(fileID, "r"), position, SEEK_SET);
 }
 
+
+
+// Are we assuming this function is called after fOpen and provides information on 
+// the current file targeted by fOpen? Is there some kind of buffer or stream that 
+// can be accessed for the currently "opened" file?
+// Otherwise, are we allowed to use a global variable that tracks the latest opened
+// file's FILE pointer, which fLs will call upon?
+
 int fLs (void) {
-	//TODO
-   // The fLs() function should print all the information your system knows about the file, 
+   // The fLs() function should print all the information your system knows about the files in the current directory, 
    // then return -1 if detect an error and 0 otherwise. */
+
+   DIR *directory;
+   struct dirent *dir;
+   directory = opendir("."); // current directory
+
+
+   if (directory) {
+      printf("%s\n", "Files in current directory:");
+
+      // while ((dir = readdir(directory)) != NULL) {
+      //    if (dir->d_type == DT_REG) printf("%s\n", dir->d_name);
+      // }
+
+      /* Explanation: 
+      lh flag to show expanded information in human readable form
+      grep with regex to avoid displaying directories
+      tail to omit first line ("total XX")
+      */
+      system("ls -lh -S -p | grep -v '/$' | tail -n +2");
+
+      closedir(directory);
+      return 0;
+   }
+
+   // error with accessing current directory
+   return -1;
 }
 
 
@@ -80,5 +112,6 @@ int main(int argc, char **argv) {
    /* Read and display data */
    fRead(fd, buffer, NUM_BLOCKS);
    printf("File contents: %s\n", buffer);
+   fLs();
    fClose(fd);
 }

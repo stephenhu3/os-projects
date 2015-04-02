@@ -7,6 +7,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <pthread.h>
+// for fLS()
+#include <dirent.h>
+
 
 // DEFINES
 #define NUM_BLOCKS 100
