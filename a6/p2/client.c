@@ -1,86 +1,125 @@
+#define WIN32_LEAN_AND_MEAN
+
 #include <windows.h>
-#include <WinSock2.h>
-#include <WS2tcpip.h>
-#include <stdio.h>
+#include <winsock2.h>
+#include <ws2tcpip.h>
 #include <stdlib.h>
-//#include <unistd.h>
-//#include <pthread.h>
-//#include <sys/types.h>
-//#include <sys/socket.h>
-#include <time.h>
-#include <ctype.h>
-//#include <netinet/in.h>
-#include <string.h>
-#include <errno.h>
-//#include <arpa/inet.h> 
-// NEED TO CHANGE ALL THIS TO windwos
-
-int tcp_connect(char *hostname[], int portnumber);
-// connect to server running at tcp port 11261 on lulu.ugrad.cs.ubc.ca
+#include <stdio.h>
 
 
- 
-int main(int argc, char **argv) 
+// Need to link with Ws2_32.lib, Mswsock.lib, and Advapi32.lib
+#pragma comment (lib, "Ws2_32.lib")
+#pragma comment (lib, "Mswsock.lib")
+#pragma comment (lib, "AdvApi32.lib")
+
+
+#define DEFAULT_BUFLEN 512
+#define DEFAULT_PORT "27015"
+
+int __cdecl main(int argc, char **argv) 
 {
+    WSADATA wsaData;
+    SOCKET ConnectSocket = INVALID_SOCKET;
+    struct addrinfo *result = NULL,
+                    *ptr = NULL,
+                    hints;
+    char *sendbuf = "this is a test";
+    char recvbuf[DEFAULT_BUFLEN];
+    int iResult;
+    int recvbuflen = DEFAULT_BUFLEN;
+    
+    // Validate the parameters
+    if (argc != 2) {
+        printf("usage: %s server-name\n", argv[0]);
+        return 1;
+    }
 
-	
-	int port = atoi(argv[3]);
-	
-	tcp_connect(hostname[],port);
+    // Initialize Winsock
+    iResult = WSAStartup(MAKEWORD(2,2), &wsaData);
+    if (iResult != 0) {
+        printf("WSAStartup failed with error: %d\n", iResult);
+        return 1;
+    }
 
+    ZeroMemory( &hints, sizeof(hints) );
+    hints.ai_family = AF_UNSPEC;
+    hints.ai_socktype = SOCK_STREAM;
+    hints.ai_protocol = IPPROTO_TCP;
 
-}
+    // Resolve the server address and port
+    iResult = getaddrinfo(argv[1], DEFAULT_PORT, &hints, &result);
+    if ( iResult != 0 ) {
+        printf("getaddrinfo failed with error: %d\n", iResult);
+        WSACleanup();
+        return 1;
+    }
 
+    // Attempt to connect to an address until one succeeds
+    for(ptr=result; ptr != NULL ;ptr=ptr->ai_next) {
 
+        // Create a SOCKET for connecting to server
+        ConnectSocket = socket(ptr->ai_family, ptr->ai_socktype, 
+            ptr->ai_protocol);
+        if (ConnectSocket == INVALID_SOCKET) {
+            printf("socket failed with error: %ld\n", WSAGetLastError());
+            WSACleanup();
+            return 1;
+        }
 
+        // Connect to server.
+        iResult = connect( ConnectSocket, ptr->ai_addr, (int)ptr->ai_addrlen);
+        if (iResult == SOCKET_ERROR) {
+            closesocket(ConnectSocket);
+            ConnectSocket = INVALID_SOCKET;
+            continue;
+        }
+        break;
+    }
 
+    freeaddrinfo(result);
 
+    if (ConnectSocket == INVALID_SOCKET) {
+        printf("Unable to connect to server!\n");
+        WSACleanup();
+        return 1;
+    }
 
+    // Send an initial buffer
+    iResult = send( ConnectSocket, sendbuf, (int)strlen(sendbuf), 0 );
+    if (iResult == SOCKET_ERROR) {
+        printf("send failed with error: %d\n", WSAGetLastError());
+        closesocket(ConnectSocket);
+        WSACleanup();
+        return 1;
+    }
 
-int tcp_connect (char *hostname[], int portnumber)
-{
-	char * servName = "lulu.ugard.cs.ubc.ca";
-	
+    printf("Bytes Sent: %ld\n", iResult);
 
-	char servIP[16]; // change to name --> ip
-	struct hostent *hent;
-	hent =gethostbyname(servName);
-	inet_ntop(AF_INET,(void *)hent->h_addr_list[0],servIP,16);
-	
-	int rtnVal = inet_pton(AF_INET,servIP,&ServAddr.sin_addr.s_addr); //convert endiean
-	if(rtnVal <= 0)
-		dieMsg("inet fail",rtnVal);
+    // shutdown the connection since no more data will be sent
+    iResult = shutdown(ConnectSocket, SD_SEND);
+    if (iResult == SOCKET_ERROR) {
+        printf("shutdown failed with error: %d\n", WSAGetLastError());
+        closesocket(ConnectSocket);
+        WSACleanup();
+        return 1;
+    }
 
-	servAddr.sin_port = htons(servPort);
-	servAddr.sin_family = AF_INET;
-	printf("%s\n",servIP);
+    // Receive until the peer closes the connection
+    do {
 
+        iResult = recv(ConnectSocket, recvbuf, recvbuflen, 0);
+        if ( iResult > 0 )
+            printf("Bytes received: %d\n", iResult);
+        else if ( iResult == 0 )
+            printf("Connection closed\n");
+        else
+            printf("recv failed with error: %d\n", WSAGetLastError());
 
-	long addres;
-	myaddr.sin_family = AF_INET;
-	myaddr.sin_port = htons(11261); //connect to port 11261 of server
-	
-	int socket = socket(SF_INET, SOCK_STREAM, 0) //not sure 3rd argument shld be IPRPOTO_TCP or 0
-	if(sock <0)printf("sock fail",sock); 
+    } while( iResult > 0 );
 
-	if connect(sock,(struct sockaddr*) &servAddr,sizeof(servAddr))<0);
-	{
+    // cleanup
+    closesocket(ConnectSocket);
+    WSACleanup();
 
-		printf("con fail",-1);
-
-	}	
-
-
-
-struct sockaddr_in myaddr;
-	 
-	bind(clientsocket,myaddr,sizeof(addres);
-
-	struct sockaddr_in uraddr;
-
-	
-	connect(clientsocket, (struct sockaddr*) uraddr
-
-
-
+    return 0;
 }
