@@ -49,9 +49,14 @@ int main(int argc , char *argv[])
         printf("accept failed with error code : %d" , WSAGetLastError());
     }
      
-    puts(" Connection accepted!");
+    puts("Connection accepted");
  
-	//close socket
+    //Reply to client
+    message = "Hello Client , I have received your connection. But I have to go now, bye\n";
+    send(new_socket , message , strlen(message) , 0);
+     
+    getchar();
+ 
     closesocket(s);
     WSACleanup();
  
