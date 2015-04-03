@@ -52,7 +52,7 @@ int main(int argc , char *argv[])
     puts("Connection accepted");
  
     //Reply to client
-    message = "Hello Client , I have received your connection. But I have to go now, bye\n";
+    message = "Hello Client , I have received your connection. But I have to go now, Bye\n";
     send(new_socket , message , strlen(message) , 0);
      
     getchar();
