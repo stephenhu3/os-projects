@@ -15,6 +15,7 @@
 #define NUM_SCANNERS 1
 #define NUM_MODEMS 1
 #define NUM_DRIVES 2
+#define NUM_DATA 8
 #define TOTAL_MEM 1024
 #define TOTAL_RTMEM 64
 
@@ -24,6 +25,7 @@
 #define RUNNING 1
 #define PAUSED 2
 #define TERMINATED 3
+#define DELIMINATOR ", "
 
 // STRUCT DEFINITIONS
 struct host {

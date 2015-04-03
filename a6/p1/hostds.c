@@ -15,7 +15,6 @@ int main(int argc, char *argv[]) {
 	// input in the form:
 	// <arrival time>, <priority>, <processor time>, <Mbytes>, <#printers>, <#scanners>, <#modems>, <#CDs>
 	// 13, 3, 6, 128, 1, 0, 1, 2
-	// XX, X, X, XXX, X, X, X, X
 	// printf("Printers: %i\n", host.numPrinters);
 
 	// open dispatch list for reading
@@ -30,10 +29,40 @@ int main(int argc, char *argv[]) {
 	fseek(file, 0, SEEK_SET);
 
 	char currentLine[50];
+	char *readData;
+	int readValues[8];
+	int i;
 
 	while (fgets(currentLine, 50, file) != NULL) {
 		// parse each line
-		printf("%s", currentLine);
+
+		
+		readData = strtok(currentLine, DELIMINATOR);
+		
+		i = 0;
+		while(readData != NULL && i < NUM_DATA) {
+			// fprintf(stdout, "%s\n", readData);
+			readValues[i++] = atoi(readData);
+			readData = strtok(NULL, DELIMINATOR);
+			
+		}
+		/*
+		readValues indices:
+		0: arrival time
+		1: priority
+		2: processor time
+		3: Mbytes
+		4: #printers
+		5: #scanners
+		6: #modems
+		7: #CDs
+
+		use values accordingly 
+		*/
+
+		// for (i = 0; i < NUM_DATA; i++)
+		// 	printf("%d\n", readValues[i]);
+
 	}
 
 
