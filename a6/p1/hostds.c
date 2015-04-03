@@ -4,7 +4,7 @@
 struct host host;
 struct queue *dispatcher, *RTQueue, *userQueue, *p1Queue, *p2Queue, *p3Queue;
 
-int main(int argc, char **argv) {
+int main(int argc, char *argv[]) {
 	if (argc != 2) {
 		printf("Error processing arguments... Please specify filename in format: ./hostds filename.txt\n");
 		exit(0);
@@ -12,7 +12,31 @@ int main(int argc, char **argv) {
 
 	initSys();
 
+	// input in the form:
+	// <arrival time>, <priority>, <processor time>, <Mbytes>, <#printers>, <#scanners>, <#modems>, <#CDs>
+	// 13, 3, 6, 128, 1, 0, 1, 2
+	// XX, X, X, XXX, X, X, X, X
 	// printf("Printers: %i\n", host.numPrinters);
+
+	// open dispatch list for reading
+	FILE *file = fopen( argv[1], "r");
+
+	if (file == -1) {
+		printf("Error reading dispatch file\n");
+		return 0;	
+	}
+
+	// seek file pointer for reading from beginning
+	fseek(file, 0, SEEK_SET);
+
+	char currentLine[50];
+
+	while (fgets(currentLine, 50, file) != NULL) {
+		// parse each line
+		printf("%s", currentLine);
+	}
+
+
 }
 
 //PARAMS: none
