@@ -218,51 +218,158 @@ void freeHostRes(struct pcb *process) {
 			host.memory[i] = 0;	
 }
 
-//PARAMS:
-//EFFECTS:
-//RETURNS:
+//PARAMS: process
+//EFFECTS: allocates host printers to process
+//RETURNS: 1 for sucess, 0 for failure
 int allocPrinters(struct pcb *process) {
+	if(process->res->printersNeeded == 0)
+		return 1;
 
+	int i, cursor = checkRes(process->pid, process->res->printersNeeded, host.numPrinters, host.printers);
+
+	if(cursor != -1) {
+		for(i = cursor; i < cursor + process->res->printersNeeded; i++)
+			host.printers[i] = process->pid;
+
+		process->res->printersHave = process->res->printersNeeded;
+		process->res->printersAllocIndex = cursor;
+
+		return 1;
+	}
+
+	return 0;
 }
 
-//PARAMS:
-//EFFECTS:
-//RETURNS:
+//PARAMS: process
+//EFFECTS: allocates host scanners to process
+//RETURNS: 1 for sucess, 0 for failure
 int allocScanners(struct pcb *process) {
+	if(process->res->scannersNeeded == 0)
+		return 1;
 
+	int i, cursor = checkRes(process->pid, process->res->scannersNeeded, host.numScanners, host.scanners);
+
+	if(cursor != -1) {
+		for(i = cursor; i < cursor + process->res->scannersNeeded; i++)
+			host.scanners[i] = process->pid;
+
+		process->res->scannersHave = process->res->scannersNeeded;
+		process->res->scannersAllocIndex = cursor;
+
+		return 1;
+	}
+
+	return 0;
 }
 
-//PARAMS:
-//EFFECTS:
-//RETURNS:
+//PARAMS: process
+//EFFECTS: allocates host modems to process
+//RETURNS: 1 for sucess, 0 for failure
 int allocModems(struct pcb *process) {
+	if(process->res->modemsNeeded == 0)
+		return 1;
 
+	int i, cursor = checkRes(process->pid, process->res->modemsNeeded, host.numModems, host.modems);
+
+	if(cursor != -1) {
+		for(i = cursor; i < cursor + process->res->modemsNeeded; i++)
+			host.modems[i] = process->pid;
+
+		process->res->modemsHave = process->res->modemsNeeded;
+		process->res->modemsAllocIndex = cursor;
+
+		return 1;
+	}
+
+	return 0;
 }
 
-//PARAMS:
-//EFFECTS:
-//RETURNS:
+//PARAMS: process
+//EFFECTS: allocates host (CD) drives to process
+//RETURNS: 1 for sucess, 0 for failure
 int allocDrives(struct pcb *process) {
+	if(process->res->drivesNeeded == 0)
+		return 1;
 
+	int i, cursor = checkRes(process->pid, process->res->drivesNeeded, host.numDrives, host.drives);
+
+	if(cursor != -1) {
+		for(i = cursor; i < cursor + process->res->drivesNeeded; i++)
+			host.drives[i] = process->pid;
+
+		process->res->drivesHave = process->res->drivesNeeded;
+		process->res->drivesAllocIndex = cursor;
+
+		return 1;
+	}
+
+	return 0;
 }
 
-//PARAMS:
-//EFFECTS:
-//RETURNS:
+//PARAMS: process
+//EFFECTS: allocates host memory to process
+//RETURNS: 1 for sucess, 0 for failure
 int allocMem(struct pcb *process) {
+	if(process->res->memNeeded == 0)
+		return 1;
 
+	int i, cursor = checkRes(process->pid, process->res->memNeeded, host.totalMem, host.memory);
+
+	if(cursor != -1) {
+		for(i = cursor; i < cursor + process->res->memNeeded; i++)
+			host.memory[i] = process->pid;
+
+		process->res->memHave = process->res->memNeeded;
+		process->res->memAllocIndex = cursor;
+
+		return 1;
+	}
+
+	return 0;
 }
 
-//PARAMS:
-//EFFECTS:
-//RETURNS:
+//PARAMS: process
+//EFFECTS: allocates host real-time memory to process
+//RETURNS: 1 for sucess, 0 for failure
 int allocRTMem(struct pcb *process) {
+	if(process->res->memNeeded == 0)
+		return 1;
 
+	int i, cursor = checkRes(process->pid, process->res->memNeeded, host.rtMemory, host.memory);
+
+	if(cursor != -1) {
+		for(i = cursor; i < cursor + process->res->memNeeded; i++)
+			host.memory[i] = process->pid;
+
+		process->res->memHave = process->res->memNeeded;
+		process->res->memAllocIndex = cursor;
+
+		return 1;
+	}
+
+	return 0;
 }
 
-//PARAMS:
-//EFFECTS:
-//RETURNS:
+//PARAMS: process
+//EFFECTS: allocates relevant host resources to process
+//RETURNS: -1 for success and realtime, 1 for success, 0 for failure
 int allocRes(struct pcb *process) {
+	int printers, scanners, modems, drives, memory;
 
+	printers = allocPrinters(process);
+	scanners = allocScanners(process);
+	modems = allocModems(process);
+	drives = allocDrives(process);
+
+	if(process->priority == 0) {
+		memory = allocRTMem(process);
+		return -1;
+	}
+	else {
+		memory = allocMem(process);
+		return 1;
+	}
+
+	freeHostRes(process);
+	return 0;
 }
