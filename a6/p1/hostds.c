@@ -81,7 +81,7 @@ void initSys(void) {
 	host.rtMemory = TOTAL_RTMEM;
 	host.rtMemoryUsed = 0;
 	
-	// sets array members to 0
+	// initializes components
 	memset(host.printers, 0, NUM_PRINTERS);
 	memset(host.scanners, 0, NUM_SCANNERS);
 	memset(host.modems, 0, NUM_MODEMS);
@@ -160,4 +160,67 @@ struct queue* dequeue(struct queue **header) {
 		*header = (*header)->next;
 
 	return dequeuedHeader;
+}
+
+//PARAMS:
+//EFFECTS:
+//RETURNS:
+int checkRes(int pid, int resNeeded, int haveRes, int *hostRes) {
+
+}
+
+//PARAMS:
+//EFFECTS:
+//RETURNS:
+void freeHostRes(struct pcb *process) {
+
+}
+
+//PARAMS:
+//EFFECTS:
+//RETURNS:
+int allocPrinters(struct pcb *process) {
+
+}
+
+//PARAMS:
+//EFFECTS:
+//RETURNS:
+int allocScanners(struct pcb *process) {
+
+}
+
+//PARAMS:
+//EFFECTS:
+//RETURNS:
+int allocModems(struct pcb *process) {
+
+}
+
+//PARAMS:
+//EFFECTS:
+//RETURNS:
+int allocDrives(struct pcb *process) {
+
+}
+
+//PARAMS:
+//EFFECTS:
+//RETURNS:
+int allocMem(struct pcb *process) {
+
+}
+
+//PARAMS:
+//EFFECTS:
+//RETURNS:
+int allocRTMem(struct pcb *process) {
+
+}
+
+//PARAMS:
+//EFFECTS:
+//RETURNS:
+int allocRes(struct pcb *process) {
+
 }

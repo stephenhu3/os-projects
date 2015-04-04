@@ -60,7 +60,23 @@ struct pcb {
 };
 
 struct pcbres {
-	// TODO
+	int printersNeeded;
+	int scannersNeeded;
+	int modemsNeeded;
+	int drivesNeeded;
+	int memNeeded;
+
+	int printersHave;
+	int scannersHave;
+	int modemsHave;
+	int drivesHave;
+	int memHave;
+
+	int printerAllocIndex;
+	int scannerAllocIndex;
+	int modemsAllocIndex;
+	int drivesAllocIndex;
+	int memAllocIndex;
 };
 
 struct queue {
@@ -79,5 +95,16 @@ int updateDispatcher(int time);
 void initQueue(struct queue *queue);
 void enqueue(struct queue *queue, struct pcb *currentProcess);
 struct queue* dequeue(struct queue **header);
+
+int checkRes(int pid, int resNeeded, int haveRes, int *hostRes);
+void freeHostRes(struct pcb *process);
+
+int allocPrinters(struct pcb *process);
+int allocScanners(struct pcb *process);
+int allocModems(struct pcb *process);
+int allocDrives(struct pcb *process);
+int allocMem(struct pcb *process);
+int allocRTMem(struct pcb *process);
+int allocRes(struct pcb *process);
 
 #endif
