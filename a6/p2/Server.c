@@ -9,6 +9,7 @@ int main(int argc , char *argv[])
     SOCKET s , new_socket;
     struct sockaddr_in server , client;
     int c;
+    char *message;
  
     printf("\nInitialising Winsock.......");
     if (WSAStartup(MAKEWORD(2,2),&wsa) != 0){
