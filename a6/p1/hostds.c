@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
 	// open dispatch list for reading
 	FILE *file = fopen( argv[1], "r");
 
-	if (file == -1) {
+	if ((int) file == -1) {
 		printf("Error reading dispatch file\n");
 		return 0;	
 	}
@@ -162,18 +162,60 @@ struct queue* dequeue(struct queue **header) {
 	return dequeuedHeader;
 }
 
-//PARAMS:
-//EFFECTS:
-//RETURNS:
+//PARAMS: pid, resources in need of allocation, resources present on host, host resource pool
+//EFFECTS: attempts to allocate resources from host as needed
+//RETURNS: index within host resource pool available for allocation, -1 for not enough resources
 int checkRes(int pid, int resNeeded, int haveRes, int *hostRes) {
+	int i, count = 0, cursor = -1;
 
+	for(i = 0; i < haveRes; i++) {
+		if(hostRes[i] == 0) {
+			if(cursor == -1)
+				cursor = i;
+			count++;
+			
+			if(count == resNeeded)
+				break;
+		}
+		else if(hostRes[i] == pid)
+			return -1;
+		else {
+			cursor = -1;
+			count = 0;
+		}
+	}
+
+	if(count == resNeeded)
+		return cursor;
+	else
+		return -1;
 }
 
-//PARAMS:
-//EFFECTS:
-//RETURNS:
+//PARAMS: process
+//EFFECTS: frees host resources allocated to process
+//RETURNS: none
 void freeHostRes(struct pcb *process) {
+	int i;
+	
+	if(process->res->printersAllocIndex != -1)
+		for(i = process->res->printersAllocIndex; i < process->res->printersAllocIndex + process->res->printersHave; i++)
+			host.printers[i] = 0;
 
+	if(process->res->scannersAllocIndex != -1)
+		for(i = process->res->scannersAllocIndex; i < process->res->scannersAllocIndex + process->res->scannersHave; i++)
+			host.scanners[i] = 0;
+
+	if(process->res->modemsAllocIndex != -1)
+		for(i = process->res->modemsAllocIndex; i < process->res->modemsAllocIndex + process->res->modemsHave; i++)
+			host.modems[i] = 0;
+
+	if(process->res->drivesAllocIndex != -1)
+		for(i = process->res->drivesAllocIndex; i < process->res->drivesAllocIndex + process->res->drivesHave; i++)
+			host.drives[i] = 0;
+
+	if(process->res->memAllocIndex != -1)
+		for(i = process->res->memAllocIndex; i < process->res->memAllocIndex + process->res->memHave; i++)
+			host.memory[i] = 0;	
 }
 
 //PARAMS:

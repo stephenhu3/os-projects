@@ -72,8 +72,8 @@ struct pcbres {
 	int drivesHave;
 	int memHave;
 
-	int printerAllocIndex;
-	int scannerAllocIndex;
+	int printersAllocIndex;
+	int scannersAllocIndex;
 	int modemsAllocIndex;
 	int drivesAllocIndex;
 	int memAllocIndex;
