@@ -1,8 +1,12 @@
-all : manager driver
+driver: driver.c
+	gcc -Wall -g -c manager.c -o manager
+	gcc -Wall -g driver.c manager -o driver
 
-manager : manager.c
-	gcc -Wall -g manager.c -o manager
-
-
-driver : driver.c
-	gcc -Wall -g driver.c -o driver
+clean: 
+	rm -f manager
+	rm -f driver
+	rm -fr driver.dSYM/* 
+	rmdir driver.dSYM
+	rm -f testFile.txt
+	rm -fr testDirectory/* 
+	rmdir testDirectory

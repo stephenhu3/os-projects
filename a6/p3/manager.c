@@ -12,8 +12,8 @@ Also:
 
 #include "manager.h"
 
-// keep track of the current active directory
-char currentDir[100];
+// keep track of the current active directory, default to current directory
+char currentDir[100] = ".";
 
 
 /* Generally, fOpen(), fClose(), fRead(), and fSeek() functions should behave like the UNIX 
@@ -43,7 +43,6 @@ int fClose (int fileID) {
 }
 
 int fRead (int fileID, char *buffer, int length) {
-   // return fread(buffer, sizeof(char), length, fdopen(fileID, "r"));
    return fread(buffer, BLOCK_SIZE, length, fdopen(fileID, "r"));
 }
 
@@ -64,16 +63,11 @@ int fLs (void) {
    // then return -1 if detect an error and 0 otherwise. */
 
    DIR *directory;
-   // struct dirent *dir;
    directory = opendir(currentDir); // current directory
 
 
    if (directory) {
       printf("%s\n", "Files in current directory:");
-
-      // while ((dir = readdir(directory)) != NULL) {
-      //    if (dir->d_type == DT_REG) printf("%s\n", dir->d_name);
-      // }
 
       /* Explanation: 
       lh flag to show expanded information in human readable form
@@ -86,7 +80,7 @@ int fLs (void) {
       return 0;
    }
 
-   // error with accessing current directory
+   // return -1 if error with accessing current directory
    return -1;
 }
 
@@ -113,38 +107,4 @@ int fMkdir (char *name) {
 
 int fCd (char *name) {
 	return chdir(name);
-}
-
-int main(int argc, char **argv) {
-   strcpy(currentDir, ".");
-
-   int fd = fOpen("testFile.txt");
-   printf("File id: %d \n", fd);
-   char buffer[NUM_BLOCKS];
-
-   fSeek(fd, 0);
-   /* Read and display data */
-   fRead(fd, buffer, NUM_BLOCKS);
-   printf("File contents: %s\n", buffer);
-
-   char str[] = "Additional written information\n";
-   printf("Size of content written: %d\n", fWrite(fd, str, sizeof(str)));
-
-
-   // int fd2 = fOpen("testFile.txt");
-   // FILE *file = fdopen( fd2, "a+");
-   // // FILE *file = fopen( "testFile.txt", "a+");
-   // // printf("%d \n", fwrite(str, 1, sizeof(str), file));
-
-   // fSeek(fd2, 0);
-   // /* Read and display data */
-   // fRead(fd2, buffer2, NUM_BLOCKS);
-   // printf("File contents: %s\n", buffer2);
-
-   
-   printf("%s\n", fLs() == -1 ? "Failed fLs" : "Succeeded fLs");
-   fClose(fd);
-   printf("%s\n", fMkdir("burgers") == -1 ? "Failed fMkdir" : "Succeeded fMkdir");
-   printf("%s\n", fCd("burgers") == -1 ? "Failed fCd" : "Succeeded fCd");
-   printf("%s\n", fLs() == -1 ? "Failed fLs" : "Succeeded fLs");
 }
