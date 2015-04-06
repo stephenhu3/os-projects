@@ -4,7 +4,7 @@
 struct host host;
 struct queue *dispatcher, *RTQueue, *userQueue, *p1Queue, *p2Queue, *p3Queue;
 int pid = 1;
-int time = 1;
+int currentTime = 0;
 //above all, real time queue has main priority, FCFS, if empty THEN
 //{
 // userQueue uses round robin scheduling scheme
@@ -100,6 +100,9 @@ int main(int argc, char *argv[]) {
 
 	}
 
+	while(currentTime < 30) {
+		runDispatcher(currentTime);
+	}
 
 }
 
@@ -144,11 +147,11 @@ void processCycle(void) {
 	// If real time queue empty, start processing user queue
 	if (isEmpty(RTQueue)) {
 		// Dispatch from user queue to appropriate priority queues
-		queue userCurrent;
+		struct queue *userCurrent;
 		if (!isEmpty(userQueue)) {
 			userCurrent = dequeue(userQueue);	
 			if (userCurrent != NULL) {
-				switch(userCurrent->priority) {
+				switch(userCurrent->process->priority) {
 					case 1:
 						enqueue(p1Queue, userCurrent);
 						break;
@@ -160,7 +163,7 @@ void processCycle(void) {
 						break;
 					default:
 					// invalid priority, nothing enqueued
-					return 0;
+					return;
 				}
 			}
 		}
@@ -184,7 +187,7 @@ void processCycle(void) {
 		/* Note: "Real time processes will not need any IO resources, but require memory allocation, 64 Mbytes or less" */
 	}
 	// one unit of time has passed
-	time++;
+	currentTime++;
 }
 
 
@@ -195,7 +198,7 @@ int updateDispatcher(int arrival, int priority, int memsize,
 	int printers, int scanners, int modems, int drives) {
 
 	// Set needed resources
-	pcbres resources = malloc(sizeof(pcbres));
+	struct pcbres *resources = malloc(sizeof(resources));
 	resources->printersNeeded = printers;
 	resources->scannersNeeded = scanners;
 	resources->modemsNeeded = modems;
@@ -203,13 +206,15 @@ int updateDispatcher(int arrival, int priority, int memsize,
 	resources->memNeeded = memsize;
 
 	// Set process information
-	pcb process = malloc(sizeof(pcb));
+	struct pcb *process = malloc(sizeof(process));
 	process->pid = pid++;
 	process->priority = priority;
 	process->arrivalTime = arrival;
 	process->res = resources;
 
-	switch(priority) {
+	enqueue(dispatcher, process);
+	
+	/* switch(priority) {
 		case 0:
 			enqueue(RTQueue, process);
 			return 1;
@@ -222,7 +227,7 @@ int updateDispatcher(int arrival, int priority, int memsize,
 		default:
 		// invalid priority, nothing enqueued;
 		return -1;
-	}
+	} */
 
 	/*
 	Any User priority jobs in the User job queue that can run within available resources 
@@ -233,12 +238,76 @@ int updateDispatcher(int arrival, int priority, int memsize,
 	This enables the dispatcher to emulate a simple Round Robin dispatcher if all jobs are
 	accepted at the lowest priority.
 	*/
+}
 
+//PARAMS: current simulated time quantum
+//EFFECTS: runs the dispatcher, enqueuing or holding as appropriate
+//RETURNS: 1 if real time queue was updated (for intercepting), 0 otherwise
+int runDispatcher(int currentTime) {
+	// our return value for whether or not the realtime queue was updated
+	int rtIntercept;
+	int i, count;
 
+	// hold the dispatcher in queue that we can modify with impunity
+	struct queue *holder = dispatcher;
 
+	// if elements were added, leftover elements get pushed to this queue which will be the new dispatcher
+	struct queue *updatedDispatcher;
+	initQueue(updatedDispatcher);
+
+	if(isEmpty(holder)) {
+		printf("There is nothing to dispatch right now.\n\n");
+		return 0;
+	}
+
+	// count elements in dispatcher
+	for(count = 1; isEmpty(holder); count++) {
+		holder = holder->next;
+	}
+
+	// reset after counting
+	holder = dispatcher;
+
+	for(i = 0; i < count; i++) {
+		// grab process
+		struct pcb *process = dequeue(&holder)->process;
+		
+		// handle arrival time
+		if(currentTime >= process->arrivalTime) {
+			if(allocRes(process)) {
+				printf("Allocated Process PID: %i\n\n", process->pid);
+				if(process->priority == 0)
+					rtIntercept = 1;
+			}
+			else // can't allocate so put it back
+				enqueue(updatedDispatcher, process);
+		}
+		else // hasn't arrived yet so put it back
+			enqueue(updatedDispatcher, process);
+
+		// queue appropriately
+		switch(process->priority) {
+			case 0:
+				enqueue(RTQueue, process);
+			case 1: // if priority is either 1, 2, or 3, enqueue to user queue
+			case 2:
+			case 3:
+				enqueue(userQueue, process);
+		}
+	}
 	
+	// free the current dispatcher
+	while(isEmpty(dispatcher) != 1) {
+		holder = dispatcher->next;
+		free(dispatcher->process);
+		free(dispatcher);
+		dispatcher = holder;
+	}
 
-	
+	// update dispatcher with leftover processes
+	dispatcher = updatedDispatcher;
+
+	return rtIntercept;
 }
 
 //PARAMS: valid queue's head
