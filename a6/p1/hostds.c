@@ -3,6 +3,31 @@
 // Globals
 struct host host;
 struct queue *dispatcher, *RTQueue, *userQueue, *p1Queue, *p2Queue, *p3Queue;
+//above all, real time queue has main priority, FCFS, if empty THEN
+//{
+// userQueue uses round robin scheduling scheme
+// p1queue, p2queue, p3queue is basically a priority queue, if p1 empty, then go to p2, if p2 empty, then go to p3, else prioritize if not empty
+//}
+
+/*
+
+OUTPUT:
+Time 1:
+Process A + Information
+Time 2:
+Process A + Information
+Time 3:
+Process A + Information
+Time 4:
+Process B + Information
+Time 5:
+Process C + Information
+Time 6:
+Process A + Information
+
+*/
+
+
 
 int main(int argc, char *argv[]) {
 	if (argc != 2) {
@@ -15,6 +40,8 @@ int main(int argc, char *argv[]) {
 	// input in the form:
 	// <arrival time>, <priority>, <processor time>, <Mbytes>, <#printers>, <#scanners>, <#modems>, <#CDs>
 	// 13, 3, 6, 128, 1, 0, 1, 2
+	// 12, 2, 4, 128, 1, 0, 1, 2
+	// 12, 3, 3, 128, 1, 0, 1, 2
 	// printf("Printers: %i\n", host.numPrinters);
 
 	// open dispatch list for reading
@@ -61,7 +88,7 @@ int main(int argc, char *argv[]) {
 		*/
 
 		// for (i = 0; i < NUM_DATA; i++)
-		// 	printf("%d\n", readValues[i]);
+		// printf("%d\n", readValues[i]);
 
 	}
 
