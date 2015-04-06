@@ -47,7 +47,7 @@ struct host {
 	struct pcb *currentProcess;
 };
 
-struct pcb {
+typedef struct {
 	int pid;
 	int priority;
 	int arrivalTime;
@@ -57,9 +57,9 @@ struct pcb {
 	int state;
 
 	struct pcbres *res;
-};
+} pcb; 
 
-struct pcbres {
+typedef struct {
 	int printersNeeded;
 	int scannersNeeded;
 	int modemsNeeded;
@@ -77,14 +77,14 @@ struct pcbres {
 	int modemsAllocIndex;
 	int drivesAllocIndex;
 	int memAllocIndex;
-};
+} pcbres;
 
-struct queue {
+typedef struct {
 	int header;
 
 	struct queue *next;
 	struct pcb *process;
-};
+} queue;
 
 // FUNCTION PROTOTYPES
 
@@ -92,6 +92,7 @@ void initSys(void);
 void processCycle(void);
 int updateDispatcher(int time);
 
+int isEmpty(struct queue *queue);
 void initQueue(struct queue *queue);
 void enqueue(struct queue *queue, struct pcb *currentProcess);
 struct queue* dequeue(struct queue **header);

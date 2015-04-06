@@ -3,6 +3,8 @@
 // Globals
 struct host host;
 struct queue *dispatcher, *RTQueue, *userQueue, *p1Queue, *p2Queue, *p3Queue;
+int pid = 1;
+int time = 1;
 //above all, real time queue has main priority, FCFS, if empty THEN
 //{
 // userQueue uses round robin scheduling scheme
@@ -87,8 +89,14 @@ int main(int argc, char *argv[]) {
 		use values accordingly 
 		*/
 
-		// for (i = 0; i < NUM_DATA; i++)
-		// printf("%d\n", readValues[i]);
+		/* For debugging purposes
+		   for (i = 0; i < NUM_DATA; i++)
+		   printf("%d\n", readValues[i]);
+		*/
+
+		// add to appropriate user or real time queue
+		updateDispatcher(readValues[0], readValues[1], readValues[2],
+			readValues[3], readValues[4], readValues[5], readValues[6]);
 
 	}
 
@@ -125,19 +133,119 @@ void initSys(void) {
 
 }
 
-//PARAMS:
-//EFFECTS: simulates one processing cycle
-//RETURNS:
+//PARAMS: run once per time unit
+//EFFECTS: simulates one processing cycle, increments global time
+//RETURNS: none
 void processCycle(void) {
-	// TODO
+	// TODO: logic for time remaining, scheduling logic for user queue, fcfs for priority
+
+	// Ambiguities: can we dispatch from user queue to priority queues in same cycle with dispatching from priority queue?
+	// Current implementation: can only start dispatching from user queue to priority queue if real time queue empty
+	// If real time queue empty, start processing user queue
+	if (isEmpty(RTQueue)) {
+		// Dispatch from user queue to appropriate priority queues
+		queue userCurrent;
+		if (!isEmpty(userQueue)) {
+			userCurrent = dequeue(userQueue);	
+			if (userCurrent != NULL) {
+				switch(userCurrent->priority) {
+					case 1:
+						enqueue(p1Queue, userCurrent);
+						break;
+					case 2:
+						enqueue(p2Queue, userCurrent);
+						break;
+					case 3:
+						enqueue(p3Queue, userCurrent);
+						break;
+					default:
+					// invalid priority, nothing enqueued
+					return 0;
+				}
+			}
+		}
+
+		// Run process from priority queues
+		if (isEmpty(p1Queue)) {
+			if (isEmpty(p2Queue)) {
+				if (isEmpty(p3Queue)) {
+					return;
+				} else {
+					//run process from priority queue 3, additional logic needed
+				}
+			} else {
+				//run process from priority queue 2, additional logic needed
+			}
+		} else {
+			//run process from priority queue 1, additional logic needed
+		}
+	} else {
+		// run process from real time queue, additional logic needed
+		/* Note: "Real time processes will not need any IO resources, but require memory allocation, 64 Mbytes or less" */
+	}
+	// one unit of time has passed
+	time++;
 }
 
 
 //PARAMS: current time quantum
 //EFFECTS: update the dispatcher
-//RETURNS: 1 for process put into real time queue else 0
-int updateDispatcher(int time) {
-	// TODO
+//RETURNS: 1 for process put into real time queue, 0 for user queue, -1 if none
+int updateDispatcher(int arrival, int priority, int memsize, 
+	int printers, int scanners, int modems, int drives) {
+
+	// Set needed resources
+	pcbres resources = malloc(sizeof(pcbres));
+	resources->printersNeeded = printers;
+	resources->scannersNeeded = scanners;
+	resources->modemsNeeded = modems;
+	resources->drivesNeeded = drives;
+	resources->memNeeded = memsize;
+
+	// Set process information
+	pcb process = malloc(sizeof(pcb));
+	process->pid = pid++;
+	process->priority = priority;
+	process->arrivalTime = arrival;
+	process->res = resources;
+
+	switch(priority) {
+		case 0:
+			enqueue(RTQueue, process);
+			return 1;
+		case 1: // if priority is either 1, 2, or 3, enqueue to user queue
+		case 2:
+		case 3:
+			enqueue(userQueue, process);
+			return 0;
+
+		default:
+		// invalid priority, nothing enqueued;
+		return -1;
+	}
+
+	/*
+	Any User priority jobs in the User job queue that can run within available resources 
+	(memory and i/o devices) are transferred to the appropriate priority queue.
+	Normal operation of a feedback queue will accept all jobs at the highest priority level 
+	and degrade the priority after each completed time quantum. However, this dispatcher has 
+	the ability to accept jobs at a lower priority, inserting them in the appropriate queue.
+	This enables the dispatcher to emulate a simple Round Robin dispatcher if all jobs are
+	accepted at the lowest priority.
+	*/
+
+
+
+	
+
+	
+}
+
+//PARAMS: valid queue's head
+//EFFECTS: none
+//RETURNS: 1 if queue empty, 0 otherwise
+int isEmpty(struct queue *queue) {
+	return queue->header == 0 ? 1 : 0;
 }
 
 //PARAMS: valid uninitialized queue
@@ -291,7 +399,7 @@ int allocScanners(struct pcb *process) {
 
 //PARAMS: process
 //EFFECTS: allocates host modems to process
-//RETURNS: 1 for sucess, 0 for failure
+//RETURNS: 1 for success, 0 for failure
 int allocModems(struct pcb *process) {
 	if(process->res->modemsNeeded == 0)
 		return 1;
