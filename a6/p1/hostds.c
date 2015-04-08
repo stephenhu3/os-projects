@@ -159,20 +159,20 @@ void processCycle(void) {
 					return;
 				} else {
 					//run process from priority queue 3, additional logic needed
-					executeFCFS(p3queue);
+					executeFCFS(p3Queue);
 				}
 			} else {
 				//run process from priority queue 2, additional logic needed
-				executeFCFS(p2queue);
+				executeFCFS(p2Queue);
 			}
 		} else {
 			//run process from priority queue 1, additional logic needed
-			executeFCFS(p1queue);
+			executeFCFS(p1Queue);
 		}
 	} else {
 		// run process from real time queue, additional logic needed
 		/* Note: "Real time processes will not need any IO resources, but require memory allocation, 64 Mbytes or less" */
-		executeFCFS(RTqueue);
+		executeFCFS(RTQueue);
 	}
 	// one unit of time has passed
 	currentTime++;
@@ -324,29 +324,67 @@ int executeFCFS(struct queue *queue) {
 	// terminated if time remaining is zero
 	// continued if it was started and resumed
 	// suspended if another process is run before completion of current process
+
+	/*
+	When a job is started (fork and exec("process",...)), 
+	the dispatcher will display the job parameters 
+	(Process ID, priority, processor time remaining (in seconds),
+	memory location and block size, and resources requested) before performing the exec.
+	*/
+
+	/*
+	A low priority User job is allowed to run for one dispatcher tick (one second) 
+	before it is suspended (SIGTSTP) or terminated (SIGINT) if its time has expired. 
+	If suspended, its priority level is lowered (if possible) and it is re-queued on
+	the appropriate priority queue as shown in Figures 1 & 3 above.
+	To retain synchronisation of output between your dispatcher and the child process,
+	your dispatcher should wait for the process to respond to a SIGTSTP or SIGINT signal
+	before continuing ( waitpid(p->pid, &status, WUNTRACED)). 
+	To match the performance sequence indicated in Stallings' comparison of scheduling 
+	policies the User job should not be suspended and moved to a lower priority level 
+	unless another process is waiting to be (re)started.
+	*/
+
 	if (!isEmpty(queue)) {
 		struct queue *cursor = queue;
 		// cursor is last element in queue
 		while (cursor->next)
 			cursor = cursor->next;
-		// if started flag was zero, set to one
 
-		if (cursor->started == 0) {
-			cursor->started = 1;
-			printf("Process %d: Started | Current Time: %d\n", cursor->pid, currentTime);
+		// if started flag was not set, set to one
+		if (cursor->process->started != 1) {
+			cursor->process->started = 1;
+			printf("Process %d: Started | Current Time: %d\n", cursor->process->pid, currentTime);
 		} else {
-			printf("Process %d: Continued | Current Time: %d\n", cursor->pid, currentTime);
+			printf("Process %d: Continued | Current Time: %d\n", cursor->process->pid, currentTime);
 		}
 
 		//alternative:
 		// cursor->remainingTime = cursor->remainingTime - remainingTimeSplice; 
-		cursor->remainingTime = cursor->remainingTime - 1;
-		if (cursor->remainingTime == 0) {
-			printf("Process %d: Terminated\n", cursor->pid);
+		cursor->process->remainingTime = cursor->process->remainingTime - 1;
+
+		if (cursor->process->remainingTime == 0) {
+			printf("Process %d: Terminated\n", cursor->process->pid);
 			dequeue(cursor);
 		}
-		else
-			printf("Process %d: Suspended\n", cursor->pid);
+		else {
+			printf("Process %d: Suspended\n", cursor->process->pid);	
+			// implement aging, move to 1 priority lower
+			switch(cursor->process->priority) {
+				case 1:
+					enqueue(p2Queue, dequeue(cursor));
+					break;
+				case 2:
+					enqueue(p3Queue, dequeue(cursor));
+					break;
+				case 3:
+					// can't move any lower
+					break;
+				default:
+				// invalid priority, nothing enqueued
+				return 0;
+			}
+		}
 		return 1;
 	}
 	return 0;

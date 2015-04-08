@@ -51,7 +51,7 @@ struct pcb{
 	int pid;
 	int priority;
 	int arrivalTime;
-	int started = 0; // default to zero, 1 if started
+	int started; // default to zero, 1 if started
 	int remainingTime;
 	int remainingTimeSplice;
 
