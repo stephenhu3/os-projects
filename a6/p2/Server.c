@@ -59,6 +59,7 @@ int main(int argc , char *argv[])
      
     getchar();
  
+    //without closesocket keep running client until it runs.
     closesocket(s);
     WSACleanup();
  
