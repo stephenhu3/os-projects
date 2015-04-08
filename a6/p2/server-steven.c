@@ -60,7 +60,7 @@ int main(int argc , char *argv[])
         puts("Connection accepted");
          
         //Reply to the client
-        message = "This is server, looking for client \n";
+        message = "This is server, looking for client!! Houston are you there ??!! \n";
         send(new_socket , message , strlen(message) , 0);
 		//Receive a reply from the server
     if((recv_size = recv(new_socket, client_reply , 2000 , 0)) == SOCKET_ERROR)

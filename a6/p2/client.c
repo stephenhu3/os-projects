@@ -55,6 +55,8 @@ int main(int argc , char *argv[])
         return 1;
     }
     puts("Data Sending\n");
+	printf("Client is Sending : ");
+	puts(message);
      
     //Receive a reply from the server
     if((recv_size = recv(s , server_reply , 2000 , 0)) == SOCKET_ERROR)
