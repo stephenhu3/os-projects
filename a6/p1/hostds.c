@@ -89,10 +89,10 @@ int main(int argc, char *argv[]) {
 		use values accordingly 
 		*/
 
-		/* For debugging purposes
-		   for (i = 0; i < NUM_DATA; i++)
-		   printf("%d\n", readValues[i]);
-		*/
+		 // For debugging purposes
+		   // for (i = 0; i < NUM_DATA; i++)
+		   // printf("%d\n", readValues[i]);
+		
 
 		// add to appropriate user or real time queue
 		updateDispatcher(readValues[0], readValues[1], readValues[2],
@@ -100,16 +100,17 @@ int main(int argc, char *argv[]) {
 
 	}
 
-	while(currentTime < 30) {
-		runDispatcher(currentTime);
-	}
+	// debugging, so comment out
+	// while(currentTime < 30) {
+	// 	runDispatcher(currentTime);
+	// }
 
 }
 
 //PARAMS: none
 //EFFECTS: Initializes the host with relevant items
 //RETURNS: none
-void initSys(void) {
+void initSys(void) { // No crashes
 	// initialize constants
 	host.numPrinters = NUM_PRINTERS;
 	host.numScanners = NUM_SCANNERS;
@@ -294,13 +295,13 @@ int runUser(void) {
 			if (userCurrent != NULL) {
 				switch(userCurrent->process->priority) {
 					case 1:
-						enqueue(p1Queue, userCurrent);
+						enqueue(p1Queue, userCurrent->process);
 						return 1;
 					case 2:
-						enqueue(p2Queue, userCurrent);
+						enqueue(p2Queue, userCurrent->process);
 						return 1;
 					case 3:
-						enqueue(p3Queue, userCurrent);
+						enqueue(p3Queue, userCurrent->process);
 						return 1;
 					default:
 					// invalid priority, nothing enqueued
@@ -347,6 +348,7 @@ int executeFCFS(struct queue *queue) {
 
 	if (!isEmpty(queue)) {
 		struct queue *cursor = queue;
+
 		// cursor is last element in queue
 		while (cursor->next)
 			cursor = cursor->next;
@@ -354,6 +356,9 @@ int executeFCFS(struct queue *queue) {
 		// if started flag was not set, set to one
 		if (cursor->process->started != 1) {
 			cursor->process->started = 1;
+
+			//need to add check that resources can be allocated before running
+			allocRes(cursor->process);
 			printf("Process %d: Started | Current Time: %d\n", cursor->process->pid, currentTime);
 		} else {
 			printf("Process %d: Continued | Current Time: %d\n", cursor->process->pid, currentTime);
@@ -365,17 +370,19 @@ int executeFCFS(struct queue *queue) {
 
 		if (cursor->process->remainingTime == 0) {
 			printf("Process %d: Terminated\n", cursor->process->pid);
-			dequeue(cursor);
+			// free resources only if process to be terminated
+			freeHostRes(cursor->process);
+			dequeue(cursor->process);
 		}
 		else {
 			printf("Process %d: Suspended\n", cursor->process->pid);	
 			// implement aging, move to 1 priority lower
 			switch(cursor->process->priority) {
 				case 1:
-					enqueue(p2Queue, dequeue(cursor));
+					enqueue(p2Queue, dequeue(cursor)->process);
 					break;
 				case 2:
-					enqueue(p3Queue, dequeue(cursor));
+					enqueue(p3Queue, dequeue(cursor)->process);
 					break;
 				case 3:
 					// can't move any lower
@@ -634,26 +641,29 @@ int allocRTMem(struct pcb *process) {
 	return 0;
 }
 
+
+//Question: should freehostres be called using this function?
 //PARAMS: process
 //EFFECTS: allocates relevant host resources to process
-//RETURNS: -1 for success and realtime, 1 for success, 0 for failure
+//RETURNS: 1 for success and realtime, 0 for success, -1 for failure
 int allocRes(struct pcb *process) {
 	int printers, scanners, modems, drives, memory;
 
-	printers = allocPrinters(process);
-	scanners = allocScanners(process);
-	modems = allocModems(process);
-	drives = allocDrives(process);
-
 	if(process->priority == 0) {
 		memory = allocRTMem(process);
-		return -1;
-	}
-	else {
-		memory = allocMem(process);
 		return 1;
 	}
+	else if (process->priority < 4 && process->priority > 0){
+		// these I/O resources only allocated to non-realtime tasks
+		memory = allocMem(process);
+		printers = allocPrinters(process);
+		scanners = allocScanners(process);
+		modems = allocModems(process);
+		drives = allocDrives(process);
+		return 0;
+	}
 
-	freeHostRes(process);
-	return 0;
+	// freeHostRes(process);
+	// priority was invalid, not within 0 to 3 range
+	return -1;
 }
