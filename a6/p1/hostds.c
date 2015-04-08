@@ -145,29 +145,11 @@ void processCycle(void) {
 	// Ambiguities: can we dispatch from user queue to priority queues in same cycle with dispatching from priority queue?
 	// Current implementation: can only start dispatching from user queue to priority queue if real time queue empty
 	// If real time queue empty, start processing user queue
+	runDispatcher(currentTime);
+
 	if (isEmpty(RTQueue)) {
 		// Dispatch from user queue to appropriate priority queues
-		struct queue *userCurrent;
-		if (!isEmpty(userQueue)) {
-			userCurrent = dequeue(userQueue);	
-			if (userCurrent != NULL) {
-				switch(userCurrent->process->priority) {
-					case 1:
-						enqueue(p1Queue, userCurrent);
-						break;
-					case 2:
-						enqueue(p2Queue, userCurrent);
-						break;
-					case 3:
-						enqueue(p3Queue, userCurrent);
-						break;
-					default:
-					// invalid priority, nothing enqueued
-					return;
-				}
-			}
-		}
-
+		runUser();
 		// Run process from priority queues
 		if (isEmpty(p1Queue)) {
 			if (isEmpty(p2Queue)) {
@@ -213,21 +195,6 @@ int updateDispatcher(int arrival, int priority, int memsize,
 	process->res = resources;
 
 	enqueue(dispatcher, process);
-	
-	/* switch(priority) {
-		case 0:
-			enqueue(RTQueue, process);
-			return 1;
-		case 1: // if priority is either 1, 2, or 3, enqueue to user queue
-		case 2:
-		case 3:
-			enqueue(userQueue, process);
-			return 0;
-
-		default:
-		// invalid priority, nothing enqueued;
-		return -1;
-	} */
 
 	/*
 	Any User priority jobs in the User job queue that can run within available resources 
@@ -308,6 +275,42 @@ int runDispatcher(int currentTime) {
 	dispatcher = updatedDispatcher;
 
 	return rtIntercept;
+}
+
+//PARAMS: none
+//EFFECTS: runs the user queue, enqueuing or holding as appropriate
+//RETURNS: 1 if user queue enqueued process to a priority queue, else 0
+int runUser(void) {
+	// our return value for whether or not the realtime queue was updated
+	struct queue *userCurrent;
+		if (!isEmpty(userQueue)) {
+			userCurrent = dequeue(userQueue);	
+			if (userCurrent != NULL) {
+				switch(userCurrent->process->priority) {
+					case 1:
+						enqueue(p1Queue, userCurrent);
+						return 1;
+					case 2:
+						enqueue(p2Queue, userCurrent);
+						return 1;
+					case 3:
+						enqueue(p3Queue, userCurrent);
+						return 1;
+					default:
+					// invalid priority, nothing enqueued
+					return 0;
+				}
+			}
+		}
+	return 0;
+}
+
+
+//PARAMS: input queue (any of of the priority queues or real time queue)
+//EFFECTS: executes the input queue in FCFS fashion (last element is dequeued)
+//RETURNS: 1 if process dequeued and run, else 0
+int executeFCFS(struct queue *queue) {
+	//TODO: display necessary information
 }
 
 //PARAMS: valid queue's head

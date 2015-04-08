@@ -93,6 +93,7 @@ void processCycle(void);
 int updateDispatcher(int arrival, int priority, int memsize, 
 	int printers, int scanners, int modems, int drives);
 int runDispatcher(int currentTime);
+int runUser(void);
 
 int isEmpty(struct queue *queue);
 void initQueue(struct queue *queue);
