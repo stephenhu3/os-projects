@@ -145,6 +145,8 @@ void processCycle(void) {
 	// Ambiguities: can we dispatch from user queue to priority queues in same cycle with dispatching from priority queue?
 	// Current implementation: can only start dispatching from user queue to priority queue if real time queue empty
 	// If real time queue empty, start processing user queue
+
+	//TODO: process cycle should only be called at most once per second, use timing functions to ensure this
 	runDispatcher(currentTime);
 
 	if (isEmpty(RTQueue)) {
@@ -157,16 +159,20 @@ void processCycle(void) {
 					return;
 				} else {
 					//run process from priority queue 3, additional logic needed
+					executeFCFS(p3queue);
 				}
 			} else {
 				//run process from priority queue 2, additional logic needed
+				executeFCFS(p2queue);
 			}
 		} else {
 			//run process from priority queue 1, additional logic needed
+			executeFCFS(p1queue);
 		}
 	} else {
 		// run process from real time queue, additional logic needed
 		/* Note: "Real time processes will not need any IO resources, but require memory allocation, 64 Mbytes or less" */
+		executeFCFS(RTqueue);
 	}
 	// one unit of time has passed
 	currentTime++;
@@ -307,10 +313,43 @@ int runUser(void) {
 
 
 //PARAMS: input queue (any of of the priority queues or real time queue)
-//EFFECTS: executes the input queue in FCFS fashion (last element is dequeued)
+//EFFECTS: executes the input queue in FCFS fashion
+//		   (last element has time remaining decremented, dequeued if completed)
 //RETURNS: 1 if process dequeued and run, else 0
 int executeFCFS(struct queue *queue) {
 	//TODO: display necessary information
+	// A message displaying the process ID when the process starts;
+	// A regular message every second the process is executed; and
+	// A message when the process is Suspended, Continued, or Terminated.
+	// terminated if time remaining is zero
+	// continued if it was started and resumed
+	// suspended if another process is run before completion of current process
+	if (!isEmpty(queue)) {
+		struct queue *cursor = queue;
+		// cursor is last element in queue
+		while (cursor->next)
+			cursor = cursor->next;
+		// if started flag was zero, set to one
+
+		if (cursor->started == 0) {
+			cursor->started = 1;
+			printf("Process %d: Started | Current Time: %d\n", cursor->pid, currentTime);
+		} else {
+			printf("Process %d: Continued | Current Time: %d\n", cursor->pid, currentTime);
+		}
+
+		//alternative:
+		// cursor->remainingTime = cursor->remainingTime - remainingTimeSplice; 
+		cursor->remainingTime = cursor->remainingTime - 1;
+		if (cursor->remainingTime == 0) {
+			printf("Process %d: Terminated\n", cursor->pid);
+			dequeue(cursor);
+		}
+		else
+			printf("Process %d: Suspended\n", cursor->pid);
+		return 1;
+	}
+	return 0;
 }
 
 //PARAMS: valid queue's head
