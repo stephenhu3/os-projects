@@ -52,8 +52,9 @@ int main(int argc , char *argv[])
      
     puts("Connection accepted");
  
-    //Reply to client
+    //Reply to client(test if client can receive or not)
     message = "Hello Client , I have received your connection. But I have to go now, Bye\n";
+    //message = "shorter string"; //test case
     send(new_socket , message , strlen(message) , 0);
      
     getchar();
