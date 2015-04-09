@@ -106,7 +106,7 @@ int main(int argc, char *argv[]) {
 
 
 
-	runDispatcher(currentTime);
+	// runDispatcher(currentTime);
 	// process cycle calls run dispatcher already
 	while(isEmpty(dispatcher) == 0) {
 		processCycle();
@@ -114,7 +114,7 @@ int main(int argc, char *argv[]) {
 
 
 
-	// for (int i = 0; i < 11; i++) {
+	// for (int i = 0; i < 13; i++) {
 	// 	processCycle();
 	// }
 	// contents of queues
@@ -180,7 +180,7 @@ void processCycle(void) {
 	// If real time queue empty, start processing user queue
 
 	//TODO: process cycle should only be called at most once per second, use timing functions to ensure this
-	// runDispatcher(currentTime);
+	runDispatcher(currentTime);
 
 	if (isEmpty(RTQueue)) {
 		// Dispatch from user queue to appropriate priority queues
@@ -419,9 +419,13 @@ int executeFCFS(struct queue *queue) {
 
 		if (cursor->process->remainingTime <= 0) {
 			printf("Process %d: Terminated\n", cursor->process->pid);
+			// seg fault occurs right after termination
 			// free resources only if process to be terminated
+			freeHostRes(cursor->process); // this is the one causing segfault
 			dequeue(&cursor); // TODO: this here is causing segfault, fixed by calling by reference
-			freeHostRes(cursor->process);
+			free(cursor);
+			// issue: infinite loop, problem in this here
+			
 			
 		}
 		else {
@@ -454,6 +458,8 @@ int executeFCFS(struct queue *queue) {
 //EFFECTS: none
 //RETURNS: 1 if queue empty, 0 otherwise
 int isEmpty(struct queue *queue) {
+	if (queue == NULL)
+		return 1;
 	return queue->header == 0 ? 1 : 0;
 }
 
@@ -482,6 +488,8 @@ void enqueue(struct queue *target, struct pcb *currentProcess) {
 	}
 }
 
+//Write tests to ensure enqueue and dequeue behave accordingly first
+//TODO: the mallocs need cast to pointer type
 
 //PARAMS: pointer to queue containing header to dequeue
 //EFFECTS: dequeues the header of queue
@@ -490,12 +498,19 @@ struct queue* dequeue(struct queue **header) {
 	if(((*header)->process) == NULL)
 		return NULL;
 
-	struct queue *dequeuedHeader = *header;
+	struct queue *dequeuedHeader = malloc(sizeof(struct queue));
+	*dequeuedHeader = **header;
+	// this was the issue, you're setting header as null
 
-	if((*header)->next == NULL)
+	// remove current header and set new header
+	if((*header)->next == NULL) {// single element case
 		*header = NULL;
-	else
+	}
+	else {
 		*header = (*header)->next;
+		//set as header
+		(*header)->header = 1;
+	}
 
 	return dequeuedHeader;
 }
