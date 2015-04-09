@@ -162,7 +162,7 @@ void initSys(void) { // No crashes
 //RETURNS: none
 void initQueue(struct queue **init) {
 	struct queue *new;
-	new = malloc(sizeof(struct queue));
+	new = (struct queue *) malloc(sizeof(struct queue));
 	new->header = 0;
 	new->next = NULL;
 	new->process = NULL;
@@ -220,7 +220,7 @@ int updateDispatcher(int arrival, int priority, int duration, int memsize,
 	int printers, int scanners, int modems, int drives) {
 
 	// Set needed resources
-	struct pcbres *resources = malloc(sizeof(struct pcbres));
+	struct pcbres *resources = (struct queue *) malloc(sizeof(struct pcbres));
 	resources->printersNeeded = printers;
 	resources->scannersNeeded = scanners;
 	resources->modemsNeeded = modems;
@@ -228,7 +228,7 @@ int updateDispatcher(int arrival, int priority, int duration, int memsize,
 	resources->memNeeded = memsize;
 
 	// Set process information
-	struct pcb *process = malloc(sizeof(struct pcb));
+	struct pcb *process = (struct queue *) malloc(sizeof(struct pcb));
 	process->pid = pid++;
 	process->priority = priority;
 	process->arrivalTime = arrival;
@@ -477,7 +477,7 @@ void enqueue(struct queue *target, struct pcb *currentProcess) {
 			struct queue *cursor = target;
 			while (cursor->next != NULL)
 				cursor = cursor->next;
-			struct queue *thisProcess = malloc(sizeof(struct queue));
+			struct queue *thisProcess = (struct queue *) malloc(sizeof(struct queue));
 			cursor->next = thisProcess;
 			cursor->next->header = 0;
 			cursor->next->next = NULL;
@@ -498,7 +498,7 @@ struct queue* dequeue(struct queue **header) {
 	if(((*header)->process) == NULL)
 		return NULL;
 
-	struct queue *dequeuedHeader = malloc(sizeof(struct queue));
+	struct queue *dequeuedHeader = (struct queue *) malloc(sizeof(struct queue));
 	*dequeuedHeader = **header;
 	// this was the issue, you're setting header as null
 
