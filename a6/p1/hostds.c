@@ -2,7 +2,12 @@
 
 // Globals
 struct host host;
-struct queue *dispatcher, *RTQueue, *userQueue, *p1Queue, *p2Queue, *p3Queue;
+struct queue *dispatcher;
+struct queue *RTQueue;
+struct queue *userQueue;
+struct queue *p1Queue;
+struct queue *p2Queue;
+struct queue *p3Queue;
 int pid = 1;
 int currentTime = 0;
 //above all, real time queue has main priority, FCFS, if empty THEN
@@ -60,6 +65,8 @@ int main(int argc, char *argv[]) {
 	int readValues[8];
 	int i;
 	initSys();
+	if (dispatcher == NULL)
+		printf("Dispatcher queue is null\n");
 	while (fgets(currentLine, 50, file) != NULL) {
 		// parse each line
 
@@ -144,6 +151,7 @@ void initQueue(struct queue *init) {
 	init->header = 0;
 	init->next = NULL;
 	init->process = NULL;
+
 }
 
 //PARAMS: run once per time unit
@@ -416,14 +424,14 @@ int isEmpty(struct queue *queue) {
 //PARAMS: target queue to insert process, current process to queue up
 //EFFECTS: queues current process at end of given queue
 //RETURNS: none
-void enqueue(struct queue *queue, struct pcb *currentProcess) {
-		if (queue != NULL) {
-		if(!queue->header) {
-			queue->process = currentProcess;
-			queue->header = 1;
+void enqueue(struct queue *target, struct pcb *currentProcess) {
+	if (target != NULL) {
+		if(!target->header) {
+			target->process = currentProcess;
+			target->header = 1;
 		}
 		else {
-			struct queue *cursor = queue;
+			struct queue *cursor = target;
 			while (cursor->next)
 				cursor = cursor->next;
 			struct queue *thisProcess = malloc(sizeof(struct queue));
