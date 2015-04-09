@@ -93,23 +93,27 @@ int main(int argc, char *argv[]) {
 		use values accordingly 
 		*/
 
-		 // For debugging purposes
-		   // for (i = 0; i < NUM_DATA; i++)
-		   // printf("%d\n", readValues[i]);
+		// For debugging purposes
+		// for (i = 0; i < NUM_DATA; i++)
+		// printf("%d\n", readValues[i]);
 		
 
 		// add to appropriate user or real time queue
 		updateDispatcher(readValues[0], readValues[1], readValues[2],
-			readValues[3], readValues[4], readValues[5], readValues[6]);
+			readValues[3], readValues[4], readValues[5], readValues[6], readValues[7]);
 
 	}
 
 
 
 	// debugging, so comment out
-	// while(currentTime < 30) {
+	while(isEmpty(dispatcher) == 0) {
 		runDispatcher(currentTime);
-	// }
+		processCycle();
+	}
+	// // is empty, so run 1 last time
+	// runDispatcher(currentTime);
+	// processCycle();
 
 }
 
@@ -201,7 +205,7 @@ void processCycle(void) {
 //PARAMS: current time quantum
 //EFFECTS: update the dispatcher
 //RETURNS: 1 for process put into real time queue, 0 for user queue, -1 if none
-int updateDispatcher(int arrival, int priority, int memsize, 
+int updateDispatcher(int arrival, int priority, int duration, int memsize, 
 	int printers, int scanners, int modems, int drives) {
 
 	// Set needed resources
@@ -217,6 +221,7 @@ int updateDispatcher(int arrival, int priority, int memsize,
 	process->pid = pid++;
 	process->priority = priority;
 	process->arrivalTime = arrival;
+	process->remainingTime = duration;
 	process->res = resources;
 
 	enqueue(dispatcher, process);
@@ -247,19 +252,22 @@ int runDispatcher(int currentTime) {
 	struct queue *updatedDispatcher;
 	initQueue(&updatedDispatcher);
 
-	if(isEmpty(holder)) {
+	if(isEmpty(dispatcher) == 1) {
 		printf("There is nothing to dispatch right now.\n\n");
 		return 0;
 	}
-
+	// Question: What does holder do?
+	// trying to count number of items in dispatcher
 	// count elements in dispatcher
-	for(count = 1; isEmpty(holder); count++) {
-		holder = holder->next;
-	}
+	// flawed implementation, isEmpty requires the head of the queue as parameter
+	// for(count = 1; isEmpty(holder)==1; count++) {
+	// 	holder = holder->next;
+	// }
 
 	// reset after counting
 	holder = dispatcher;
 
+	count = 1;
 	for(i = 0; i < count; i++) {
 		// grab process
 		struct pcb *process = dequeue(&holder)->process;
@@ -271,7 +279,7 @@ int runDispatcher(int currentTime) {
 				if(process->priority == 0)
 					rtIntercept = 1;
 			}
-			else // can't allocate so put it back
+			else // can't allocate resource so put it back
 				enqueue(updatedDispatcher, process);
 		}
 		else // hasn't arrived yet so put it back
@@ -302,7 +310,7 @@ int runDispatcher(int currentTime) {
 	// 	dispatcher = holder;
 	// }
 
-	// // update dispatcher with leftover processes
+	// // update dispatcher with leftover processes that could not be run
 	dispatcher = updatedDispatcher;
 
 	return rtIntercept;
@@ -315,7 +323,7 @@ int runUser(void) {
 	// our return value for whether or not the realtime queue was updated
 	struct queue *userCurrent;
 		if (!isEmpty(userQueue)) {
-			userCurrent = dequeue(userQueue);	
+			userCurrent = dequeue(&userQueue);	
 			if (userCurrent != NULL) {
 				switch(userCurrent->process->priority) {
 					case 1:
@@ -369,7 +377,7 @@ int executeFCFS(struct queue *queue) {
 	policies the User job should not be suspended and moved to a lower priority level 
 	unless another process is waiting to be (re)started.
 	*/
-
+	if (queue != NULL) {
 	if (!isEmpty(queue)) {
 		struct queue *cursor = queue;
 
@@ -377,36 +385,40 @@ int executeFCFS(struct queue *queue) {
 		while (cursor->next)
 			cursor = cursor->next;
 
+		//need to add check that resources can be allocated before running
+		// allocRes(cursor->process); // this was done in the sending from dispatcher to queues, so no need here
 		// if started flag was not set, set to one
 		if (cursor->process->started != 1) {
 			cursor->process->started = 1;
 
-			//need to add check that resources can be allocated before running
-			allocRes(cursor->process);
-			printf("Process %d: Started | Current Time: %d\n", cursor->process->pid, currentTime);
+			// //need to add check that resources can be allocated before running
+			// allocRes(cursor->process);
+
+			printf("Process %d: Started (Remaining Time: %d) | Current Time: %d\n", cursor->process->pid, cursor->process->remainingTime, currentTime);
 		} else {
-			printf("Process %d: Continued | Current Time: %d\n", cursor->process->pid, currentTime);
+			printf("Process %d: Continued (Remaining Time: %d) | Current Time: %d\n", cursor->process->pid, cursor->process->remainingTime, currentTime);
 		}
 
 		//alternative:
 		// cursor->remainingTime = cursor->remainingTime - remainingTimeSplice; 
 		cursor->process->remainingTime = cursor->process->remainingTime - 1;
 
-		if (cursor->process->remainingTime == 0) {
+		if (cursor->process->remainingTime <= 0) {
 			printf("Process %d: Terminated\n", cursor->process->pid);
 			// free resources only if process to be terminated
+			dequeue(&cursor); // TODO: this here is causing segfault
 			freeHostRes(cursor->process);
-			dequeue(cursor);
+			
 		}
 		else {
 			printf("Process %d: Suspended\n", cursor->process->pid);	
 			// implement aging, move to 1 priority lower
 			switch(cursor->process->priority) {
 				case 1:
-					enqueue(p2Queue, dequeue(cursor)->process);
+					enqueue(p2Queue, dequeue(&cursor)->process);
 					break;
 				case 2:
-					enqueue(p3Queue, dequeue(cursor)->process);
+					enqueue(p3Queue, dequeue(&cursor)->process);
 					break;
 				case 3:
 					// can't move any lower
@@ -417,6 +429,7 @@ int executeFCFS(struct queue *queue) {
 			}
 		}
 		return 1;
+	}
 	}
 	return 0;
 }
@@ -433,13 +446,14 @@ int isEmpty(struct queue *queue) {
 //RETURNS: none
 void enqueue(struct queue *target, struct pcb *currentProcess) {
 	if (target != NULL) {
-		if(!target->header) {
+		if(target->header == 0) {
 			target->process = currentProcess;
 			target->header = 1;
+			// added element is the head, single element of queue
 		}
 		else {
 			struct queue *cursor = target;
-			while (cursor->next)
+			while (cursor->next != NULL)
 				cursor = cursor->next;
 			struct queue *thisProcess = malloc(sizeof(struct queue));
 			cursor->next = thisProcess;

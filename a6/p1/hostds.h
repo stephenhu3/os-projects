@@ -91,7 +91,7 @@ struct queue{
 
 void initSys(void);
 void processCycle(void);
-int updateDispatcher(int arrival, int priority, int memsize, 
+int updateDispatcher(int arrival, int priority, int duration, int memsize, 
 	int printers, int scanners, int modems, int drives);
 int runDispatcher(int currentTime);
 int runUser(void);
