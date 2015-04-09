@@ -47,7 +47,7 @@ int main(int argc , char *argv[])
     puts("Connected");
      
     //Send some data(test if clinet can send the msg to server)
-    message = "SUGAR MAMA SUGAR PAPA SUGAR KID";
+    message = "SUGAR MAMA SUGAR PAPA SUGAR KID";//works with any character
     //message = "shorter string"; //test case
     if( send(s , message , strlen(message) , 0) < 0)
     {
