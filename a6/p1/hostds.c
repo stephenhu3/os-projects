@@ -9,7 +9,7 @@ struct queue *p1Queue;
 struct queue *p2Queue;
 struct queue *p3Queue;
 int pid = 1;
-int currentTime = 0;
+int currentTime = 1;
 //above all, real time queue has main priority, FCFS, if empty THEN
 //{
 // userQueue uses round robin scheduling scheme
@@ -106,11 +106,21 @@ int main(int argc, char *argv[]) {
 
 
 
-	// debugging, so comment out
+	runDispatcher(currentTime);
+	// process cycle calls run dispatcher already
 	while(isEmpty(dispatcher) == 0) {
-		runDispatcher(currentTime);
 		processCycle();
 	}
+
+
+
+	// for (int i = 0; i < 11; i++) {
+	// 	processCycle();
+	// }
+	// contents of queues
+	// head of RTQueue
+	// printf("Head of RT, PID: %d", RTQueue->process->pid);
+	// printf("Second of RT, PID: %d", RTQueue->next->process->pid);
 	// // is empty, so run 1 last time
 	// runDispatcher(currentTime);
 	// processCycle();
@@ -170,7 +180,7 @@ void processCycle(void) {
 	// If real time queue empty, start processing user queue
 
 	//TODO: process cycle should only be called at most once per second, use timing functions to ensure this
-	runDispatcher(currentTime);
+	// runDispatcher(currentTime);
 
 	if (isEmpty(RTQueue)) {
 		// Dispatch from user queue to appropriate priority queues
@@ -179,6 +189,7 @@ void processCycle(void) {
 		if (isEmpty(p1Queue)) {
 			if (isEmpty(p2Queue)) {
 				if (isEmpty(p3Queue)) {
+					currentTime++;
 					return;
 				} else {
 					//run process from priority queue 3, additional logic needed
@@ -259,15 +270,18 @@ int runDispatcher(int currentTime) {
 	// Question: What does holder do?
 	// trying to count number of items in dispatcher
 	// count elements in dispatcher
-	// flawed implementation, isEmpty requires the head of the queue as parameter
-	// for(count = 1; isEmpty(holder)==1; count++) {
-	// 	holder = holder->next;
-	// }
+	for(count = 1; holder->next != NULL; count++) {
+		holder = holder->next;
+	}
+
+	// For debugging
+	// printf("count: %d\n", count);
 
 	// reset after counting
 	holder = dispatcher;
 
-	count = 1;
+	// if this is to simulate 1 time quantum, should only be able to perform once, not loop
+	// Current issue: segfault after terminating process
 	for(i = 0; i < count; i++) {
 		// grab process
 		struct pcb *process = dequeue(&holder)->process;
@@ -406,14 +420,16 @@ int executeFCFS(struct queue *queue) {
 		if (cursor->process->remainingTime <= 0) {
 			printf("Process %d: Terminated\n", cursor->process->pid);
 			// free resources only if process to be terminated
-			dequeue(&cursor); // TODO: this here is causing segfault
+			dequeue(&cursor); // TODO: this here is causing segfault, fixed by calling by reference
 			freeHostRes(cursor->process);
 			
 		}
 		else {
 			printf("Process %d: Suspended\n", cursor->process->pid);	
-			// implement aging, move to 1 priority lower
+			// implement aging, move to 1 priority lower if in priority queues
 			switch(cursor->process->priority) {
+				case 0: // is in real time queue
+					break;
 				case 1:
 					enqueue(p2Queue, dequeue(&cursor)->process);
 					break;
@@ -471,7 +487,7 @@ void enqueue(struct queue *target, struct pcb *currentProcess) {
 //EFFECTS: dequeues the header of queue
 //RETURNS: dequeued header
 struct queue* dequeue(struct queue **header) {
-	if(!((*header)->process))
+	if(((*header)->process) == NULL)
 		return NULL;
 
 	struct queue *dequeuedHeader = *header;
