@@ -69,7 +69,7 @@ int main(int argc , char *argv[])
     }
 	else
 	{
-	printf("I have receive your messege \n");
+	printf("I have receive your message \n");
 	printf("Reply from client : ");
 	client_reply[recv_size] = '\0';
 	puts(client_reply);
