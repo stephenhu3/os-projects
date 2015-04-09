@@ -97,7 +97,7 @@ int runDispatcher(int currentTime);
 int runUser(void);
 
 int isEmpty(struct queue *queue);
-void initQueue(struct queue *queue);
+void initQueue(struct queue **init);
 void enqueue(struct queue *queue, struct pcb *currentProcess);
 struct queue* dequeue(struct queue **header);
 

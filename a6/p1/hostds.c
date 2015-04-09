@@ -65,8 +65,7 @@ int main(int argc, char *argv[]) {
 	int readValues[8];
 	int i;
 	initSys();
-	if (dispatcher == NULL)
-		printf("Dispatcher queue is null\n");
+	
 	while (fgets(currentLine, 50, file) != NULL) {
 		// parse each line
 
@@ -105,9 +104,11 @@ int main(int argc, char *argv[]) {
 
 	}
 
+
+
 	// debugging, so comment out
 	// while(currentTime < 30) {
-	// 	runDispatcher(currentTime);
+		runDispatcher(currentTime);
 	// }
 
 }
@@ -133,25 +134,25 @@ void initSys(void) { // No crashes
 	memset(host.memory, 0, TOTAL_MEM);
 
 	// initializes queues
-	initQueue(dispatcher);
-	initQueue(RTQueue);
-	initQueue(userQueue);
-	initQueue(p1Queue);
-	initQueue(p2Queue);
-	initQueue(p3Queue);
+	initQueue(&dispatcher);
+	initQueue(&RTQueue);
+	initQueue(&userQueue);
+	initQueue(&p1Queue);
+	initQueue(&p2Queue);
+	initQueue(&p3Queue);
 
 }
 
 //PARAMS: valid uninitialized queue
 //EFFECTS: initializes queue and elements within
 //RETURNS: none
-void initQueue(struct queue *init) {
-	init = malloc(sizeof(struct queue));
-
-	init->header = 0;
-	init->next = NULL;
-	init->process = NULL;
-
+void initQueue(struct queue **init) {
+	struct queue *new;
+	new = malloc(sizeof(struct queue));
+	new->header = 0;
+	new->next = NULL;
+	new->process = NULL;
+	*init = new;
 }
 
 //PARAMS: run once per time unit
@@ -236,7 +237,7 @@ int updateDispatcher(int arrival, int priority, int memsize,
 //RETURNS: 1 if real time queue was updated (for intercepting), 0 otherwise
 int runDispatcher(int currentTime) {
 	// our return value for whether or not the realtime queue was updated
-	int rtIntercept;
+	int rtIntercept = 0;
 	int i, count;
 
 	// hold the dispatcher in queue that we can modify with impunity
@@ -244,7 +245,7 @@ int runDispatcher(int currentTime) {
 
 	// if elements were added, leftover elements get pushed to this queue which will be the new dispatcher
 	struct queue *updatedDispatcher;
-	initQueue(updatedDispatcher);
+	initQueue(&updatedDispatcher);
 
 	if(isEmpty(holder)) {
 		printf("There is nothing to dispatch right now.\n\n");
@@ -280,22 +281,28 @@ int runDispatcher(int currentTime) {
 		switch(process->priority) {
 			case 0:
 				enqueue(RTQueue, process);
+				break;
 			case 1: // if priority is either 1, 2, or 3, enqueue to user queue
 			case 2:
 			case 3:
 				enqueue(userQueue, process);
+				break;
+			default:
+				break;
 		}
 	}
 	
-	// free the current dispatcher
-	while(isEmpty(dispatcher) != 1) {
-		holder = dispatcher->next;
-		free(dispatcher->process);
-		free(dispatcher);
-		dispatcher = holder;
-	}
 
-	// update dispatcher with leftover processes
+	//TODO: this is causing segfaults since holder can be null, come back to this
+	// free the current dispatcher
+	// while(isEmpty(dispatcher) != 1) {
+	// 	holder = dispatcher->next;
+	// 	free(dispatcher->process);
+	// 	free(dispatcher);
+	// 	dispatcher = holder;
+	// }
+
+	// // update dispatcher with leftover processes
 	dispatcher = updatedDispatcher;
 
 	return rtIntercept;
