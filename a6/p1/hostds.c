@@ -37,8 +37,6 @@ int main(int argc, char *argv[]) {
 		exit(0);
 	}
 
-	initSys();
-
 	// input in the form:
 	// <arrival time>, <priority>, <processor time>, <Mbytes>, <#printers>, <#scanners>, <#modems>, <#CDs>
 	// 13, 3, 6, 128, 1, 0, 1, 2
@@ -61,7 +59,7 @@ int main(int argc, char *argv[]) {
 	char *readData;
 	int readValues[8];
 	int i;
-
+	initSys();
 	while (fgets(currentLine, 50, file) != NULL) {
 		// parse each line
 
@@ -137,6 +135,17 @@ void initSys(void) { // No crashes
 
 }
 
+//PARAMS: valid uninitialized queue
+//EFFECTS: initializes queue and elements within
+//RETURNS: none
+void initQueue(struct queue *init) {
+	init = malloc(sizeof(struct queue));
+
+	init->header = 0;
+	init->next = NULL;
+	init->process = NULL;
+}
+
 //PARAMS: run once per time unit
 //EFFECTS: simulates one processing cycle, increments global time
 //RETURNS: none
@@ -187,7 +196,7 @@ int updateDispatcher(int arrival, int priority, int memsize,
 	int printers, int scanners, int modems, int drives) {
 
 	// Set needed resources
-	struct pcbres *resources = malloc(sizeof(resources));
+	struct pcbres *resources = malloc(sizeof(struct pcbres));
 	resources->printersNeeded = printers;
 	resources->scannersNeeded = scanners;
 	resources->modemsNeeded = modems;
@@ -195,7 +204,7 @@ int updateDispatcher(int arrival, int priority, int memsize,
 	resources->memNeeded = memsize;
 
 	// Set process information
-	struct pcb *process = malloc(sizeof(process));
+	struct pcb *process = malloc(sizeof(struct pcb));
 	process->pid = pid++;
 	process->priority = priority;
 	process->arrivalTime = arrival;
@@ -372,7 +381,7 @@ int executeFCFS(struct queue *queue) {
 			printf("Process %d: Terminated\n", cursor->process->pid);
 			// free resources only if process to be terminated
 			freeHostRes(cursor->process);
-			dequeue(cursor->process);
+			dequeue(cursor);
 		}
 		else {
 			printf("Process %d: Suspended\n", cursor->process->pid);	
@@ -404,34 +413,27 @@ int isEmpty(struct queue *queue) {
 	return queue->header == 0 ? 1 : 0;
 }
 
-//PARAMS: valid uninitialized queue
-//EFFECTS: initializes queue and elements within
-//RETURNS: none
-void initQueue(struct queue *queue) {
-	queue = malloc(sizeof(queue));
-
-	queue->header = 0;
-	queue->next = NULL;
-	queue->process = NULL;
-}
-
 //PARAMS: target queue to insert process, current process to queue up
 //EFFECTS: queues current process at end of given queue
 //RETURNS: none
 void enqueue(struct queue *queue, struct pcb *currentProcess) {
-	if(!queue->header) {
-		queue->process = currentProcess;
-		queue->header = 1;
-	}
-	else {
-		struct queue *cursor = queue;
-		while (cursor->next)
-			cursor = cursor->next;
-		struct queue *thisProcess = malloc(sizeof(queue));
-		cursor->next = thisProcess;
-		cursor->next->header = 0;
-		cursor->next->next = NULL;
-		cursor->next->process = currentProcess;
+		if (queue != NULL) {
+		if(!queue->header) {
+			queue->process = currentProcess;
+			queue->header = 1;
+		}
+		else {
+			struct queue *cursor = queue;
+			while (cursor->next)
+				cursor = cursor->next;
+			struct queue *thisProcess = malloc(sizeof(struct queue));
+			cursor->next = thisProcess;
+			cursor->next->header = 0;
+			cursor->next->next = NULL;
+			cursor->next->process = currentProcess;
+		}
+	} else {
+		printf("Invalid queue, nothing enqueued.\n");
 	}
 }
 
