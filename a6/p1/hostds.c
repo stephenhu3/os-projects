@@ -29,8 +29,6 @@ Process A + Information
 
 */
 
-
-
 int main(int argc, char *argv[]) {
 	if (argc != 2) {
 		printf("Error processing arguments... Please specify filename in format: ./hostds filename.txt\n");
@@ -45,7 +43,7 @@ int main(int argc, char *argv[]) {
 
 	if ((int) file == -1) {
 		printf("Error reading dispatch file\n");
-		return 0;	
+		return -1;	
 	}
 
 	// seek file pointer for reading from beginning
@@ -94,6 +92,15 @@ int main(int argc, char *argv[]) {
 	while(!isEmpty(dispatcher) || host.currentProcess != NULL || !isEmpty(RTQueue) || !isEmpty(p1Queue) || !isEmpty(p2Queue) || !isEmpty(p3Queue)) {
 	 	processCycle();
 	}
+
+	free(p1Queue);
+	free(p2Queue);
+	free(p3Queue);
+	free(RTQueue);
+	free(userQueue);
+	free(dispatcher);
+
+	return 0;
 }
 
 //PARAMS: none
@@ -333,6 +340,14 @@ void runDispatcher(int currentTime) {
 		}
 		else // hasn't arrived yet so put it back
 			enqueue(updatedDispatcher, process);
+	}
+
+	while(!isEmpty(dispatcher)) {
+		holder = dispatcher->next;
+		free(dispatcher->process->res);
+		free(dispatcher->process);
+		free(dispatcher);
+		dispatcher = holder;
 	}
 
 	// update dispatcher with leftover processes that could not be run
