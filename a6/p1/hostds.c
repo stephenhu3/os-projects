@@ -42,12 +42,12 @@ int main(int argc, char *argv[]) {
 		exit(0);
 	}
 
-	// input in the form:
-	// <arrival time>, <priority>, <processor time>, <Mbytes>, <#printers>, <#scanners>, <#modems>, <#CDs>
-	// 13, 3, 6, 128, 1, 0, 1, 2
-	// 12, 2, 4, 128, 1, 0, 1, 2
-	// 12, 3, 3, 128, 1, 0, 1, 2
-	// printf("Printers: %i\n", host.numPrinters);
+	// // input in the form:
+	// // <arrival time>, <priority>, <processor time>, <Mbytes>, <#printers>, <#scanners>, <#modems>, <#CDs>
+	// // 13, 3, 6, 128, 1, 0, 1, 2
+	// // 12, 2, 4, 128, 1, 0, 1, 2
+	// // 12, 3, 3, 128, 1, 0, 1, 2
+	// // printf("Printers: %i\n", host.numPrinters);
 
 	// open dispatch list for reading
 	FILE *file = fopen( argv[1], "r");
@@ -106,24 +106,117 @@ int main(int argc, char *argv[]) {
 
 
 
-	// runDispatcher(currentTime);
-	// process cycle calls run dispatcher already
+	// // runDispatcher(currentTime);
+	// // // process cycle calls run dispatcher already
 	while(isEmpty(dispatcher) == 0) {
 		processCycle();
 	}
 
 
 
-	// for (int i = 0; i < 13; i++) {
-	// 	processCycle();
-	// }
-	// contents of queues
-	// head of RTQueue
-	// printf("Head of RT, PID: %d", RTQueue->process->pid);
-	// printf("Second of RT, PID: %d", RTQueue->next->process->pid);
-	// // is empty, so run 1 last time
+	// // for (int i = 0; i < 13; i++) {
+	// // 	processCycle();
+	// // }
+	// // contents of queues
+	// // head of RTQueue
+	// // printf("Head of RT, PID: %d", RTQueue->process->pid);
+	// // printf("Second of RT, PID: %d", RTQueue->next->process->pid);
+	// // // is empty, so run 1 last time
+	// // runDispatcher(currentTime);
+	// // processCycle();
+
+	// //Testing dequeue and enqueue
+	// initSys();
+	// struct pcbres *resources = (struct pcbres *) malloc(sizeof(struct pcbres));
+	// resources->printersNeeded = 0;
+	// resources->scannersNeeded = 0;
+	// resources->modemsNeeded = 0;
+	// resources->drivesNeeded = 0;
+	// resources->memNeeded = 0;
+
+	// // Set process information
+	// struct pcb *process = (struct pcb *) malloc(sizeof(struct pcb));
+	// process->priority = 0;
+	// process->arrivalTime = 0;
+	// process->remainingTime = 5;
+	// process->res = resources;
+	// int currentPID = pid++;
+	// process->pid = currentPID;
+	
+
+	// enqueue(RTQueue, process);
+	// // printf("Header: %d\n", RTQueue->header);
+	// // printf("Head ID: %d\n", RTQueue->process->pid);
+
+
+	// struct pcbres *resources2 = (struct pcbres *) malloc(sizeof(struct pcbres));
+	// resources->printersNeeded = 0;
+	// resources->scannersNeeded = 0;
+	// resources->modemsNeeded = 0;
+	// resources->drivesNeeded = 0;
+	// resources->memNeeded = 0;
+
+	// // Set process information
+	// struct pcb *process2 = (struct pcb *) malloc(sizeof(struct pcb));
+	// int currentPID2 = pid++;
+	// process2->pid = currentPID2;
+	// process2->priority = 0;
+	// process2->arrivalTime = 0;
+	// process2->remainingTime = 10;
+	// process2->res = resources2;
+
+	// enqueue(RTQueue, process2);
+	
+	// printf("First Header: %d\n", RTQueue->header);
+	// printf("First ID: %d\n", RTQueue->process->pid);
+	// printf("First Remaining Time: %d\n", RTQueue->process->remainingTime);
+	// printf("Second Header: %d\n", RTQueue->next->header);
+	// printf("Second ID: %d\n", RTQueue->next->process->pid);
+	// printf("Second Remaining Time: %d\n", RTQueue->next->process->remainingTime);
+	//issue here, on the second enqueue, the added element became the new head, unless pid got increased for all
+
+
+	// printf("First Header: %d\n", RTQueue->header);
+	// printf("First ID: %d\n", RTQueue->process->pid);
+	// printf("First Remaining Time: %d\n", RTQueue->process->remainingTime);
+	// dequeue(&RTQueue);
+	
+	// printf("First Header: %d\n", RTQueue->header);
+	// printf("First ID: %d\n", RTQueue->process->pid);
+	// printf("First Remaining Time: %d\n", RTQueue->process->remainingTime);
+	// dequeue(&RTQueue);
+	
+	//
+	// struct queue *process3 = (struct queue *) malloc(sizeof(struct queue));
+	// process3 = dequeue(&RTQueue);
+
+	// printf("After First Dequeue First ID: %d\n", process3->process->pid);
+	// printf("After First Dequeue First Remaining Time: %d\n", process3->process->remainingTime);
+
+	// struct queue *process4 = (struct queue *) malloc(sizeof(struct queue));
+	// process4 = dequeue(&RTQueue);  // assigning dequeue on the head element has incorrect value, else is okay
+
+	// printf("After Second Dequeue Second ID: %d\n", process4->process->pid);
+	// printf("After Second Dequeue Second Remaining Time: %d\n", process4->process->remainingTime);
+
+	// if (RTQueue == NULL)
+	// 	printf("Queue empty now\n");
+
+	// printf("After Dequeue Second ID: %d\n", RTQueue->next->process->pid);
+
+	// updateDispatcher(6, 0, 3, 64, 1, 2, 1, 1);
+	// updateDispatcher(10, 0, 1, 64, 1, 2, 1, 1);
+	// updateDispatcher(6, 1, 3, 64, 1, 2, 1, 1);
+	// updateDispatcher(13, 1, 1, 64, 1, 2, 1, 1);
 	// runDispatcher(currentTime);
-	// processCycle();
+	// printf("Head ID: %d\n", RTQueue->process->pid);
+	// dequeue(&RTQueue); // Segfault caused by dequeue if not using &
+	// printf("Head ID: %d\n", RTQueue->process->pid);
+
+	// printf("Head ID: %d\n", p1Queue->process->pid);
+	// dequeue(&p1Queue); // Segfault caused by this using p1
+	// printf("Head ID: %d\n", p1Queue->process->pid);
+
 
 }
 
@@ -207,6 +300,7 @@ void processCycle(void) {
 		// run process from real time queue, additional logic needed
 		/* Note: "Real time processes will not need any IO resources, but require memory allocation, 64 Mbytes or less" */
 		executeFCFS(RTQueue);
+		// maybe executeFCFS needs to be pass by reference using & since dequeues are occurring
 	}
 	// one unit of time has passed
 	currentTime++;
@@ -218,7 +312,6 @@ void processCycle(void) {
 //RETURNS: 1 for process put into real time queue, 0 for user queue, -1 if none
 int updateDispatcher(int arrival, int priority, int duration, int memsize, 
 	int printers, int scanners, int modems, int drives) {
-
 	// Set needed resources
 	struct pcbres *resources = (struct queue *) malloc(sizeof(struct pcbres));
 	resources->printersNeeded = printers;
@@ -229,7 +322,8 @@ int updateDispatcher(int arrival, int priority, int duration, int memsize,
 
 	// Set process information
 	struct pcb *process = (struct queue *) malloc(sizeof(struct pcb));
-	process->pid = pid++;
+	int currentPID = pid++;
+	process->pid = currentPID;
 	process->priority = priority;
 	process->arrivalTime = arrival;
 	process->remainingTime = duration;
@@ -432,7 +526,7 @@ int executeFCFS(struct queue *queue) {
 			printf("Process %d: Suspended\n", cursor->process->pid);	
 			// implement aging, move to 1 priority lower if in priority queues
 			switch(cursor->process->priority) {
-				case 0: // is in real time queue
+				case 0: // is in real time queue, leave in there
 					break;
 				case 1:
 					enqueue(p2Queue, dequeue(&cursor)->process);
@@ -477,11 +571,11 @@ void enqueue(struct queue *target, struct pcb *currentProcess) {
 			struct queue *cursor = target;
 			while (cursor->next != NULL)
 				cursor = cursor->next;
-			struct queue *thisProcess = (struct queue *) malloc(sizeof(struct queue));
-			cursor->next = thisProcess;
-			cursor->next->header = 0;
-			cursor->next->next = NULL;
-			cursor->next->process = currentProcess;
+			struct queue *newQueue = (struct queue *) malloc(sizeof(struct queue));
+			newQueue->header = 0;
+			newQueue->next = NULL;
+			newQueue->process = currentProcess;
+			cursor->next = newQueue;
 		}
 	} else {
 		printf("Invalid queue, nothing enqueued.\n");
@@ -499,10 +593,21 @@ struct queue* dequeue(struct queue **header) {
 		return NULL;
 
 	struct queue *dequeuedHeader = (struct queue *) malloc(sizeof(struct queue));
-	*dequeuedHeader = **header;
+	memcpy(dequeuedHeader, *header, sizeof(struct queue));
+
+	struct pcb *dequeuedProcess = (struct pcb *) malloc(sizeof(struct pcb));
+	memcpy(dequeuedProcess, (*header)->process, sizeof(struct pcb));	
+
+	struct pcbres *resources = (struct pcbres *) malloc(sizeof(struct pcbres));
+	memcpy(resources, (*header)->process->res, sizeof(struct pcbres));
+
+	dequeuedProcess->res = resources;
+	dequeuedHeader->process = dequeuedProcess;
+	// copied over the queue, but need to copy over the process too
+	// dequeuedHeader = header;
 	// this was the issue, you're setting header as null
 
-	// remove current header and set new header
+	// // remove current header and set new header
 	if((*header)->next == NULL) {// single element case
 		*header = NULL;
 	}
