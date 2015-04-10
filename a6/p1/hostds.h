@@ -53,9 +53,6 @@ struct pcb{
 	int arrivalTime;
 	int started; // default to zero, 1 if started
 	int remainingTime;
-	int remainingTimeSplice;
-
-	int state;
 
 	struct pcbres *res;
 }; 
@@ -111,5 +108,7 @@ int allocDrives(struct pcb *process);
 int allocMem(struct pcb *process);
 int allocRTMem(struct pcb *process);
 int allocRes(struct pcb *process);
+
+int executeFCFS(struct queue *cursor);
 
 #endif

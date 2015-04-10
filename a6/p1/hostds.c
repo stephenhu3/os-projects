@@ -106,7 +106,7 @@ int main(int argc, char *argv[]) {
 
 
 
-	runDispatcher(currentTime);
+	// runDispatcher(currentTime);
 	
 	// struct queue *process3 = (struct queue *) malloc(sizeof(struct queue));
 	// process3 = dequeue(&RTQueue);
@@ -126,16 +126,52 @@ int main(int argc, char *argv[]) {
 	// printf("After Third Dequeue Third ID: %d\n", process5->process->pid);
 	// printf("After Third Dequeue Third Remaining Time: %d\n", process5->process->remainingTime);
 
-	// // // process cycle calls run dispatcher already
-	while(isEmpty(dispatcher) == 0) {
-		processCycle();
+	// process cycle calls run dispatcher already
+	// while(isEmpty(dispatcher) == 0) {
+	// 	processCycle();
+	// }
+
+
+
+	// for (int i = 0; i < 30; i++) {
+	// 	processCycle();
+	// }
+
+	for (int i = 0; i < 50; i++) {
+		runDispatcher(currentTime);
+		currentTime++;
 	}
 
+	struct queue *process3 = (struct queue *) malloc(sizeof(struct queue));
+	process3 = dequeue(&RTQueue);
+	printf("After First Dequeue First Header: %d\n", process3->header);
+	printf("After First Dequeue First ID: %d\n", process3->process->pid);
+	printf("After First Dequeue First Remaining Time: %d\n", process3->process->remainingTime);
 
 
-	// // for (int i = 0; i < 13; i++) {
-	// // 	processCycle();
-	// // }
+	struct queue *process4 = (struct queue *) malloc(sizeof(struct queue));
+	process4 = dequeue(&RTQueue);  // assigning dequeue on the head element has incorrect value, else is okay
+	printf("After Second Dequeue Second Header: %d\n", process4->header);
+	printf("After Second Dequeue Second ID: %d\n", process4->process->pid);
+	printf("After Second Dequeue Second Remaining Time: %d\n", process4->process->remainingTime);
+
+	// printf("First Header: %d\n", RTQueue->header);
+	// printf("First ID: %d\n", RTQueue->process->pid);
+	// printf("First Remaining Time: %d\n", RTQueue->process->remainingTime);
+
+	// dequeue(&RTQueue);
+	// printf("First Header: %d\n", RTQueue->header);
+	// printf("First ID: %d\n", RTQueue->process->pid);
+	// printf("First Remaining Time: %d\n", RTQueue->process->remainingTime);
+
+	// dequeue(&RTQueue);
+	// printf("First Header: %d\n", RTQueue->header);
+	// printf("First ID: %d\n", RTQueue->process->pid);
+	// printf("First Remaining Time: %d\n", RTQueue->process->remainingTime);
+	// printf("After First Dequeue First ID: %d\n", process3->process->pid);
+	// printf("After First Dequeue First Remaining Time: %d\n", process3->process->remainingTime);
+
+
 	// // contents of queues
 	// // head of RTQueue
 	// // printf("Head of RT, PID: %d", RTQueue->process->pid);
@@ -473,7 +509,7 @@ int runUser(void) {
 //EFFECTS: executes the input queue in FCFS fashion
 //		   (last element has time remaining decremented, dequeued if completed)
 //RETURNS: 1 if process dequeued and run, else 0
-int executeFCFS(struct queue *queue) {
+int executeFCFS(struct queue *cursor) {
 	//TODO: display necessary information
 	// A message displaying the process ID when the process starts;
 	// A regular message every second the process is executed; and
@@ -501,9 +537,9 @@ int executeFCFS(struct queue *queue) {
 	policies the User job should not be suspended and moved to a lower priority level 
 	unless another process is waiting to be (re)started.
 	*/
-	if (queue != NULL) {
-	if (!isEmpty(queue)) {
-		struct queue *cursor = queue;
+	if (cursor != NULL) {
+	if (!isEmpty(cursor)) {
+		// struct queue *cursor = queue;
 
 		// should be head, not tail, comment this out
 		// // cursor is last element in queue
@@ -524,8 +560,6 @@ int executeFCFS(struct queue *queue) {
 			printf("Process %d: Continued (Remaining Time: %d) | Current Time: %d\n", cursor->process->pid, cursor->process->remainingTime, currentTime);
 		}
 
-		//alternative:
-		// cursor->remainingTime = cursor->remainingTime - remainingTimeSplice; 
 		cursor->process->remainingTime = cursor->process->remainingTime - 1;
 
 		if (cursor->process->remainingTime <= 0) {
