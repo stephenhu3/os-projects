@@ -440,8 +440,6 @@ void runDispatcher(int currentTime) {
 
 	// // update dispatcher with leftover processes that could not be run
 	dispatcher = updatedDispatcher;
-
-	return rtIntercept;
 }
 
 //PARAMS: none
