@@ -16,18 +16,18 @@ int main(int argc , char *argv[])
     int recv_size;
  
     printf("\nInitialising Winsock...");
-    if (WSAStartup(MAKEWORD(2,2),&wsa) != 0)
+    if (WSAStartup(MAKEWORD(2,2),&wsa) != 0) //initialize winsock
     {
-        printf("Failed. Error Code : %d",WSAGetLastError());
+        printf("Failed. Error Code : %d",WSAGetLastError()); //prints out when initialize fails
         return 1;
     }
      
     printf("Initialised.\n");
      
     //Create a socket
-    if((s = socket(AF_INET , SOCK_STREAM , 0 )) == INVALID_SOCKET)
+    if((s = socket(AF_INET , SOCK_STREAM , 0 )) == INVALID_SOCKET) //creates socket
     {
-        printf("Could not create socket : %d" , WSAGetLastError());
+        printf("Could not create socket : %d" , WSAGetLastError()); //prints out when creation fails
     }
  
     printf("Socket created.\n");
@@ -38,7 +38,7 @@ int main(int argc , char *argv[])
     server.sin_port = htons( 8888 ); // make sure u have same port number as server
  
     //Connect to remote server
-    if (connect(s , (struct sockaddr *)&server , sizeof(server)) < 0)
+    if (connect(s , (struct sockaddr *)&server , sizeof(server)) < 0) //using connect' function from winsock to remote server
     {
         puts("connect error");
         return 1;
@@ -49,7 +49,7 @@ int main(int argc , char *argv[])
     //Send some data(test if clinet can send the msg to server)
     message = "SUGAR MAMA SUGAR PAPA SUGAR KID";//works with any character
     //message = "shorter string"; //test case
-    if( send(s , message , strlen(message) , 0) < 0)
+    if( send(s , message , strlen(message) , 0) < 0) //send message
     {
         puts("Send failed");
         return 1;
