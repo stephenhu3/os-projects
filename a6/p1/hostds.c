@@ -344,11 +344,11 @@ int updateDispatcher(int arrival, int priority, int duration, int memsize,
 
 //PARAMS: current simulated time quantum
 //EFFECTS: runs the dispatcher, enqueuing or holding as appropriate
-//RETURNS: 1 if real time queue was updated (for intercepting), 0 otherwise
-int runDispatcher(int currentTime) {
+//RETURNS: none
+void runDispatcher(int currentTime) {
 	// our return value for whether or not the realtime queue was updated
 	int rtIntercept = 0;
-	int i, count;
+	int i, count, allocRet;
 
 	// hold the dispatcher in queue that we can modify with impunity
 	struct queue *holder = dispatcher;
@@ -382,7 +382,8 @@ int runDispatcher(int currentTime) {
 		
 		// handle arrival time
 		if(currentTime >= process->arrivalTime) {
-			if(allocRes(process)) {
+			allocRet = allocRes(process);
+			if(allocRet == 1 || allocRet == 0) {
 				printf("Allocated Process PID: %i\n\n", process->pid);
 				if(process->priority == 0)
 					rtIntercept = 1;
