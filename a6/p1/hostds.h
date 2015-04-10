@@ -59,7 +59,7 @@ struct pcb{
 	int pid;
 	int priority;
 	int arrivalTime;
-	int started; // default to zero, 1 if started
+	int started;
 	int remainingTime;
 	int maxTimeAllotted;
 
