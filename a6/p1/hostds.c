@@ -403,7 +403,7 @@ void runDispatcher(int currentTime) {
 		if(currentTime >= process->arrivalTime) {
 			allocRet = allocRes(process);
 			if(allocRet == 1 || allocRet == 0) {
-				printf("Allocated Process PID: %i\n\n", process->pid);
+				printf("\nAllocated Process PID: %i\n", process->pid);
 				if(process->priority == 0)
 					rtIntercept = 1;
 			}
@@ -413,18 +413,20 @@ void runDispatcher(int currentTime) {
 		else // hasn't arrived yet so put it back
 			enqueue(updatedDispatcher, process);
 
-		// queue appropriately
-		switch(process->priority) {
-			case 0:
-				enqueue(RTQueue, process);
-				break;
-			case 1: // if priority is either 1, 2, or 3, enqueue to user queue
-			case 2:
-			case 3:
-				enqueue(userQueue, process);
-				break;
-			default:
-				break;
+		if(currentTime >= process->arrivalTime) {
+			// queue appropriately
+			switch(process->priority) {
+				case 0:
+					enqueue(RTQueue, process);
+					break;
+				case 1: // if priority is either 1, 2, or 3, enqueue to user queue
+				case 2:
+				case 3:
+					enqueue(userQueue, process);
+					break;
+				default:
+					break;
+			}
 		}
 	}
 	
