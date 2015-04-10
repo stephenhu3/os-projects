@@ -406,16 +406,7 @@ void runDispatcher(int currentTime) {
 				printf("\nAllocated Process PID: %i\n", process->pid);
 				if(process->priority == 0)
 					rtIntercept = 1;
-			}
-			else // can't allocate resource so put it back
-				enqueue(updatedDispatcher, process);
-		}
-		else // hasn't arrived yet so put it back
-			enqueue(updatedDispatcher, process);
-
-		if(currentTime >= process->arrivalTime) {
-			// queue appropriately
-			switch(process->priority) {
+				switch(process->priority) {
 				case 0:
 					enqueue(RTQueue, process);
 					break;
@@ -427,7 +418,12 @@ void runDispatcher(int currentTime) {
 				default:
 					break;
 			}
+			}
+			else // can't allocate resource so put it back
+				enqueue(updatedDispatcher, process);
 		}
+		else // hasn't arrived yet so put it back
+			enqueue(updatedDispatcher, process);
 	}
 	
 
