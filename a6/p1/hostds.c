@@ -332,7 +332,7 @@ void processCycle(void) {
 int updateDispatcher(int arrival, int priority, int duration, int memsize, 
 	int printers, int scanners, int modems, int drives) {
 	// Set needed resources
-	struct pcbres *resources = (struct queue *) malloc(sizeof(struct pcbres));
+	struct pcbres *resources = (struct pcbres *) malloc(sizeof(struct pcbres));
 	resources->printersNeeded = printers;
 	resources->scannersNeeded = scanners;
 	resources->modemsNeeded = modems;
@@ -340,7 +340,7 @@ int updateDispatcher(int arrival, int priority, int duration, int memsize,
 	resources->memNeeded = memsize;
 
 	// Set process information
-	struct pcb *process = (struct queue *) malloc(sizeof(struct pcb));
+	struct pcb *process = (struct pcb *) malloc(sizeof(struct pcb));
 	int currentPID = pid++;
 	process->pid = currentPID;
 	process->priority = priority;
