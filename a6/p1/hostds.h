@@ -61,6 +61,7 @@ struct pcb{
 	int arrivalTime;
 	int started; // default to zero, 1 if started
 	int remainingTime;
+	int maxTimeAllotted;
 
 	struct pcbres *res;
 }; 

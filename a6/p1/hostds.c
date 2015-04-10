@@ -127,7 +127,7 @@ int main(int argc, char *argv[]) {
 	// printf("After Third Dequeue Third Remaining Time: %d\n", process5->process->remainingTime);
 
 	// process cycle calls run dispatcher already
-	while(currentTime < 30) {
+	while(!isEmpty(dispatcher) || host.currentProcess != NULL || !isEmpty(RTQueue) || !isEmpty(p1Queue) || !isEmpty(p2Queue) || !isEmpty(p3Queue)) {
 	 	processCycle();
 	}
 
@@ -374,8 +374,19 @@ void processCycle(void) {
 			host.currentProcess->started = 1;
 
 			printf(GREEN "Process %d: Started (Remaining Time: %d) | Current Time: %d\n" RESET, host.currentProcess->pid, host.currentProcess->remainingTime, currentTime);
+			host.currentProcess->maxTimeAllotted = 20;
+
+		} else if (host.currentProcess->maxTimeAllotted <= 1) {
+			printf(MAGENTA "Process %d: Self-terminated after running for 20 cycles\n" RESET, host.currentProcess->pid);
+			freeHostRes(host.currentProcess);
+			host.currentProcess = NULL;
+			currentTime++;
+			printf("\n");
+			return;
+
 		} else {
 			printf(CYAN "Process %d: Continued (Remaining Time: %d) | Current Time: %d\n" RESET, host.currentProcess->pid, host.currentProcess->remainingTime, currentTime);
+			host.currentProcess->maxTimeAllotted--;
 		}
 
 		host.currentProcess->remainingTime--;
