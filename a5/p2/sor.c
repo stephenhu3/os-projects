@@ -22,14 +22,13 @@
    establish convergence of a diverging iterative process or speed up 
    convergence of an overshooting process */
 #define omega 1.25
-#define MAX_double 100000
-#define MIN_double 0
+#define MAX_NUM 100000
+#define MIN_NUM 0
 
 // inputs: A, b, omega
 // outputs: ptr (solutions to n variables)
 
 void solveSystem(double A[n][n], double b[n], int Xi);
-void function();
 
 int main() {
 	int status; // for wait
@@ -54,7 +53,7 @@ int main() {
 	int shm_fd;
 	int shm_fd_oldphi;
 
-	// pointer to shared memory object is a double ptr
+	// pointer to shared memory object is a double pointer
 	double *ptr;
 	double *oldptr;
 	
@@ -69,7 +68,7 @@ int main() {
 	// memory map the shared memory object
 	ptr = mmap(0, SIZE, PROT_WRITE, MAP_SHARED, shm_fd, 0);
 	oldptr = mmap(0, SIZE, PROT_WRITE, MAP_SHARED, shm_fd_oldphi, 0);
-	// ptr is now shared
+	// ptr, oldptr are now shared
 	
 	// write to the shared memory object
 	if (ptr != MAP_FAILED) {
@@ -98,12 +97,12 @@ int main() {
 
 	 int parentpid = getpid();
 	
-	double maxError = MIN_double;
-	double currentError = MAX_double;
+	double maxError = MIN_NUM;
+	double currentError = MAX_NUM;
 
 	while (currentError > 0.01) {
 
-		// NOTE: UPDATE OLDPTR ONLY AFTER X1, X2, X3 HAVE BEEN CALCULATED
+		// NOTE: UPDATES OLDPTR ONLY AFTER VALUES HAVE BEEN CALCULATED FOR PREVIOUS ITERATION
 		for (k = 0; k < n; k++){
 			oldptr[k] = ptr[k]; // old ptr gets previous values after iteration
 		}
@@ -132,7 +131,7 @@ int main() {
 		   accomplish this by checking for approximate error between 
 		   new value and old value, the max should be close to 0 */
 
-		maxError = MIN_double;
+		maxError = MIN_NUM;
 		for (m = 0; m < n; m++) {
 			maxError = error[m] > maxError ? error[m] : maxError;
 		}
@@ -179,16 +178,20 @@ void solveSystem(double A[n][n], double b[n], int Xi) {
 		/* memory map the shared memory object */
 		ptr = mmap(0, SIZE, PROT_WRITE, MAP_SHARED, shm_fd, 0);
 		oldptr = mmap(0, SIZE, PROT_WRITE, MAP_SHARED, shm_fd, 0);
+
 	    /* read from the shared memory object */
 
 		double sigma;
 		int j;
 
+
 		sigma = 0;
+		// calculate sigma, which is used in computing the new values
 		for (j = 0; j < n; j++) {
 			sigma =  j != Xi ? sigma + (A[Xi][j] * ptr[j]) : sigma;
 		}
 
+		// Compute new value based on previous answers in oldptr
 		ptr[Xi] = ((1-omega)*oldptr[Xi]) + ((omega / A[Xi][Xi]) * (b[Xi]-sigma));
 	}
 }
