@@ -14,9 +14,6 @@
 // DEFINES
 #define NUM_BLOCKS 100
 #define BLOCK_SIZE 50
-//void initDisk (void);
-//int dRead (int addr, char *buf);
-
 
 // STRUCT DEFINITIONS
 
