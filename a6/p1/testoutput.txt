@@ -1,0 +1,328 @@
+|------------------------------------------------|
+              PROCESSOR CYCLE #1                
+|------------------------------------------------|
+[33mIdling... Current Time: 1
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #2                
+|------------------------------------------------|
+[34mAllocated Process PID: 1
+[0m[32mProcess 1: Started (Remaining Time: 4) | Current Time: 2
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #3                
+|------------------------------------------------|
+[34mAllocated Process PID: 2
+[0m[36mProcess 1: Continued (Remaining Time: 3) | Current Time: 3
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #4                
+|------------------------------------------------|
+[34mAllocated Process PID: 3
+[0m[34mAllocated Process PID: 4
+[0m[31mProcess 1: Suspended (Remaining Time: 2) | Current Time: 4
+[0m[32mProcess 4: Started (Remaining Time: 5) | Current Time: 4
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #5                
+|------------------------------------------------|
+[36mProcess 4: Continued (Remaining Time: 4) | Current Time: 5
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #6                
+|------------------------------------------------|
+[36mProcess 4: Continued (Remaining Time: 3) | Current Time: 6
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #7                
+|------------------------------------------------|
+[36mProcess 4: Continued (Remaining Time: 2) | Current Time: 7
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #8                
+|------------------------------------------------|
+[36mProcess 4: Continued (Remaining Time: 1) | Current Time: 8
+[0m[35mProcess 4: Terminated
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #9                
+|------------------------------------------------|
+[34mAllocated Process PID: 5
+[0m[36mProcess 1: Continued (Remaining Time: 2) | Current Time: 9
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #10                
+|------------------------------------------------|
+[36mProcess 1: Continued (Remaining Time: 1) | Current Time: 10
+[0m[35mProcess 1: Terminated
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #11                
+|------------------------------------------------|
+[32mProcess 5: Started (Remaining Time: 8) | Current Time: 11
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #12                
+|------------------------------------------------|
+[36mProcess 5: Continued (Remaining Time: 7) | Current Time: 12
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #13                
+|------------------------------------------------|
+[34mAllocated Process PID: 6
+[0m[31mProcess 5: Suspended (Remaining Time: 6) | Current Time: 13
+[0m[32mProcess 6: Started (Remaining Time: 3) | Current Time: 13
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #14                
+|------------------------------------------------|
+[36mProcess 6: Continued (Remaining Time: 2) | Current Time: 14
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #15                
+|------------------------------------------------|
+[36mProcess 6: Continued (Remaining Time: 1) | Current Time: 15
+[0m[35mProcess 6: Terminated
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #16                
+|------------------------------------------------|
+[36mProcess 5: Continued (Remaining Time: 6) | Current Time: 16
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #17                
+|------------------------------------------------|
+[34mAllocated Process PID: 7
+[0m[31mProcess 5: Suspended (Remaining Time: 5) | Current Time: 17
+[0m[32mProcess 7: Started (Remaining Time: 11) | Current Time: 17
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #18                
+|------------------------------------------------|
+[36mProcess 7: Continued (Remaining Time: 10) | Current Time: 18
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #19                
+|------------------------------------------------|
+[36mProcess 7: Continued (Remaining Time: 9) | Current Time: 19
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #20                
+|------------------------------------------------|
+[34mAllocated Process PID: 8
+[0m[36mProcess 7: Continued (Remaining Time: 8) | Current Time: 20
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #21                
+|------------------------------------------------|
+[36mProcess 7: Continued (Remaining Time: 7) | Current Time: 21
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #22                
+|------------------------------------------------|
+[36mProcess 7: Continued (Remaining Time: 6) | Current Time: 22
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #23                
+|------------------------------------------------|
+[36mProcess 7: Continued (Remaining Time: 5) | Current Time: 23
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #24                
+|------------------------------------------------|
+[36mProcess 7: Continued (Remaining Time: 4) | Current Time: 24
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #25                
+|------------------------------------------------|
+[36mProcess 7: Continued (Remaining Time: 3) | Current Time: 25
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #26                
+|------------------------------------------------|
+[36mProcess 7: Continued (Remaining Time: 2) | Current Time: 26
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #27                
+|------------------------------------------------|
+[36mProcess 7: Continued (Remaining Time: 1) | Current Time: 27
+[0m[35mProcess 7: Terminated
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #28                
+|------------------------------------------------|
+[32mProcess 8: Started (Remaining Time: 200) | Current Time: 28
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #29                
+|------------------------------------------------|
+[36mProcess 8: Continued (Remaining Time: 199) | Current Time: 29
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #30                
+|------------------------------------------------|
+[36mProcess 8: Continued (Remaining Time: 198) | Current Time: 30
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #31                
+|------------------------------------------------|
+[36mProcess 8: Continued (Remaining Time: 197) | Current Time: 31
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #32                
+|------------------------------------------------|
+[36mProcess 8: Continued (Remaining Time: 196) | Current Time: 32
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #33                
+|------------------------------------------------|
+[36mProcess 8: Continued (Remaining Time: 195) | Current Time: 33
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #34                
+|------------------------------------------------|
+[36mProcess 8: Continued (Remaining Time: 194) | Current Time: 34
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #35                
+|------------------------------------------------|
+[36mProcess 8: Continued (Remaining Time: 193) | Current Time: 35
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #36                
+|------------------------------------------------|
+[36mProcess 8: Continued (Remaining Time: 192) | Current Time: 36
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #37                
+|------------------------------------------------|
+[36mProcess 8: Continued (Remaining Time: 191) | Current Time: 37
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #38                
+|------------------------------------------------|
+[36mProcess 8: Continued (Remaining Time: 190) | Current Time: 38
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #39                
+|------------------------------------------------|
+[36mProcess 8: Continued (Remaining Time: 189) | Current Time: 39
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #40                
+|------------------------------------------------|
+[36mProcess 8: Continued (Remaining Time: 188) | Current Time: 40
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #41                
+|------------------------------------------------|
+[36mProcess 8: Continued (Remaining Time: 187) | Current Time: 41
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #42                
+|------------------------------------------------|
+[36mProcess 8: Continued (Remaining Time: 186) | Current Time: 42
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #43                
+|------------------------------------------------|
+[36mProcess 8: Continued (Remaining Time: 185) | Current Time: 43
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #44                
+|------------------------------------------------|
+[36mProcess 8: Continued (Remaining Time: 184) | Current Time: 44
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #45                
+|------------------------------------------------|
+[36mProcess 8: Continued (Remaining Time: 183) | Current Time: 45
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #46                
+|------------------------------------------------|
+[36mProcess 8: Continued (Remaining Time: 182) | Current Time: 46
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #47                
+|------------------------------------------------|
+[36mProcess 8: Continued (Remaining Time: 181) | Current Time: 47
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #48                
+|------------------------------------------------|
+[35mProcess 8: Self-terminated after running for 20 cycles
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #49                
+|------------------------------------------------|
+[36mProcess 5: Continued (Remaining Time: 5) | Current Time: 49
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #50                
+|------------------------------------------------|
+[36mProcess 5: Continued (Remaining Time: 4) | Current Time: 50
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #51                
+|------------------------------------------------|
+[36mProcess 5: Continued (Remaining Time: 3) | Current Time: 51
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #52                
+|------------------------------------------------|
+[36mProcess 5: Continued (Remaining Time: 2) | Current Time: 52
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #53                
+|------------------------------------------------|
+[36mProcess 5: Continued (Remaining Time: 1) | Current Time: 53
+[0m[35mProcess 5: Terminated
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #54                
+|------------------------------------------------|
+[32mProcess 2: Started (Remaining Time: 7) | Current Time: 54
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #55                
+|------------------------------------------------|
+[36mProcess 2: Continued (Remaining Time: 6) | Current Time: 55
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #56                
+|------------------------------------------------|
+[36mProcess 2: Continued (Remaining Time: 5) | Current Time: 56
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #57                
+|------------------------------------------------|
+[36mProcess 2: Continued (Remaining Time: 4) | Current Time: 57
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #58                
+|------------------------------------------------|
+[36mProcess 2: Continued (Remaining Time: 3) | Current Time: 58
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #59                
+|------------------------------------------------|
+[36mProcess 2: Continued (Remaining Time: 2) | Current Time: 59
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #60                
+|------------------------------------------------|
+[36mProcess 2: Continued (Remaining Time: 1) | Current Time: 60
+[0m[35mProcess 2: Terminated
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #61                
+|------------------------------------------------|
+[32mProcess 3: Started (Remaining Time: 2) | Current Time: 61
+[0m
+|------------------------------------------------|
+              PROCESSOR CYCLE #62                
+|------------------------------------------------|
+[36mProcess 3: Continued (Remaining Time: 1) | Current Time: 62
+[0m[35mProcess 3: Terminated
+[0m
