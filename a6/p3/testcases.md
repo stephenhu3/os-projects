@@ -24,3 +24,7 @@ Close file in new directory
 	Passed
 Display information about files in new directory
 	Passed
+Program has no segmentation faults
+	Passed
+Program has no memory leaks
+	Passed

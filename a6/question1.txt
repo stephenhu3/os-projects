@@ -1,4 +1,4 @@
-Group 20 EECE 315
+﻿Group 20 EECE 315
 PA6 Question 1
 
 Assume that you need to compile the kernel in a special way, different from the way
@@ -30,6 +30,6 @@ Finally, we need to build the kernel. As our source has stated, by changing the 
 the root of the kernel source tree" and proceeding to type certain "fakeroot" commands, the task should be done. 
 Assuming the commands work properly, some sets of binary package files will be produced in a directory above the build root directory.
 
-Now,we can test the new kernel.
+Now, we can test the new kernel.
 
 
