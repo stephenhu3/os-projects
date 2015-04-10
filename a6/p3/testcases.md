@@ -1,26 +1,26 @@
 Create file in current directory
-	Pass
+	Passed
 Write to file in current directory
-	Pass
+	Passed
 Read from file in current directory
-	Pass
+	Passed
 Close file in current directory
-	Pass
+	Passed
 Display information about files in current directory
-	Pass
+	Passed
 Create new directory
-	Pass
+	Passed
 Access new directory
-	Pass
+	Passed
 Create file in new directory
-	Pass
+	Passed
 Open file new directory
-	Pass
+	Passed
 Write to file in new directory
-	Pass
+	Passed
 Read from file in new directory
-	Pass
+	Passed
 Close file in new directory
-	Pass
+	Passed
 Display information about files in new directory
-	Pass
+	Passed
