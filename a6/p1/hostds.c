@@ -378,7 +378,7 @@ void runDispatcher(int currentTime) {
 
 	if(isEmpty(dispatcher) == 1) {
 		printf("There is nothing to dispatch right now.\n\n");
-		return 0;
+		return;
 	}
 	// Question: What does holder do?
 	// trying to count number of items in dispatcher
