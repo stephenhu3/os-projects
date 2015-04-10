@@ -1,0 +1,35 @@
+Group 20 EECE 315
+PA6 Question 1
+
+Assume that you need to compile the kernel in a special way, different from the way
+the official kernel is compiled in. Explain in detail the steps you need to take in order to
+rebuild the Linux kernel (consider Ubuntu if distribution-dependent). Clearly mention
+which source(s) (Webpages, books, …) you use as reference.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+Online reference: https://wiki.ubuntu.com/Kernel/BuildYourOwnKernel
+
+Firstly, in order to get the kernel source, we will need to obtain the source for an Ubuntu release.
+There are two ways of doing this:
+
+1. Apt-get: This method should be used if a user wants to make changes to the kernel already installed on 
+their system. Using this will result in the source code being obtained.
+2. Git: This method should be used to get the sources if the goal is to get the most up to date sources. Each 
+release has its source in its own git repository, so git can be used to obtain them.
+
+Secondly, we'll need to set up the necessary build environment. Certain packages will be needed in order 
+to get the environment ready to successfully build the kernel. 
+
+Next, if necessary, the configuration needs to get modified. If we don't want any configuration 
+changes, then this can obviously be skipped. Assuming configuration changes are indeed desired, we 
+can run commands to call menuconfig in order to edit the config file of the current configuration 
+for the architectures supported.
+
+Finally, we need to build the kernel. As our source has stated, by changing the "working directory to 
+the root of the kernel source tree" and proceeding to type certain "fakeroot" commands, the task should be done. 
+Assuming the commands work properly, some sets of binary package files will be produced in a directory above the build root directory.
+
+Now,we can test the new kernel.
+
+

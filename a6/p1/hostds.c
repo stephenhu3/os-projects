@@ -127,33 +127,15 @@ int main(int argc, char *argv[]) {
 	// printf("After Third Dequeue Third Remaining Time: %d\n", process5->process->remainingTime);
 
 	// process cycle calls run dispatcher already
-	// while(isEmpty(dispatcher) == 0) {
-	// 	processCycle();
-	// }
+	while(currentTime < 30) {
+	 	processCycle();
+	}
 
 
 
 	// for (int i = 0; i < 30; i++) {
 	// 	processCycle();
 	// }
-
-	for (int i = 0; i < 50; i++) {
-		runDispatcher(currentTime);
-		currentTime++;
-	}
-
-	struct queue *process3 = (struct queue *) malloc(sizeof(struct queue));
-	process3 = dequeue(&RTQueue);
-	printf("After First Dequeue First Header: %d\n", process3->header);
-	printf("After First Dequeue First ID: %d\n", process3->process->pid);
-	printf("After First Dequeue First Remaining Time: %d\n", process3->process->remainingTime);
-
-
-	struct queue *process4 = (struct queue *) malloc(sizeof(struct queue));
-	process4 = dequeue(&RTQueue);  // assigning dequeue on the head element has incorrect value, else is okay
-	printf("After Second Dequeue Second Header: %d\n", process4->header);
-	printf("After Second Dequeue Second ID: %d\n", process4->process->pid);
-	printf("After Second Dequeue Second Remaining Time: %d\n", process4->process->remainingTime);
 
 	// printf("First Header: %d\n", RTQueue->header);
 	// printf("First ID: %d\n", RTQueue->process->pid);
@@ -321,43 +303,31 @@ void initQueue(struct queue **init) {
 //EFFECTS: simulates one processing cycle, increments global time
 //RETURNS: none
 void processCycle(void) {
-	// TODO: logic for time remaining, scheduling logic for user queue, fcfs for priority
-
-	// Ambiguities: can we dispatch from user queue to priority queues in same cycle with dispatching from priority queue?
-	// Current implementation: can only start dispatching from user queue to priority queue if real time queue empty
-	// If real time queue empty, start processing user queue
-
-	//TODO: process cycle should only be called at most once per second, use timing functions to ensure this
 	runDispatcher(currentTime);
 
-	if (isEmpty(RTQueue)) {
-		// Dispatch from user queue to appropriate priority queues
-		runUser();
-		// Run process from priority queues
-		if (isEmpty(p1Queue)) {
-			if (isEmpty(p2Queue)) {
-				if (isEmpty(p3Queue)) {
-					currentTime++;
-					return;
-				} else {
-					//run process from priority queue 3, additional logic needed
-					executeFCFS(p3Queue);
-				}
-			} else {
-				//run process from priority queue 2, additional logic needed
-				executeFCFS(p2Queue);
-			}
-		} else {
-			//run process from priority queue 1, additional logic needed
-			executeFCFS(p1Queue);
-		}
-	} else {
-		// run process from real time queue, additional logic needed
-		/* Note: "Real time processes will not need any IO resources, but require memory allocation, 64 Mbytes or less" */
-		executeFCFS(RTQueue);
-		// maybe executeFCFS needs to be pass by reference using & since dequeues are occurring
+	if(!isEmpty(RTQueue) && host.currentProcess == NULL) {
+		host.currentProcess = RTQueue->process;
+		dequeue(&RTQueue);
 	}
-	// one unit of time has passed
+
+	if(host.currentProcess != NULL) {
+		if (host.currentProcess->started != 1) {
+			host.currentProcess->started = 1;
+
+			printf("Process %d: Started (Remaining Time: %d) | Current Time: %d\n", host.currentProcess->pid, host.currentProcess->remainingTime, currentTime);
+		} else {
+			printf("Process %d: Continued (Remaining Time: %d) | Current Time: %d\n", host.currentProcess->pid, host.currentProcess->remainingTime, currentTime);
+		}
+
+		host.currentProcess->remainingTime--;
+
+		if(host.currentProcess->remainingTime <= 0) {
+			printf("Process %d: Terminated\n", host.currentProcess->pid);
+			freeHostRes(host.currentProcess);
+			host.currentProcess = NULL;
+		}
+	}
+	
 	currentTime++;
 }
 
@@ -413,7 +383,7 @@ void runDispatcher(int currentTime) {
 	initQueue(&updatedDispatcher);
 
 	if(isEmpty(dispatcher) == 1) {
-		printf("There is nothing to dispatch right now.\n\n");
+		// printf("There is nothing to dispatch right now.\n\n");
 		return;
 	}
 	// Question: What does holder do?
@@ -612,7 +582,6 @@ int isEmpty(struct queue *queue) {
 //EFFECTS: queues current process at end of given queue
 //RETURNS: none
 void enqueue(struct queue *target, struct pcb *currentProcess) {
-	if (target != NULL) {
 		if(target->header == 0) {
 			target->process = currentProcess;
 			target->header = 1;
@@ -628,9 +597,6 @@ void enqueue(struct queue *target, struct pcb *currentProcess) {
 			newQueue->process = currentProcess;
 			cursor->next = newQueue;
 		}
-	} else {
-		printf("Invalid queue, nothing enqueued.\n");
-	}
 }
 
 //Write tests to ensure enqueue and dequeue behave accordingly first
@@ -661,6 +627,7 @@ struct queue* dequeue(struct queue **header) {
 	// // remove current header and set new header
 	if((*header)->next == NULL) {// single element case
 		*header = NULL;
+		initQueue(header);
 	}
 	else {
 		*header = (*header)->next;
