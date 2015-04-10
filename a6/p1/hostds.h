@@ -27,6 +27,14 @@
 #define TERMINATED 3
 #define DELIMINATOR ", "
 
+#define RED     "\x1b[31m"
+#define GREEN   "\x1b[32m"
+#define YELLOW  "\x1b[33m"
+#define BLUE    "\x1b[34m"
+#define MAGENTA "\x1b[35m"
+#define CYAN    "\x1b[36m"
+#define RESET   "\x1b[0m"
+
 // STRUCT DEFINITIONS
 struct host {
 	int numPrinters;
@@ -96,6 +104,7 @@ int runUser(void);
 int isEmpty(struct queue *queue);
 void initQueue(struct queue **init);
 void enqueue(struct queue *queue, struct pcb *currentProcess);
+void priorityEnqueue(struct pcb *currentProcess);
 struct queue* dequeue(struct queue **header);
 
 int checkRes(int pid, int resNeeded, int haveRes, int *hostRes);
@@ -108,7 +117,5 @@ int allocDrives(struct pcb *process);
 int allocMem(struct pcb *process);
 int allocRTMem(struct pcb *process);
 int allocRes(struct pcb *process);
-
-int executeFCFS(struct queue *cursor);
 
 #endif

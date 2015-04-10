@@ -299,34 +299,96 @@ void initQueue(struct queue **init) {
 	*init = new;
 }
 
+//PARAMS: process with priority != 0 to be reenqueued
+//EFFECTS: enqueues process depending on priority ranged 1 to 3 inclusive
+//RETURNS: none
+void priorityEnqueue(struct pcb *currentProcess) {
+	if(currentProcess->priority == 1)
+		enqueue(p1Queue, currentProcess);
+	else if(currentProcess->priority == 2)
+		enqueue(p2Queue, currentProcess);
+	else
+		enqueue(p3Queue, currentProcess);
+}
+
 //PARAMS: run once per time unit
 //EFFECTS: simulates one processing cycle, increments global time
 //RETURNS: none
 void processCycle(void) {
+	printf("|------------------------------------------------|\n");
+	printf("              PROCESSOR CYCLE #%i                \n", currentTime);
+	printf("|------------------------------------------------|\n");
+	
 	runDispatcher(currentTime);
-
-	if(!isEmpty(RTQueue) && host.currentProcess == NULL) {
-		host.currentProcess = RTQueue->process;
-		dequeue(&RTQueue);
+	runUser();
+	
+	// Real Time Handler
+	if(!isEmpty(RTQueue)) {
+		if(host.currentProcess == NULL) {
+			host.currentProcess = RTQueue->process;
+			dequeue(&RTQueue);
+		}
+		else if(host.currentProcess->priority != 0) {
+			printf(RED "Process %d: Suspended (Remaining Time: %d) | Current Time: %d\n" RESET, host.currentProcess->pid, host.currentProcess->remainingTime, currentTime);
+			priorityEnqueue(host.currentProcess);
+			host.currentProcess = RTQueue->process;
+			dequeue(&RTQueue);
+		}
+	}
+	// Priority 1 Handler
+	else if(!isEmpty(p1Queue)) {
+		if(host.currentProcess == NULL) {
+			host.currentProcess = p1Queue->process;
+			dequeue(&p1Queue);
+		}
+		else if(host.currentProcess->priority > 1) {
+			printf(RED "Process %d: Suspended (Remaining Time: %d) | Current Time: %d\n" RESET, host.currentProcess->pid, host.currentProcess->remainingTime, currentTime);
+			priorityEnqueue(host.currentProcess);
+			host.currentProcess = p1Queue->process;
+			dequeue(&p1Queue);
+		}
+	}
+	// Priority 2 Handler
+	else if(!isEmpty(p2Queue)) {
+		if(host.currentProcess == NULL) {
+			host.currentProcess = p2Queue->process;
+			dequeue(&p2Queue);
+		}
+		else if(host.currentProcess->priority > 2) {
+			printf(RED "Process %d: Suspended (Remaining Time: %d) | Current Time: %d\n" RESET, host.currentProcess->pid, host.currentProcess->remainingTime, currentTime);
+			priorityEnqueue(host.currentProcess);
+			host.currentProcess = p2Queue->process;
+			dequeue(&p2Queue);
+		}
+	}
+	// Priority 3 Handler
+	else if(!isEmpty(p3Queue)) {
+		if(host.currentProcess == NULL) {
+			host.currentProcess = p3Queue->process;
+			dequeue(&p3Queue);
+		}
 	}
 
 	if(host.currentProcess != NULL) {
 		if (host.currentProcess->started != 1) {
 			host.currentProcess->started = 1;
 
-			printf("Process %d: Started (Remaining Time: %d) | Current Time: %d\n", host.currentProcess->pid, host.currentProcess->remainingTime, currentTime);
+			printf(GREEN "Process %d: Started (Remaining Time: %d) | Current Time: %d\n" RESET, host.currentProcess->pid, host.currentProcess->remainingTime, currentTime);
 		} else {
-			printf("Process %d: Continued (Remaining Time: %d) | Current Time: %d\n", host.currentProcess->pid, host.currentProcess->remainingTime, currentTime);
+			printf(CYAN "Process %d: Continued (Remaining Time: %d) | Current Time: %d\n" RESET, host.currentProcess->pid, host.currentProcess->remainingTime, currentTime);
 		}
 
 		host.currentProcess->remainingTime--;
 
 		if(host.currentProcess->remainingTime <= 0) {
-			printf("Process %d: Terminated\n", host.currentProcess->pid);
+			printf(MAGENTA "Process %d: Terminated\n" RESET, host.currentProcess->pid);
 			freeHostRes(host.currentProcess);
 			host.currentProcess = NULL;
 		}
 	}
+	else
+		printf(YELLOW "Idling... Current Time: %i\n" RESET, currentTime);
+	printf("\n");
 	
 	currentTime++;
 }
@@ -409,7 +471,7 @@ void runDispatcher(int currentTime) {
 		if(currentTime >= process->arrivalTime) {
 			allocRet = allocRes(process);
 			if(allocRet == 1 || allocRet == 0) {
-				printf("\nAllocated Process PID: %i\n", process->pid);
+				printf(BLUE "Allocated Process PID: %i\n" RESET, process->pid);
 				if(process->priority == 0)
 					rtIntercept = 1;
 				switch(process->priority) {
@@ -471,101 +533,6 @@ int runUser(void) {
 				}
 			}
 		}
-	return 0;
-}
-
-
-//PARAMS: input queue (any of of the priority queues or real time queue)
-//EFFECTS: executes the input queue in FCFS fashion
-//		   (last element has time remaining decremented, dequeued if completed)
-//RETURNS: 1 if process dequeued and run, else 0
-int executeFCFS(struct queue *cursor) {
-	//TODO: display necessary information
-	// A message displaying the process ID when the process starts;
-	// A regular message every second the process is executed; and
-	// A message when the process is Suspended, Continued, or Terminated.
-	// terminated if time remaining is zero
-	// continued if it was started and resumed
-	// suspended if another process is run before completion of current process
-
-	/*
-	When a job is started (fork and exec("process",...)), 
-	the dispatcher will display the job parameters 
-	(Process ID, priority, processor time remaining (in seconds),
-	memory location and block size, and resources requested) before performing the exec.
-	*/
-
-	/*
-	A low priority User job is allowed to run for one dispatcher tick (one second) 
-	before it is suspended (SIGTSTP) or terminated (SIGINT) if its time has expired. 
-	If suspended, its priority level is lowered (if possible) and it is re-queued on
-	the appropriate priority queue as shown in Figures 1 & 3 above.
-	To retain synchronisation of output between your dispatcher and the child process,
-	your dispatcher should wait for the process to respond to a SIGTSTP or SIGINT signal
-	before continuing ( waitpid(p->pid, &status, WUNTRACED)). 
-	To match the performance sequence indicated in Stallings' comparison of scheduling 
-	policies the User job should not be suspended and moved to a lower priority level 
-	unless another process is waiting to be (re)started.
-	*/
-	if (cursor != NULL) {
-	if (!isEmpty(cursor)) {
-		// struct queue *cursor = queue;
-
-		// should be head, not tail, comment this out
-		// // cursor is last element in queue
-		// while (cursor->next)
-		// 	cursor = cursor->next;
-
-		//need to add check that resources can be allocated before running
-		// allocRes(cursor->process); // this was done in the sending from dispatcher to queues, so no need here
-		// if started flag was not set, set to one
-		if (cursor->process->started != 1) {
-			cursor->process->started = 1;
-
-			// //need to add check that resources can be allocated before running
-			// allocRes(cursor->process);
-
-			printf("Process %d: Started (Remaining Time: %d) | Current Time: %d\n", cursor->process->pid, cursor->process->remainingTime, currentTime);
-		} else {
-			printf("Process %d: Continued (Remaining Time: %d) | Current Time: %d\n", cursor->process->pid, cursor->process->remainingTime, currentTime);
-		}
-
-		cursor->process->remainingTime = cursor->process->remainingTime - 1;
-
-		if (cursor->process->remainingTime <= 0) {
-			printf("Process %d: Terminated\n", cursor->process->pid);
-			// seg fault occurs right after termination
-			// free resources only if process to be terminated
-			freeHostRes(cursor->process); // this is the one causing segfault
-			dequeue(&cursor); // TODO: this here is causing segfault, fixed by calling by reference
-			// free(cursor); // don't try to deal with this right now
-			// issue: infinite loop, problem in this here
-			
-			
-		}
-		else {
-			printf("Process %d: Suspended\n", cursor->process->pid);	
-			// implement aging, move to 1 priority lower if in priority queues
-			switch(cursor->process->priority) {
-				case 0: // is in real time queue, leave in there
-					break;
-				case 1:
-					enqueue(p2Queue, dequeue(&cursor)->process);
-					break;
-				case 2:
-					enqueue(p3Queue, dequeue(&cursor)->process);
-					break;
-				case 3:
-					// can't move any lower
-					break;
-				default:
-				// invalid priority, nothing enqueued
-				return 0;
-			}
-		}
-		return 1;
-	}
-	}
 	return 0;
 }
 
