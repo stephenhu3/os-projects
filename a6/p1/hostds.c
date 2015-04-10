@@ -106,7 +106,26 @@ int main(int argc, char *argv[]) {
 
 
 
-	// // runDispatcher(currentTime);
+	runDispatcher(currentTime);
+	
+	// struct queue *process3 = (struct queue *) malloc(sizeof(struct queue));
+	// process3 = dequeue(&RTQueue);
+
+	// printf("After First Dequeue First ID: %d\n", process3->process->pid);
+	// printf("After First Dequeue First Remaining Time: %d\n", process3->process->remainingTime);
+
+	// struct queue *process4 = (struct queue *) malloc(sizeof(struct queue));
+	// process4 = dequeue(&RTQueue);  // assigning dequeue on the head element has incorrect value, else is okay
+
+	// printf("After Second Dequeue Second ID: %d\n", process4->process->pid);
+	// printf("After Second Dequeue Second Remaining Time: %d\n", process4->process->remainingTime);
+
+	// struct queue *process5 = (struct queue *) malloc(sizeof(struct queue));
+	// process5 = dequeue(&RTQueue);  // assigning dequeue on the head element has incorrect value, else is okay
+
+	// printf("After Third Dequeue Third ID: %d\n", process5->process->pid);
+	// printf("After Third Dequeue Third Remaining Time: %d\n", process5->process->remainingTime);
+
 	// // // process cycle calls run dispatcher already
 	while(isEmpty(dispatcher) == 0) {
 		processCycle();
@@ -489,9 +508,10 @@ int executeFCFS(struct queue *queue) {
 	if (!isEmpty(queue)) {
 		struct queue *cursor = queue;
 
-		// cursor is last element in queue
-		while (cursor->next)
-			cursor = cursor->next;
+		// should be head, not tail, comment this out
+		// // cursor is last element in queue
+		// while (cursor->next)
+		// 	cursor = cursor->next;
 
 		//need to add check that resources can be allocated before running
 		// allocRes(cursor->process); // this was done in the sending from dispatcher to queues, so no need here
@@ -517,7 +537,7 @@ int executeFCFS(struct queue *queue) {
 			// free resources only if process to be terminated
 			freeHostRes(cursor->process); // this is the one causing segfault
 			dequeue(&cursor); // TODO: this here is causing segfault, fixed by calling by reference
-			free(cursor);
+			// free(cursor); // don't try to deal with this right now
 			// issue: infinite loop, problem in this here
 			
 			
