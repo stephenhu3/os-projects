@@ -12,16 +12,16 @@ int main(int argc , char *argv[])
     char *message;
  
     printf("\nInitialising Winsock.......");
-    if (WSAStartup(MAKEWORD(2,2),&wsa) != 0){
-        printf("Failed. Error Code : %d",WSAGetLastError());
+    if (WSAStartup(MAKEWORD(2,2),&wsa) != 0){ //initialising winsock
+        printf("Failed. Error Code : %d",WSAGetLastError()); //prints out if initialising fails
         return 1;
     }
      
     printf(" Initialised!\n");
      
     //Create a socket
-    if((s = socket(AF_INET , SOCK_STREAM , 0 )) == INVALID_SOCKET)
-        printf("Could not create socket : %d" , WSAGetLastError());
+    if((s = socket(AF_INET , SOCK_STREAM , 0 )) == INVALID_SOCKET) //create a socket
+        printf("Could not create socket : %d" , WSAGetLastError()); //prints out if creation fails
  
     printf("Socket created!\n");
      
@@ -31,8 +31,8 @@ int main(int argc , char *argv[])
     server.sin_port = htons( 8888 );
      
     //Bind
-    if( bind(s ,(struct sockaddr *)&server , sizeof(server)) == SOCKET_ERROR)
-        printf("Bind failed with error code : %d" , WSAGetLastError());
+    if( bind(s ,(struct sockaddr *)&server , sizeof(server)) == SOCKET_ERROR) //bind socket
+        printf("Bind failed with error code : %d" , WSAGetLastError()); //prints out if bind fails
      
     puts("Bind done!");
      
@@ -44,10 +44,10 @@ int main(int argc , char *argv[])
     puts("Waiting for incoming connections...");
      
     c = sizeof(struct sockaddr_in);
-    new_socket = accept(s , (struct sockaddr *)&client, &c);
+    new_socket = accept(s , (struct sockaddr *)&client, &c); //accept connection from client
     if (new_socket == INVALID_SOCKET)
     {
-        printf("accept failed with error code : %d" , WSAGetLastError());
+        printf("accept failed with error code : %d" , WSAGetLastError()); //prints out if client connection fails
     }
      
     puts("Connection accepted");
@@ -55,7 +55,7 @@ int main(int argc , char *argv[])
     //Reply to client(test if client can receive or not)
     message = "Hello Client , I have received your connection. But I have to go now, Bye\n";
     //message = "shorter string"; //test case
-    send(new_socket , message , strlen(message) , 0);
+    send(new_socket , message , strlen(message) , 0); //send message to client that it has been connected
      
     getchar();
  
