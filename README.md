@@ -1,4 +1,4 @@
-# Linux-based OS Projects
+# Unix-based OS Projects
 
 Contributing Members:
 - Rico Wen
